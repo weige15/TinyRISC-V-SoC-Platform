@@ -112,14 +112,39 @@ module NPU (
     localparam STATE_AXI_READ_DATA  = 3'd4;
     localparam STATE_AXI_WRITE      = 3'd5;
     localparam STATE_AXI_WRITE_RESP = 3'd6;
+    localparam STATE_SIMD_MAC       = 3'd7;
+
+    localparam [2:0]  FUNCT3_SIMD_MAC                 = 3'b011;
+    localparam [31:0] FUNCT7_SIMD_MAC_RESET           = 32'd1;
+    localparam [31:0] FUNCT7_SIMD_MAC_ACCUMULATE      = 32'd0;
 
     reg [2:0] state_r;
+    reg [31:0] simd_mac_accumulator_r;
+
+    // Packed operands follow the Lab 1 convention: lane 0 is bits [31:24]
+    // and lane 3 is bits [7:0]. Sign-extend each byte before multiplying.
+    wire signed [15:0] input_lane0  = {{8{rs1_i[31]}}, rs1_i[31:24]};
+    wire signed [15:0] input_lane1  = {{8{rs1_i[23]}}, rs1_i[23:16]};
+    wire signed [15:0] input_lane2  = {{8{rs1_i[15]}}, rs1_i[15:8]};
+    wire signed [15:0] input_lane3  = {{8{rs1_i[7]}},  rs1_i[7:0]};
+    wire signed [15:0] filter_lane0 = {{8{rs2_i[31]}}, rs2_i[31:24]};
+    wire signed [15:0] filter_lane1 = {{8{rs2_i[23]}}, rs2_i[23:16]};
+    wire signed [15:0] filter_lane2 = {{8{rs2_i[15]}}, rs2_i[15:8]};
+    wire signed [15:0] filter_lane3 = {{8{rs2_i[7]}},  rs2_i[7:0]};
+
+    wire signed [31:0] simd_product0 = input_lane0 * filter_lane0;
+    wire signed [31:0] simd_product1 = input_lane1 * filter_lane1;
+    wire signed [31:0] simd_product2 = input_lane2 * filter_lane2;
+    wire signed [31:0] simd_product3 = input_lane3 * filter_lane3;
+    wire signed [31:0] simd_dot_product = simd_product0 + simd_product1 +
+                                              simd_product2 + simd_product3;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            state_r      <= STATE_IDLE;
-            NPU_out      <= 32'd0;
-            NPU_done     <= 1'b0;
+            state_r                <= STATE_IDLE;
+            NPU_out                <= 32'd0;
+            NPU_done               <= 1'b0;
+            simd_mac_accumulator_r <= 32'd0;
             M_AXI_ARADDR  <= 32'd0;
             M_AXI_ARVALID <= 1'b0;
             M_AXI_AWADDR  <= 32'd0;
@@ -146,6 +171,8 @@ module NPU (
                             M_AXI_WLAST   <= 1'b1;
                             M_AXI_WVALID  <= 1'b1;
                             state_r       <= STATE_AXI_WRITE;
+                        end else if (funct3_i[2:0] == FUNCT3_SIMD_MAC) begin
+                            state_r <= STATE_SIMD_MAC;
                         end else begin
                             state_r <= STATE_DONE;
                         end
@@ -154,6 +181,18 @@ module NPU (
 
                 STATE_COMP: begin
                     NPU_out <= rs1_i + rs2_i + funct7_i;
+                    state_r <= STATE_DONE;
+                end
+
+                STATE_SIMD_MAC: begin
+                    if (funct7_i == FUNCT7_SIMD_MAC_RESET) begin
+                        simd_mac_accumulator_r <= simd_dot_product;
+                        NPU_out                <= simd_dot_product;
+                    end else if (funct7_i == FUNCT7_SIMD_MAC_ACCUMULATE) begin
+                        simd_mac_accumulator_r <= simd_mac_accumulator_r +
+                                                  simd_dot_product;
+                        NPU_out <= simd_mac_accumulator_r + simd_dot_product;
+                    end
                     state_r <= STATE_DONE;
                 end
 
