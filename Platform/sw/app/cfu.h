@@ -10,9 +10,12 @@ typedef uintptr_t CfuWord;
 #define CFU_FUNCT3_COMPUTE 0
 #define CFU_FUNCT3_AXI_READ 1
 #define CFU_FUNCT3_AXI_WRITE 2
+#define CFU_FUNCT3_SIMD_MAC 3
 
 #define CFU_FUNCT7_AXI 0
 #define CFU_FUNCT7_SCALAR_COMPUTE 5
+#define CFU_FUNCT7_SIMD_MAC_RESET 1
+#define CFU_FUNCT7_SIMD_MAC_ACCUMULATE 0
 
 enum CfuFunction {
   kCfuScalarCompute = 0,
@@ -54,6 +57,17 @@ uint32_t software_cfu_raw(uint32_t funct3, uint32_t funct7, CfuWord rs1,
 #define cfu_raw_op(funct3, funct7, rs1, rs2) \
   cfu_raw_op_hw(funct3, funct7, rs1, rs2)
 #endif
+
+static inline uint32_t cfu_simd_mac_reset(CfuWord input, CfuWord filter) {
+  return cfu_raw_op(CFU_FUNCT3_SIMD_MAC, CFU_FUNCT7_SIMD_MAC_RESET, input,
+                    filter);
+}
+
+static inline uint32_t cfu_simd_mac_accumulate(CfuWord input,
+                                                CfuWord filter) {
+  return cfu_raw_op(CFU_FUNCT3_SIMD_MAC, CFU_FUNCT7_SIMD_MAC_ACCUMULATE,
+                    input, filter);
+}
 
 #define cfu_op0_hw(funct7, rs1, rs2) \
   cfu_raw_op_hw(CFU_FUNCT3_COMPUTE, funct7, rs1, rs2)
