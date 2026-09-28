@@ -4,14 +4,14 @@
     "xci_name": "MMIO_util_vector_logic_0_1",
     "cell_name": "util_vector_logic_1",
     "component_reference": "xilinx.com:ip:util_vector_logic:2.0",
-    "ip_revision": "4",
+    "ip_revision": "3",
     "gen_directory": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_util_vector_logic_0_1",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "MMIO_util_vector_logic_0_1", "resolve_type": "user", "usage": "all" } ],
         "C_SIZE": [ { "value": "1", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_OPERATION": [ { "value": "not", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
-        "LOGO_FILE": [ { "value": "data/sym_notgate.png", "resolve_type": "user", "enabled": false, "usage": "all" } ]
+        "LOGO_FILE": [ { "value": "data/sym_notgate.png", "value_src": "user", "resolve_type": "user", "enabled": false, "usage": "all" } ]
       },
       "model_parameters": {
         "C_OPERATION": [ { "value": "not", "resolve_type": "generated", "usage": "all" } ],
@@ -33,12 +33,12 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "4" } ],
+        "IPREVISION": [ { "value": "3" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_util_vector_logic_0_1" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
-        "SWVERSION": [ { "value": "2024.1" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },

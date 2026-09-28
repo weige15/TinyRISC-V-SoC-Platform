@@ -4,7 +4,7 @@
     "xci_name": "MMIO_xlconstant_0_0",
     "cell_name": "xlconstant_0",
     "component_reference": "xilinx.com:ip:xlconstant:1.1",
-    "ip_revision": "9",
+    "ip_revision": "8",
     "gen_directory": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_xlconstant_0_0",
     "parameters": {
       "component_parameters": {
@@ -32,12 +32,12 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "9" } ],
+        "IPREVISION": [ { "value": "8" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_xlconstant_0_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
-        "SWVERSION": [ { "value": "2024.1" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },

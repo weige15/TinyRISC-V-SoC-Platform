@@ -4,7 +4,7 @@
     "xci_name": "MMIO_axi_uartlite_0_1",
     "cell_name": "axi_uartlite_0",
     "component_reference": "xilinx.com:ip:axi_uartlite:2.0",
-    "ip_revision": "35",
+    "ip_revision": "33",
     "gen_directory": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_axi_uartlite_0_1",
     "parameters": {
       "component_parameters": {
@@ -45,12 +45,12 @@
       },
       "runtime_parameters": {
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
-        "IPREVISION": [ { "value": "35" } ],
+        "IPREVISION": [ { "value": "33" } ],
         "MANAGED": [ { "value": "TRUE" } ],
         "OUTPUTDIR": [ { "value": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_axi_uartlite_0_1" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../ipshared" } ],
-        "SWVERSION": [ { "value": "2024.1" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },
@@ -84,7 +84,6 @@
           "vlnv": "xilinx.com:interface:aximm:1.0",
           "abstraction_type": "xilinx.com:interface:aximm_rtl:1.0",
           "mode": "slave",
-          "memory_map_ref": "S_AXI",
           "parameters": {
             "DATA_WIDTH": [ { "value": "32", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "PROTOCOL": [ { "value": "AXI4LITE", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
