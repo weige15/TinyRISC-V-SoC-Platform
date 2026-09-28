@@ -31,7 +31,7 @@
         "OUTPUTDIR": [ { "value": "../../../../../../CUSTOM_SoC.gen/sources_1/bd/MMIO/ip/MMIO_NPU_0_0" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "../../../../../../srcs/sources_1/bd/MMIO/ipshared" } ],
-        "SWVERSION": [ { "value": "2024.1" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
         "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
       }
     },
@@ -44,9 +44,8 @@
         "NPU_out": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
         "NPU_start": [ { "direction": "in" } ],
         "NPU_done": [ { "direction": "out" } ],
-        "NPU_exception": [ { "direction": "out" } ],
-        "funct3_i": [ { "direction": "in", "size_left": "2", "size_right": "0" } ],
-        "funct7_i": [ { "direction": "in", "size_left": "6", "size_right": "0" } ],
+        "funct3_i": [ { "direction": "in", "size_left": "3", "size_right": "0" } ],
+        "funct7_i": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
         "M_AXI_AWADDR": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
         "M_AXI_AWLEN": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
         "M_AXI_AWSIZE": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],

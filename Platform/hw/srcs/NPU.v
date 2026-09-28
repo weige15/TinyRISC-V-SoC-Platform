@@ -93,7 +93,6 @@ module NPU (
     assign M_AXI_AWQOS   = 4'b0000;
     assign M_AXI_AWUSER  = 16'h0000;
     assign M_AXI_WSTRB   = 4'b1111;
-    assign M_AXI_BREADY  = 1'b1;
 
     assign M_AXI_ARLEN   = 8'h00;
     assign M_AXI_ARSIZE  = 3'b010;
@@ -103,19 +102,31 @@ module NPU (
     assign M_AXI_ARPROT  = 3'b000;
     assign M_AXI_ARQOS   = 4'b0000;
     assign M_AXI_ARUSER  = 16'h0000;
-    assign M_AXI_RREADY  = 1'b1;
+    assign M_AXI_RREADY  = (state_r == STATE_AXI_READ_DATA);
+    assign M_AXI_BREADY  = (state_r == STATE_AXI_WRITE_RESP);
 
-    localparam STATE_IDLE = 3'd0;
-    localparam STATE_COMP = 3'd1;
-    localparam STATE_DONE = 3'd2;
+    localparam STATE_IDLE          = 3'd0;
+    localparam STATE_COMP          = 3'd1;
+    localparam STATE_DONE          = 3'd2;
+    localparam STATE_AXI_READ_ADDR  = 3'd3;
+    localparam STATE_AXI_READ_DATA  = 3'd4;
+    localparam STATE_AXI_WRITE      = 3'd5;
+    localparam STATE_AXI_WRITE_RESP = 3'd6;
 
     reg [2:0] state_r;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            state_r  <= STATE_IDLE;
-            NPU_out  <= 32'd0;
-            NPU_done <= 1'b0;
+            state_r      <= STATE_IDLE;
+            NPU_out      <= 32'd0;
+            NPU_done     <= 1'b0;
+            M_AXI_ARADDR  <= 32'd0;
+            M_AXI_ARVALID <= 1'b0;
+            M_AXI_AWADDR  <= 32'd0;
+            M_AXI_AWVALID <= 1'b0;
+            M_AXI_WDATA   <= 32'd0;
+            M_AXI_WLAST   <= 1'b0;
+            M_AXI_WVALID  <= 1'b0;
         end else begin
             NPU_done <= 1'b0;
             case (state_r)
@@ -124,6 +135,17 @@ module NPU (
                     if (NPU_start) begin
                         if (funct3_i[2:0] == 3'b000) begin
                             state_r <= STATE_COMP;
+                        end else if (funct3_i[2:0] == 3'b001) begin
+                            M_AXI_ARADDR  <= rs1_i;
+                            M_AXI_ARVALID <= 1'b1;
+                            state_r       <= STATE_AXI_READ_ADDR;
+                        end else if (funct3_i[2:0] == 3'b010) begin
+                            M_AXI_AWADDR  <= rs1_i;
+                            M_AXI_AWVALID <= 1'b1;
+                            M_AXI_WDATA   <= rs2_i;
+                            M_AXI_WLAST   <= 1'b1;
+                            M_AXI_WVALID  <= 1'b1;
+                            state_r       <= STATE_AXI_WRITE;
                         end else begin
                             state_r <= STATE_DONE;
                         end
@@ -133,6 +155,44 @@ module NPU (
                 STATE_COMP: begin
                     NPU_out <= rs1_i + rs2_i + funct7_i;
                     state_r <= STATE_DONE;
+                end
+
+                STATE_AXI_READ_ADDR: begin
+                    if (M_AXI_ARVALID && M_AXI_ARREADY) begin
+                        M_AXI_ARVALID <= 1'b0;
+                        state_r       <= STATE_AXI_READ_DATA;
+                    end else begin
+                        state_r <= STATE_AXI_READ_ADDR;
+                    end
+                end
+
+                STATE_AXI_READ_DATA: begin
+                    if (M_AXI_RVALID && M_AXI_RREADY) begin
+                        NPU_out <= M_AXI_RDATA;
+                        state_r <= STATE_DONE;
+                    end else begin
+                        state_r <= STATE_AXI_READ_DATA;
+                    end
+                end
+
+                STATE_AXI_WRITE: begin
+                    if (M_AXI_AWVALID && M_AXI_AWREADY) begin
+                        M_AXI_AWVALID <= 1'b0;
+                    end
+                    if (M_AXI_WVALID && M_AXI_WREADY) begin
+                        M_AXI_WVALID <= 1'b0;
+                        M_AXI_WLAST  <= 1'b0;
+                    end
+                    if ((!M_AXI_AWVALID || M_AXI_AWREADY) &&
+                        (!M_AXI_WVALID || M_AXI_WREADY)) begin
+                        state_r <= STATE_AXI_WRITE_RESP;
+                    end
+                end
+
+                STATE_AXI_WRITE_RESP: begin
+                    if (M_AXI_BVALID && M_AXI_BREADY) begin
+                        state_r <= STATE_DONE;
+                    end
                 end
 
                 STATE_DONE: begin
