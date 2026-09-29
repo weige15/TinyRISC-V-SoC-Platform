@@ -50,7 +50,7 @@ module NPU (
     input M_AXI_AWREADY,
     // W Channel
     output reg [31:0] M_AXI_WDATA,
-    output [3:0] M_AXI_WSTRB,
+    output reg [3:0] M_AXI_WSTRB,
     output reg M_AXI_WLAST,
     output reg M_AXI_WVALID,
     input M_AXI_WREADY,
@@ -92,8 +92,6 @@ module NPU (
     assign M_AXI_AWPROT  = 3'b000;
     assign M_AXI_AWQOS   = 4'b0000;
     assign M_AXI_AWUSER  = 16'h0000;
-    assign M_AXI_WSTRB   = 4'b1111;
-
     assign M_AXI_ARLEN   = 8'h00;
     assign M_AXI_ARSIZE  = 3'b010;
     assign M_AXI_ARBURST = 2'b01;
@@ -120,6 +118,9 @@ module NPU (
 
     reg [2:0] state_r;
     reg [31:0] simd_mac_accumulator_r;
+    reg [31:0] write_second_data_r;
+    reg [3:0] write_second_strb_r;
+    reg write_second_pending_r;
 
     // Packed operands follow the Lab 1 convention: lane 0 is bits [31:24]
     // and lane 3 is bits [7:0]. Sign-extend each byte before multiplying.
@@ -150,8 +151,12 @@ module NPU (
             M_AXI_AWADDR  <= 32'd0;
             M_AXI_AWVALID <= 1'b0;
             M_AXI_WDATA   <= 32'd0;
+            M_AXI_WSTRB   <= 4'b1111;
             M_AXI_WLAST   <= 1'b0;
             M_AXI_WVALID  <= 1'b0;
+            write_second_data_r    <= 32'd0;
+            write_second_strb_r    <= 4'd0;
+            write_second_pending_r <= 1'b0;
         end else begin
             NPU_done <= 1'b0;
             case (state_r)
@@ -165,11 +170,17 @@ module NPU (
                             M_AXI_ARVALID <= 1'b1;
                             state_r       <= STATE_AXI_READ_ADDR;
                         end else if (funct3_i[2:0] == 3'b010) begin
-                            M_AXI_AWADDR  <= rs1_i;
+                            M_AXI_AWADDR  <= {rs1_i[31:2], 2'b00};
                             M_AXI_AWVALID <= 1'b1;
-                            M_AXI_WDATA   <= rs2_i;
+                            M_AXI_WDATA   <= rs2_i << {rs1_i[1:0], 3'b000};
+                            M_AXI_WSTRB   <= 4'b1111 << rs1_i[1:0];
                             M_AXI_WLAST   <= 1'b1;
                             M_AXI_WVALID  <= 1'b1;
+                            write_second_data_r <= rs2_i >>
+                                (6'd32 - {1'b0, rs1_i[1:0], 3'b000});
+                            write_second_strb_r <=
+                                (4'b0001 << rs1_i[1:0]) - 4'b0001;
+                            write_second_pending_r <= (rs1_i[1:0] != 2'b00);
                             state_r       <= STATE_AXI_WRITE;
                         end else if (funct3_i[2:0] == FUNCT3_SIMD_MAC) begin
                             state_r <= STATE_SIMD_MAC;
@@ -230,7 +241,18 @@ module NPU (
 
                 STATE_AXI_WRITE_RESP: begin
                     if (M_AXI_BVALID && M_AXI_BREADY) begin
-                        state_r <= STATE_DONE;
+                        if (write_second_pending_r) begin
+                            M_AXI_AWADDR  <= M_AXI_AWADDR + 32'd4;
+                            M_AXI_AWVALID <= 1'b1;
+                            M_AXI_WDATA   <= write_second_data_r;
+                            M_AXI_WSTRB   <= write_second_strb_r;
+                            M_AXI_WLAST   <= 1'b1;
+                            M_AXI_WVALID  <= 1'b1;
+                            write_second_pending_r <= 1'b0;
+                            state_r <= STATE_AXI_WRITE;
+                        end else begin
+                            state_r <= STATE_DONE;
+                        end
                     end
                 end
 
