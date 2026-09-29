@@ -118,6 +118,9 @@ module NPU (
 
     reg [2:0] state_r;
     reg [31:0] simd_mac_accumulator_r;
+    reg [1:0] read_offset_r;
+    reg [31:0] read_first_word_r;
+    reg read_second_word_r;
     reg [31:0] write_second_data_r;
     reg [3:0] write_second_strb_r;
     reg write_second_pending_r;
@@ -139,6 +142,9 @@ module NPU (
     wire signed [31:0] simd_product3 = input_lane3 * filter_lane3;
     wire signed [31:0] simd_dot_product = simd_product0 + simd_product1 +
                                               simd_product2 + simd_product3;
+    wire [63:0] read_word_pair = {M_AXI_RDATA, read_first_word_r};
+    wire [31:0] reconstructed_read_data =
+        read_word_pair >> {read_offset_r, 3'b000};
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -146,6 +152,9 @@ module NPU (
             NPU_out                <= 32'd0;
             NPU_done               <= 1'b0;
             simd_mac_accumulator_r <= 32'd0;
+            read_offset_r          <= 2'b00;
+            read_first_word_r      <= 32'd0;
+            read_second_word_r    <= 1'b0;
             M_AXI_ARADDR  <= 32'd0;
             M_AXI_ARVALID <= 1'b0;
             M_AXI_AWADDR  <= 32'd0;
@@ -166,9 +175,11 @@ module NPU (
                         if (funct3_i[2:0] == 3'b000) begin
                             state_r <= STATE_COMP;
                         end else if (funct3_i[2:0] == 3'b001) begin
-                            M_AXI_ARADDR  <= rs1_i;
-                            M_AXI_ARVALID <= 1'b1;
-                            state_r       <= STATE_AXI_READ_ADDR;
+                            M_AXI_ARADDR       <= {rs1_i[31:2], 2'b00};
+                            M_AXI_ARVALID      <= 1'b1;
+                            read_offset_r      <= rs1_i[1:0];
+                            read_second_word_r <= 1'b0;
+                            state_r            <= STATE_AXI_READ_ADDR;
                         end else if (funct3_i[2:0] == 3'b010) begin
                             M_AXI_AWADDR  <= {rs1_i[31:2], 2'b00};
                             M_AXI_AWVALID <= 1'b1;
@@ -218,8 +229,21 @@ module NPU (
 
                 STATE_AXI_READ_DATA: begin
                     if (M_AXI_RVALID && M_AXI_RREADY) begin
-                        NPU_out <= M_AXI_RDATA;
-                        state_r <= STATE_DONE;
+                        if ((read_offset_r != 2'b00) && !read_second_word_r) begin
+                            read_first_word_r  <= M_AXI_RDATA;
+                            M_AXI_ARADDR       <= M_AXI_ARADDR + 32'd4;
+                            M_AXI_ARVALID      <= 1'b1;
+                            read_second_word_r <= 1'b1;
+                            state_r            <= STATE_AXI_READ_ADDR;
+                        end else begin
+                            if (read_second_word_r) begin
+                                NPU_out <= reconstructed_read_data;
+                            end else begin
+                                NPU_out <= M_AXI_RDATA;
+                            end
+                            read_second_word_r <= 1'b0;
+                            state_r            <= STATE_DONE;
+                        end
                     end else begin
                         state_r <= STATE_AXI_READ_DATA;
                     end
