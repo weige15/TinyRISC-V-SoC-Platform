@@ -16,6 +16,7 @@ limitations under the License.
 #define TENSORFLOW_LITE_KERNELS_INTERNAL_REFERENCE_INTEGER_OPS_CONV_H_
 
 #include <algorithm>
+#include <stddef.h>
 #include <stdint.h>
 
 #include "cbo.h"
@@ -48,6 +49,23 @@ inline int32_t SimdAccumulatorAsInt32(uint32_t result) {
              : static_cast<int32_t>(result);
 }
 
+// The data cache transfers 256-bit (32-byte) lines. Clean each line in the
+// read-only convolution inputs once before the NPU reads them, rather than
+// issuing two slow-path CBO operations for every four-channel MAC group.
+constexpr size_t kDCacheLineBytes = 32;
+inline void CleanTensorForAxi(const int8_t* data, size_t bytes) {
+#if defined(__riscv)
+  __asm__ volatile("fence rw, rw" ::: "memory");
+  for (size_t offset = 0; offset < bytes; offset += kDCacheLineBytes) {
+    cbo_clean(data + offset);
+  }
+  __asm__ volatile("fence rw, rw" ::: "memory");
+#else
+  (void)data;
+  (void)bytes;
+#endif
+}
+
 // Fixed-point per-channel-quantization convolution reference kernel.
 inline void ConvPerChannel(
     const ConvParams& params, const int32_t* output_multiplier,
@@ -65,6 +83,10 @@ inline void ConvPerChannel(
   const int pad_width = params.padding_values.width;
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
+  if (filter_shape.Dims(3) >= 4) {
+    CleanTensorForAxi(input_data, input_shape.FlatSize());
+    CleanTensorForAxi(filter_data, filter_shape.FlatSize());
+  }
 
   // Set min and max value of the output.
   const int32_t output_activation_min = params.quantized_activation_min;
@@ -136,14 +158,6 @@ inline void ConvPerChannel(
                     const int8_t* filter_group = filter_data + filter_index;
                     if ((reinterpret_cast<uintptr_t>(input_group) & 3u) == 0 &&
                         (reinterpret_cast<uintptr_t>(filter_group) & 3u) == 0) {
-#if defined(__riscv)
-                      __asm__ volatile("fence rw, rw" ::: "memory");
-#endif
-                      cbo_clean(input_group);
-                      cbo_clean(filter_group);
-#if defined(__riscv)
-                      __asm__ volatile("fence rw, rw" ::: "memory");
-#endif
                       input_word = cfu_op1(
                           CFU_FUNCT7_AXI, (CfuWord)input_group, 0);
                       filter_word = cfu_op1(
