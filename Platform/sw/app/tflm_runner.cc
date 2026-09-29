@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "model_data.h"
 #include "model_io.h"
@@ -21,7 +22,24 @@
 
 namespace {
 
+constexpr size_t kOutputWordCount = 12;
 alignas(16) uint8_t tensor_arena[TENSOR_ARENA_SIZE];
+
+void print_output_data(const TfLiteTensor* output) {
+  if (output->type != kTfLiteFloat32 ||
+      output->bytes != kOutputWordCount * sizeof(uint32_t)) {
+    printf("Output Data unavailable: expected 12 float32 words, got type=%d, bytes=%u.\n",
+           output->type, (unsigned)output->bytes);
+    return;
+  }
+
+  puts("Output Data:");
+  for (size_t i = 0; i < kOutputWordCount; ++i) {
+    uint32_t word;
+    memcpy(&word, &output->data.f[i], sizeof(word));
+    printf("%-8u : 0x%08x\n", (unsigned)i, (unsigned)word);
+  }
+}
 
 void print_duration(uint64_t cycles) {
   printf("Cycles: ");
@@ -35,6 +53,11 @@ void print_duration(uint64_t cycles) {
 void tflm_run_inference(void) {
   printf("\n=== TFLM Functional Verification ===\n");
   printf("Model: %s (%d bytes)\n", MODEL_NAME, g_model_len);
+#ifdef TFLM_SOFTWARE_CONV
+  puts("Convolution path: software/reference (upstream TFLM ConvPerChannel)");
+#else
+  puts("Convolution path: accelerated AXI + SIMD");
+#endif
   printf("Tensor arena: %u bytes\n", (unsigned)sizeof(tensor_arena));
   model_io_print_profile();
 
@@ -50,10 +73,12 @@ void tflm_run_inference(void) {
 
   tflite::MicroInterpreter interpreter(model, resolver, tensor_arena,
                                        sizeof(tensor_arena));
-  if (interpreter.AllocateTensors() != kTfLiteOk) {
-    printf("AllocateTensors failed.\n");
+  const TfLiteStatus allocation_status = interpreter.AllocateTensors();
+  if (allocation_status != kTfLiteOk) {
+    printf("AllocateTensors failed: status=%d.\n", allocation_status);
     return;
   }
+  puts("AllocateTensors: kTfLiteOk");
 
   TfLiteTensor* input = interpreter.input(0);
   TfLiteTensor* output = interpreter.output(0);
@@ -76,12 +101,14 @@ void tflm_run_inference(void) {
     total_cycles += cycles;
 
     if (status != kTfLiteOk) {
-      printf("Invoke failed.\n");
+      printf("Invoke failed: status=%d.\n", status);
       print_duration(cycles);
       return;
     }
 
+    puts("Invoke status: kTfLiteOk");
     printf("Inference complete.\n");
+    print_output_data(output);
     model_io_verify_output(output, sample_index);
     print_duration(cycles);
   }

@@ -14,6 +14,8 @@ MODEL_FILE ?=
 MODEL_PROFILE ?=
 TENSOR_ARENA_SIZE ?= 262144
 USE_SOFTWARE_CFU ?= 0
+# Use the unmodified TFLM reference convolution instead of the AXI + SIMD patch.
+TFLM_SOFTWARE_CONV ?= 0
 # ------------------
 
 -include $(PROJECT_CONFIG)
@@ -45,6 +47,7 @@ TFLM_SRC_ROOT := $(abspath ../../tflite-micro)
 TFLM_SRC_STAMP := $(BUILD_DIR)/tflm_src.stamp
 TFLM_PATCH_DIR := tflm_patches
 TFLM_PATCH_FILES := $(shell find $(TFLM_PATCH_DIR) -type f 2>/dev/null)
+TFLM_PATCH_CONFIG := $(BUILD_DIR)/tflm_patch_config
 TFLM_PATCH_STAMP := $(BUILD_DIR)/tflm_patch.stamp
 APP_SRC_DIR := app
 PROJECT_SRC_DIR := project
@@ -70,6 +73,9 @@ DEFINES      += -DTFLM_MODEL_ENABLED=1 \
 endif
 ifeq ($(USE_SOFTWARE_CFU),1)
 DEFINES      += -DCFU_SOFTWARE_DEFINED
+endif
+ifeq ($(TFLM_SOFTWARE_CONV),1)
+DEFINES      += -DTFLM_SOFTWARE_CONV=1
 endif
 COMMON_FLAGS := $(ARCH_FLAGS) -O3 -g -ffunction-sections -fdata-sections -fno-builtin \
                 --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 \
@@ -135,6 +141,7 @@ help:
 	@printf "  MODEL_FILE=ad01_int8.tflite\n"
 	@printf "  MODEL_PROFILE=ad01\n"
 	@printf "  TENSOR_ARENA_SIZE=262144\n"
+	@printf "  TFLM_SOFTWARE_CONV=1 (select reference convolution)\n"
 	@printf "  TARGET_PREFIX=riscv64-unknown-elf\n"
 	@printf "  PROJECT_CONFIG=project.mk\n"
 	@printf "\n"
@@ -167,6 +174,7 @@ config:
 	@printf "TFLM_PATCH_DIR=%s\n" "$(TFLM_PATCH_DIR)"
 	@printf "TENSOR_ARENA_SIZE=%s\n" "$(TENSOR_ARENA_SIZE)"
 	@printf "USE_SOFTWARE_CFU=%s\n" "$(USE_SOFTWARE_CFU)"
+	@printf "TFLM_SOFTWARE_CONV=%s\n" "$(TFLM_SOFTWARE_CONV)"
 	@printf "BUILD_DIR=%s\n" "$(BUILD_DIR)"
 
 validate:
@@ -275,9 +283,23 @@ $(TFLM_SRC_STAMP):
 	fi
 	@touch $@
 
-$(TFLM_PATCH_STAMP): $(TFLM_SRC_STAMP) $(TFLM_PATCH_FILES)
+$(TFLM_PATCH_CONFIG): FORCE
+	@$(MKDIR) $(BUILD_DIR)
+	@if [ ! -f "$@" ] || [ "$$(<"$@")" != "$(TFLM_SOFTWARE_CONV)" ]; then \
+		printf "%s\n" "$(TFLM_SOFTWARE_CONV)" > "$@.tmp"; \
+		mv "$@.tmp" "$@"; \
+	fi
+
+$(TFLM_PATCH_STAMP): $(TFLM_SRC_STAMP) $(TFLM_PATCH_FILES) $(TFLM_PATCH_CONFIG)
 	@if [ -d $(TFLM_PATCH_DIR) ]; then \
 		cp -r $(TFLM_PATCH_DIR)/. $(MICRO_SRC_DIR)/; \
+	fi
+	@if [ "$(TFLM_SOFTWARE_CONV)" = "1" ]; then \
+		cp "$(TFLM_SRC_ROOT)/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h" \
+		   "$(MICRO_SRC_DIR)/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h"; \
+		echo ">> Selecting upstream software/reference ConvPerChannel"; \
+	else \
+		echo ">> Selecting patched AXI + SIMD ConvPerChannel"; \
 	fi
 	@echo ">> Running compatibility fixes..."
 	@find $(MICRO_SRC_DIR) -type f \( -name "*.h" -o -name "*.cc" -o -name "*.c" \) -exec perl -pi -e 's/std::fmax/fmax/g; s/std::fmin/fmin/g; s/std::round/round/g; s/std::expm1/expm1/g; s/std::isnan/isnan/g; s/std::isinf/isinf/g' {} +
