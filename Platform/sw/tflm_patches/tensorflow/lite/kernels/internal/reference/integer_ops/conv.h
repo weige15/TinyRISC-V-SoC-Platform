@@ -16,12 +16,37 @@ limitations under the License.
 #define TENSORFLOW_LITE_KERNELS_INTERNAL_REFERENCE_INTEGER_OPS_CONV_H_
 
 #include <algorithm>
+#include <stdint.h>
 
+#include "cbo.h"
+#include "cfu.h"
 #include "tensorflow/lite/kernels/internal/common.h"
 #include "tensorflow/lite/kernels/internal/portable_tensor_utils.h"
 
 namespace tflite {
 namespace reference_integer_ops {
+
+// AXI places the first byte in the least-significant lane; SIMD lane 0 is
+// the most-significant byte.
+inline uint32_t ReverseByteOrderForSimd(uint32_t word) {
+  return ((word & 0x000000ffu) << 24) | ((word & 0x0000ff00u) << 8) |
+         ((word & 0x00ff0000u) >> 8) | ((word & 0xff000000u) >> 24);
+}
+
+inline int32_t SumSignedBytesInAxiWord(uint32_t word) {
+  int32_t sum = 0;
+  for (int lane = 0; lane < 4; ++lane) {
+    const int32_t byte = (word >> (8 * lane)) & 0xffu;
+    sum += (byte & 0x80) ? byte - 0x100 : byte;
+  }
+  return sum;
+}
+
+inline int32_t SimdAccumulatorAsInt32(uint32_t result) {
+  return (result & 0x80000000u)
+             ? -1 - static_cast<int32_t>(~result)
+             : static_cast<int32_t>(result);
+}
 
 // Fixed-point per-channel-quantization convolution reference kernel.
 inline void ConvPerChannel(
@@ -76,6 +101,9 @@ inline void ConvPerChannel(
         for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
           auto group = out_channel / filters_per_group;
           int32_t acc = 0;
+          int32_t simd_acc = 0;
+          int32_t input_offset_correction = 0;
+          bool simd_accumulator_started = false;
           for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
             const int in_y = in_y_origin + dilation_height_factor * filter_y;
             for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
@@ -90,13 +118,69 @@ inline void ConvPerChannel(
                 continue;
               }
 
+              uint32_t input_word = 0;
+              uint32_t filter_word = 0;
+              bool operands_from_axi = false;
               for (int in_channel = 0; in_channel < filter_input_depth;
                    ++in_channel) {
-                int32_t input_val =
-                    input_data[Offset(input_shape, batch, in_y, in_x,
-                                      in_channel + group * filter_input_depth)];
-                int32_t filter_val = filter_data[Offset(
-                    filter_shape, out_channel, filter_y, filter_x, in_channel)];
+                if ((in_channel & 3) == 0) {
+                  operands_from_axi = false;
+                  if (in_channel + 4 <= filter_input_depth) {
+                    const int input_index = Offset(
+                        input_shape, batch, in_y, in_x,
+                        in_channel + group * filter_input_depth);
+                    const int filter_index = Offset(
+                        filter_shape, out_channel, filter_y, filter_x,
+                        in_channel);
+                    const int8_t* input_group = input_data + input_index;
+                    const int8_t* filter_group = filter_data + filter_index;
+                    if ((reinterpret_cast<uintptr_t>(input_group) & 3u) == 0 &&
+                        (reinterpret_cast<uintptr_t>(filter_group) & 3u) == 0) {
+#if defined(__riscv)
+                      __asm__ volatile("fence rw, rw" ::: "memory");
+#endif
+                      cbo_clean(input_group);
+                      cbo_clean(filter_group);
+#if defined(__riscv)
+                      __asm__ volatile("fence rw, rw" ::: "memory");
+#endif
+                      input_word = cfu_op1(
+                          CFU_FUNCT7_AXI, (CfuWord)input_group, 0);
+                      filter_word = cfu_op1(
+                          CFU_FUNCT7_AXI, (CfuWord)filter_group, 0);
+                      operands_from_axi = true;
+                    }
+                  }
+                }
+
+                if (operands_from_axi) {
+                  if ((in_channel & 3) == 0) {
+                    const uint32_t simd_input_word =
+                        ReverseByteOrderForSimd(input_word);
+                    const uint32_t simd_filter_word =
+                        ReverseByteOrderForSimd(filter_word);
+                    const uint32_t result = simd_accumulator_started
+                        ? cfu_simd_mac_accumulate(simd_input_word,
+                                                  simd_filter_word)
+                        : cfu_simd_mac_reset(simd_input_word,
+                                             simd_filter_word);
+                    simd_acc = SimdAccumulatorAsInt32(result);
+                    simd_accumulator_started = true;
+                    // The SIMD MAC uses raw input bytes. Add
+                    // input_offset * sum(filter lanes) to preserve
+                    // sum(filter * (input + input_offset)) exactly.
+                    input_offset_correction +=
+                        input_offset * SumSignedBytesInAxiWord(filter_word);
+                  }
+                } else {
+                  const int32_t input_val = input_data[Offset(
+                      input_shape, batch, in_y, in_x,
+                      in_channel + group * filter_input_depth)];
+                  const int32_t filter_val = filter_data[Offset(
+                      filter_shape, out_channel, filter_y, filter_x,
+                      in_channel)];
+                  acc += filter_val * (input_val + input_offset);
+                }
                 // Accumulate with 32 bits accumulator.
                 // In the nudging process during model quantization, we force
                 // real value of 0.0 be represented by a quantized value. This
@@ -113,11 +197,12 @@ inline void ConvPerChannel(
                 // we have seen so far.
                 // TODO(b/174275578): Add a check to make sure the
                 // accumulator depth is smaller than 2^16.
-                acc += filter_val * (input_val + input_offset);
               }
             }
           }
 
+          acc += simd_acc;
+          acc += input_offset_correction;
           if (bias_data) {
             acc += bias_data[out_channel];
           }
