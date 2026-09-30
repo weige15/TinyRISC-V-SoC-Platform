@@ -27,28 +27,6 @@ limitations under the License.
 namespace tflite {
 namespace reference_integer_ops {
 
-// AXI places the first byte in the least-significant lane; SIMD lane 0 is
-// the most-significant byte.
-inline uint32_t ReverseByteOrderForSimd(uint32_t word) {
-  return ((word & 0x000000ffu) << 24) | ((word & 0x0000ff00u) << 8) |
-         ((word & 0x00ff0000u) >> 8) | ((word & 0xff000000u) >> 24);
-}
-
-inline int32_t SumSignedBytesInAxiWord(uint32_t word) {
-  int32_t sum = 0;
-  for (int lane = 0; lane < 4; ++lane) {
-    const int32_t byte = (word >> (8 * lane)) & 0xffu;
-    sum += (byte & 0x80) ? byte - 0x100 : byte;
-  }
-  return sum;
-}
-
-inline int32_t SimdAccumulatorAsInt32(uint32_t result) {
-  return (result & 0x80000000u)
-             ? -1 - static_cast<int32_t>(~result)
-             : static_cast<int32_t>(result);
-}
-
 // The data cache transfers 256-bit (32-byte) lines. Clean each line in the
 // read-only convolution inputs once before the NPU reads them, rather than
 // issuing two slow-path CBO operations for every four-channel MAC group.
@@ -66,7 +44,51 @@ inline void CleanTensorForAxi(const int8_t* data, size_t bytes) {
 #endif
 }
 
-// Fixed-point per-channel-quantization convolution reference kernel.
+inline bool IsWordAligned(const int8_t* pointer) {
+  return (reinterpret_cast<uintptr_t>(pointer) & 3u) == 0;
+}
+
+// Sum of the signed filter bytes that the SIMD MAC consumes for one filter
+// tap. The SIMD MAC multiplies raw input bytes, so the convolution adds
+// input_offset * (this sum) to obtain sum(filter * (input + input_offset)).
+inline int32_t SumFilterBytes(const int8_t* filter_tap, int count) {
+  int32_t sum = 0;
+  for (int i = 0; i < count; ++i) sum += filter_tap[i];
+  return sum;
+}
+
+// Per-(output channel, filter tap) filter byte sums, computed once per
+// convolution call instead of once per four-channel group per output pixel.
+constexpr int kFilterTapSumCapacity = 4096;
+inline int32_t* FilterTapSumBuffer() {
+  static int32_t filter_tap_sums[kFilterTapSumCapacity];
+  return filter_tap_sums;
+}
+
+// Dot product of `simd_depth` (a multiple of four, > 0) int8 channels. Both
+// operands are fetched by the NPU over AXI and multiplied by the SIMD MAC.
+// SIMD lane k of the input word is paired with lane k of the filter word, so
+// the AXI byte order can be used directly for both operands: the lane
+// permutation is the same for both and does not change the dot product.
+inline uint32_t AxiSimdDotProduct(const int8_t* input, const int8_t* filter,
+                                  int simd_depth, bool continue_accumulator) {
+  uint32_t input_word = cfu_op1(CFU_FUNCT7_AXI, (CfuWord)input, 0);
+  uint32_t filter_word = cfu_op1(CFU_FUNCT7_AXI, (CfuWord)filter, 0);
+  uint32_t result = continue_accumulator
+                        ? cfu_simd_mac_accumulate(input_word, filter_word)
+                        : cfu_simd_mac_reset(input_word, filter_word);
+  for (int channel = 4; channel < simd_depth; channel += 4) {
+    input_word = cfu_op1(CFU_FUNCT7_AXI, (CfuWord)(input + channel), 0);
+    filter_word = cfu_op1(CFU_FUNCT7_AXI, (CfuWord)(filter + channel), 0);
+    result = cfu_simd_mac_accumulate(input_word, filter_word);
+  }
+  return result;
+}
+
+// Fixed-point per-channel-quantization convolution kernel. Groups of four
+// channels at word-aligned addresses are read by the NPU over AXI and
+// multiplied by the SIMD MAC; remaining channels use the scalar reference
+// arithmetic. The integer result is identical to the reference kernel.
 inline void ConvPerChannel(
     const ConvParams& params, const int32_t* output_multiplier,
     const int32_t* output_shift, const RuntimeShape& input_shape,
@@ -115,107 +137,87 @@ inline void ConvPerChannel(
   const int filters_per_group = output_depth / groups;
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
+
+  // Channels [0, simd_depth) of each filter tap go through AXI + SIMD when
+  // both operand addresses are word aligned; the rest are scalar.
+  const int simd_depth = filter_input_depth >= 4 ? (filter_input_depth & ~3) : 0;
+  const int filter_taps = filter_height * filter_width;
+  const int filter_tap_stride = filter_input_depth;
+  const int filter_channel_stride = filter_taps * filter_input_depth;
+  const int input_row_stride = input_width * input_depth;
+  const int input_batch_stride = input_height * input_row_stride;
+  const int output_pixel_stride = output_depth;
+
+  int32_t* filter_tap_sums = nullptr;
+  if (simd_depth > 0 && output_depth * filter_taps <= kFilterTapSumCapacity) {
+    filter_tap_sums = FilterTapSumBuffer();
+    for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
+      for (int tap = 0; tap < filter_taps; ++tap) {
+        filter_tap_sums[out_channel * filter_taps + tap] = SumFilterBytes(
+            filter_data + out_channel * filter_channel_stride +
+                tap * filter_tap_stride,
+            simd_depth);
+      }
+    }
+  }
+
+  int8_t* output_pixel = output_data;
   for (int batch = 0; batch < batches; ++batch) {
+    const int8_t* input_batch = input_data + batch * input_batch_stride;
     for (int out_y = 0; out_y < output_height; ++out_y) {
       const int in_y_origin = (out_y * stride_height) - pad_height;
       for (int out_x = 0; out_x < output_width; ++out_x) {
         const int in_x_origin = (out_x * stride_width) - pad_width;
         for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
-          auto group = out_channel / filters_per_group;
+          const int group = out_channel / filters_per_group;
+          const int8_t* input_group_base =
+              input_batch + group * filter_input_depth;
+          const int8_t* filter_channel =
+              filter_data + out_channel * filter_channel_stride;
           int32_t acc = 0;
-          int32_t simd_acc = 0;
           int32_t input_offset_correction = 0;
+          uint32_t simd_result = 0;
           bool simd_accumulator_started = false;
           for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
             const int in_y = in_y_origin + dilation_height_factor * filter_y;
+            if (in_y < 0 || in_y >= input_height) {
+              continue;  // Zero padding.
+            }
             for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
               const int in_x = in_x_origin + dilation_width_factor * filter_x;
-
-              // Zero padding by omitting the areas outside the image.
-              const bool is_point_inside_image =
-                  (in_x >= 0) && (in_x < input_width) && (in_y >= 0) &&
-                  (in_y < input_height);
-
-              if (!is_point_inside_image) {
-                continue;
+              if (in_x < 0 || in_x >= input_width) {
+                continue;  // Zero padding.
               }
+              const int tap = filter_y * filter_width + filter_x;
+              const int8_t* input_tap =
+                  input_group_base + in_y * input_row_stride + in_x * input_depth;
+              const int8_t* filter_tap = filter_channel + tap * filter_tap_stride;
 
-              uint32_t input_word = 0;
-              uint32_t filter_word = 0;
-              bool operands_from_axi = false;
-              for (int in_channel = 0; in_channel < filter_input_depth;
-                   ++in_channel) {
-                if ((in_channel & 3) == 0) {
-                  operands_from_axi = false;
-                  if (in_channel + 4 <= filter_input_depth) {
-                    const int input_index = Offset(
-                        input_shape, batch, in_y, in_x,
-                        in_channel + group * filter_input_depth);
-                    const int filter_index = Offset(
-                        filter_shape, out_channel, filter_y, filter_x,
-                        in_channel);
-                    const int8_t* input_group = input_data + input_index;
-                    const int8_t* filter_group = filter_data + filter_index;
-                    if ((reinterpret_cast<uintptr_t>(input_group) & 3u) == 0 &&
-                        (reinterpret_cast<uintptr_t>(filter_group) & 3u) == 0) {
-                      input_word = cfu_op1(
-                          CFU_FUNCT7_AXI, (CfuWord)input_group, 0);
-                      filter_word = cfu_op1(
-                          CFU_FUNCT7_AXI, (CfuWord)filter_group, 0);
-                      operands_from_axi = true;
-                    }
-                  }
-                }
-
-                if (operands_from_axi) {
-                  if ((in_channel & 3) == 0) {
-                    const uint32_t simd_input_word =
-                        ReverseByteOrderForSimd(input_word);
-                    const uint32_t simd_filter_word =
-                        ReverseByteOrderForSimd(filter_word);
-                    const uint32_t result = simd_accumulator_started
-                        ? cfu_simd_mac_accumulate(simd_input_word,
-                                                  simd_filter_word)
-                        : cfu_simd_mac_reset(simd_input_word,
-                                             simd_filter_word);
-                    simd_acc = SimdAccumulatorAsInt32(result);
-                    simd_accumulator_started = true;
-                    // The SIMD MAC uses raw input bytes. Add
-                    // input_offset * sum(filter lanes) to preserve
-                    // sum(filter * (input + input_offset)) exactly.
-                    input_offset_correction +=
-                        input_offset * SumSignedBytesInAxiWord(filter_word);
-                  }
-                } else {
-                  const int32_t input_val = input_data[Offset(
-                      input_shape, batch, in_y, in_x,
-                      in_channel + group * filter_input_depth)];
-                  const int32_t filter_val = filter_data[Offset(
-                      filter_shape, out_channel, filter_y, filter_x,
-                      in_channel)];
-                  acc += filter_val * (input_val + input_offset);
-                }
-                // Accumulate with 32 bits accumulator.
-                // In the nudging process during model quantization, we force
-                // real value of 0.0 be represented by a quantized value. This
-                // guarantees that the input_offset is a int8_t, even though
-                // it is represented using int32_t. int32_t += int8_t *
-                // (int8_t - int8_t) so the highest value we can get from each
-                // accumulation is [-127, 127] * ([-128, 127] -
-                // [-128, 127]), which is [-32512, 32512]. log2(32512)
-                // = 14.98, which means we can accumulate at least 2^16
-                // multiplications without overflow. The accumulator is
-                // applied to a filter so the accumulation logic will hold as
-                // long as the filter size (filter_y * filter_x * in_channel)
-                // does not exceed 2^16, which is the case in all the models
-                // we have seen so far.
-                // TODO(b/174275578): Add a check to make sure the
-                // accumulator depth is smaller than 2^16.
+              int first_scalar_channel = 0;
+              if (simd_depth > 0 && IsWordAligned(input_tap) &&
+                  IsWordAligned(filter_tap)) {
+                simd_result = AxiSimdDotProduct(input_tap, filter_tap, simd_depth,
+                                                simd_accumulator_started);
+                simd_accumulator_started = true;
+                input_offset_correction +=
+                    input_offset *
+                    (filter_tap_sums != nullptr
+                         ? filter_tap_sums[out_channel * filter_taps + tap]
+                         : SumFilterBytes(filter_tap, simd_depth));
+                first_scalar_channel = simd_depth;
+              }
+              for (int in_channel = first_scalar_channel;
+                   in_channel < filter_input_depth; ++in_channel) {
+                const int32_t input_val = input_tap[in_channel];
+                const int32_t filter_val = filter_tap[in_channel];
+                acc += filter_val * (input_val + input_offset);
               }
             }
           }
 
-          acc += simd_acc;
+          if (simd_accumulator_started) {
+            acc += static_cast<int32_t>(simd_result);
+          }
           acc += input_offset_correction;
           if (bias_data) {
             acc += bias_data[out_channel];
@@ -225,9 +227,9 @@ inline void ConvPerChannel(
           acc += output_offset;
           acc = std::max(acc, output_activation_min);
           acc = std::min(acc, output_activation_max);
-          output_data[Offset(output_shape, batch, out_y, out_x, out_channel)] =
-              static_cast<int8_t>(acc);
+          output_pixel[out_channel] = static_cast<int8_t>(acc);
         }
+        output_pixel += output_pixel_stride;
       }
     }
   }
