@@ -172,7 +172,8 @@ void tflm_run_inference(void) {
 #ifdef TFLM_SOFTWARE_CONV
   puts("Convolution path: software/reference (upstream TFLM ConvPerChannel)");
 #else
-  puts("Convolution path: accelerated AXI + SIMD");
+  puts("Convolution path: accelerated NPU burst dot product (CONV_2D), "
+       "channel-blocked int8 kernel (DEPTHWISE_CONV_2D)");
 #endif
   printf("Tensor arena: %u bytes\n", (unsigned)sizeof(tensor_arena));
   model_io_print_profile();
