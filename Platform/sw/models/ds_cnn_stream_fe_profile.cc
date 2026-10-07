@@ -6,6 +6,9 @@
 
 #include "label/label0_board.h"
 #include "label/label1_board.h"
+#include "label/label6_board.h"
+#include "label/label8_board.h"
+#include "label/label11_board.h"
 #include "platform_config.h"
 
 namespace {
@@ -30,6 +33,27 @@ const uint32_t kLabel1GoldenOutput[] = {
   0xc08975eb,0xc0d23be0,0xc0da51de,0xc1056aeb,
 };
 
+// Labels 6, 8 and 11 have no published golden. These values are the output of
+// the upstream reference ConvPerChannel build (TFLM_SOFTWARE_CONV=1) on the
+// Arty A7; the same run reproduced the label0/label1 goldens above bit-exactly.
+const uint32_t kLabel6GoldenOutput[] = {
+  0xc1bbff63,0xc099a1e8,0xc07293da,0xc0420fe2,
+  0xc06267dd,0xc10975eb,0x413e04e3,0xbfa1b7e7,
+  0xc0faa9d9,0xc08975eb,0xbfa1b7e7,0xc0815fec,
+};
+
+const uint32_t kLabel8GoldenOutput[] = {
+  0xc139f9e3,0xbf815fec,0xc0d23be0,0x00000000,
+  0xc0420fe2,0x3f015fec,0xc0c20fe2,0xc0420fe2,
+  0x40118bea,0xc0015fec,0xc08975eb,0x3e815fec,
+};
+
+const uint32_t kLabel11GoldenOutput[] = {
+  0xc1add8e5,0xbfe267dd,0xc0faa9d9,0xbf015fec,
+  0xc0b1e3e4,0xc031e3e4,0xc119a1e8,0xc0d23be0,
+  0xc0d23be0,0xc0b1e3e4,0xc0523be0,0x4139f9e3,
+};
+
 const size_t kGoldenOutputElementCount =
     sizeof(kLabel0GoldenOutput) / sizeof(kLabel0GoldenOutput[0]);
 
@@ -38,6 +62,12 @@ const AudioSample kSamples[] = {
      kLabel0GoldenOutput},
     {"label1", label1_data, sizeof(label1_data) / sizeof(label1_data[0]), 1,
      kLabel1GoldenOutput},
+    {"label6", label6_data, sizeof(label6_data) / sizeof(label6_data[0]), 6,
+     kLabel6GoldenOutput},
+    {"label8", label8_data, sizeof(label8_data) / sizeof(label8_data[0]), 8,
+     kLabel8GoldenOutput},
+    {"label11", label11_data, sizeof(label11_data) / sizeof(label11_data[0]),
+     11, kLabel11GoldenOutput},
 };
 
 const size_t kSampleCount = sizeof(kSamples) / sizeof(kSamples[0]);
@@ -122,6 +152,12 @@ void ds_cnn_verify_output(const TfLiteTensor* output, size_t sample_index) {
 
     uint32_t actual_bits = 0;
     memcpy(&actual_bits, &output->data.f[i], sizeof(actual_bits));
+    if (sample.golden_output_bits == 0) {
+      printf("Idx %u: Actual=0x%08x, Golden=(none)\n", (unsigned)i,
+             (unsigned)actual_bits);
+      ++error_count;
+      continue;
+    }
     const uint32_t golden_bits = sample.golden_output_bits[i];
     const bool matches = actual_bits == golden_bits;
     printf("Idx %u: Actual=0x%08x, Golden=0x%08x [%s]\n", (unsigned)i,
