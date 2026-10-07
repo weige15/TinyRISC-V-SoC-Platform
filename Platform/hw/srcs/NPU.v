@@ -114,19 +114,33 @@ module NPU (
     localparam [31:0] FUNCT7_SIMD_MAC_RESET           = 32'd1;
     localparam [31:0] FUNCT7_SIMD_MAC_ACCUMULATE      = 32'd0;
 
-    // Burst dot product (funct3 = 100):
-    //   funct7 = 0: set the vector length in bytes (rs1); returns rs1.
-    //   funct7 = 1: rd = sum int8(mem[rs1 + i]) * int8(mem[rs2 + i]) over
-    //               the set length, streamed with AXI INCR read bursts.
+    // Lab 2 burst dot product, CUSTOM-0 funct3 = 100:
+    //   funct7 = 0 (SET)    : N = rs1 (bytes), input_offset = int8(rs2[7:0]);
+    //                         rd = rs1.
+    //   funct7 = 1 (COMPUTE): rd = sum_{i<N} (int8(mem[rs1 + i]) + input_offset)
+    //                                         * int8(mem[rs2 + i]),
+    //                         both vectors fetched only with AXI4 INCR read
+    //                         bursts (any byte alignment of rs1 / rs2).
+    //   funct7 = 2 (STATUS) : rd = error flags of the last COMPUTE:
+    //                         bit 0 early RLAST, bit 1 missing RLAST on beat B,
+    //                         bit 2 non-OKAY RRESP; 0 means success.
     localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
+    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
 
     reg [3:0] state_r;
     // Single-word AXI read (funct3 = 001) address channel registers.
     reg [31:0] axi_read_araddr_r;
     reg axi_read_arvalid_r;
     reg [31:0] burst_dot_product_length_r;
+    reg [ 7:0] burst_dot_product_offset_r;
+    wire [2:0] burst_dot_product_status;
+
+    // Inputs the NPU does not use.
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire unused_inputs = &{1'b0, funct3_i[3], M_AXI_RID, M_AXI_BRESP};
+    /* verilator lint_on UNUSEDSIGNAL */
 
     wire burst_dot_product_start =
         (state_r == STATE_IDLE) && NPU_start &&
@@ -147,13 +161,17 @@ module NPU (
         .input_address  (rs1_i),
         .filter_address (rs2_i),
         .byte_length    (burst_dot_product_length_r),
+        .input_offset   (burst_dot_product_offset_r),
         .done           (burst_dot_product_done),
         .result         (burst_dot_product_result),
+        .status         (burst_dot_product_status),
         .m_axi_araddr   (burst_dot_product_araddr),
         .m_axi_arlen    (burst_dot_product_arlen),
         .m_axi_arvalid  (burst_dot_product_arvalid),
         .m_axi_arready  (M_AXI_ARREADY),
         .m_axi_rdata    (M_AXI_RDATA),
+        .m_axi_rresp    (M_AXI_RRESP),
+        .m_axi_rlast    (M_AXI_RLAST),
         .m_axi_rvalid   (M_AXI_RVALID),
         .m_axi_rready   (burst_dot_product_rready)
     );
@@ -195,8 +213,12 @@ module NPU (
     wire signed [31:0] simd_dot_product = simd_product0 + simd_product1 +
                                               simd_product2 + simd_product3;
     wire [63:0] read_word_pair = {M_AXI_RDATA, read_first_word_r};
-    wire [31:0] reconstructed_read_data =
+    wire [63:0] shifted_read_word_pair =
         read_word_pair >> {read_offset_r, 3'b000};
+    wire [31:0] reconstructed_read_data = shifted_read_word_pair[31:0];
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire unused_shifted_bits = &{1'b0, shifted_read_word_pair[63:32]};
+    /* verilator lint_on UNUSEDSIGNAL */
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -219,6 +241,7 @@ module NPU (
             write_second_strb_r    <= 4'd0;
             write_second_pending_r <= 1'b0;
             burst_dot_product_length_r <= 32'd0;
+            burst_dot_product_offset_r <= 8'd0;
         end else begin
             NPU_done <= 1'b0;
             case (state_r)
@@ -251,10 +274,14 @@ module NPU (
                         end else if (funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) begin
                             if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH) begin
                                 burst_dot_product_length_r <= rs1_i;
+                                burst_dot_product_offset_r <= rs2_i[7:0];
                                 NPU_out <= rs1_i;
                                 state_r <= STATE_DONE;
                             end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_COMPUTE) begin
                                 state_r <= STATE_BURST_DOT_PRODUCT;
+                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_STATUS) begin
+                                NPU_out <= {29'd0, burst_dot_product_status};
+                                state_r <= STATE_DONE;
                             end else begin
                                 state_r <= STATE_DONE;
                             end
