@@ -1,0 +1,12 @@
+  ds_cnn conv in=13x4x300 f=300x1x1x300 d=1,1 off=128: 15600 outputs, 126 distinct values, hw calls so far 1222500
+  ds_cnn         6 cases
+  offset_sweep   257 cases
+  depth_sweep    300 cases
+  depth_sweep_grp 299 cases
+  grid           412 cases
+  grouped        219 cases
+  grouped_large  70 cases
+  random         980 cases
+  (711 randomly drawn VALID shapes with no output were skipped)
+NPU product-count check failures: 0
+ALL PASS: 2543/2543 cases pass, 1193599 outputs compared, 0 mismatches

@@ -493,6 +493,31 @@ module npu_lab2_tb;
         $display("[INFO] sweep done: %0d calls, pass=%0d fail=%0d",
                  k, pass_count, fail_count);
 
+        // 4b. Long vectors up to one full input-buffer chunk (1024 bytes,
+        //     the per-command limit used by lab2_api.cc): every N in
+        //     257..1024 with rotating alignments, and N = 1021..1024 with
+        //     all 16 alignment pairs (segments of 257 words need 2 bursts).
+        for (n = 257; n <= 1024; n = n + 1) begin
+            off = pick_offset(k);
+            p1 = place(n, k[1:0], (k % 3) == 0);
+            p2 = place(n, k[3:2], (k % 5) == 1);
+            run_case(p1, p2, off, n, INJ_NONE, 0, 0, 3'd0, "long-sweep");
+            k = k + 1;
+        end
+        for (n = 1021; n <= 1024; n = n + 1) begin
+            for (o1 = 0; o1 < 4; o1 = o1 + 1) begin
+                for (o2 = 0; o2 < 4; o2 = o2 + 1) begin
+                    off = pick_offset(k);
+                    p1 = place(n, o1[1:0], (k % 2) == 0);
+                    p2 = place(n, o2[1:0], (k % 3) == 1);
+                    run_case(p1, p2, off, n, INJ_NONE, 0, 0, 3'd0, "long-align");
+                    k = k + 1;
+                end
+            end
+        end
+        $display("[INFO] long sweep done: %0d calls, pass=%0d fail=%0d",
+                 k, pass_count, fail_count);
+
         // 5. Error injection, each followed by a normal call.
         for (inj = 0; inj < 60; inj = inj + 1) begin
             m = 1 + (inj % 3);
@@ -535,7 +560,7 @@ module npu_lab2_tb;
 
         // 6. Random calls.
         for (i = 0; i < 400; i = i + 1) begin
-            n = 1 + ($urandom % 256);
+            n = 1 + ($urandom % ((i % 2) ? 256 : 1024));
             run_case(place(n, $urandom, $urandom), place(n, $urandom, $urandom),
                      pick_offset($urandom), n, INJ_NONE, 0, 0, 3'd0, "random");
         end
