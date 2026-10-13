@@ -18,6 +18,15 @@
 // from accepted, error-free R beats, so reused bytes always come from earlier
 // AXI bursts. reuse_clear (arm/disarm or an NPU AXI write) and any miss,
 // error or call while disabled invalidate the copy.
+//
+// Filter cache (fcache_enable, only while reuse is armed): ptr2 words fetched
+// by armed, error-free calls are written to a contiguous window
+// [fc_lo, fc_hi) of word addresses held in four 32-bit block-RAM banks. A
+// call extends the window only if its ptr2 words start inside or right at
+// the end of the window. A COMPUTE that hits ptr1 reuse, whose ptr2 words lie
+// inside the window and whose ptr1/ptr2 byte alignments are equal issues no
+// AXI request: four input words (banked replica) and four filter words are
+// read per cycle into a 16-lane MAC. Any reuse_clear or error empties it.
 module npu_burst_dot_product #(
     parameter integer MAX_BURST_BEATS = 256,
     parameter integer CHUNK_WORDS = 256 // retained parameter; RAM = 4x this size
@@ -25,7 +34,7 @@ module npu_burst_dot_product #(
     input clk, input rst_n, input start,
     input [31:0] input_address, filter_address, byte_length,
     input [7:0] input_offset,
-    input reuse_enable, input reuse_clear,
+    input reuse_enable, input reuse_clear, input fcache_enable,
     output reg done,
     output reg [31:0] result,
     output reg [2:0] status,
@@ -40,6 +49,8 @@ module npu_burst_dot_product #(
 );
     localparam integer BUFFER_WORDS = 4 * CHUNK_WORDS;
     localparam integer IB = $clog2(BUFFER_WORDS);
+    localparam integer FC_WORDS = 32768;      // 128 KiB filter cache
+    localparam integer FC_DEPTH = FC_WORDS/4; // words per bank
     // synthesis translate_off
     initial begin
         if (MAX_BURST_BEATS < 1 || MAX_BURST_BEATS > 256 ||
@@ -111,6 +122,32 @@ module npu_burst_dot_product #(
     wire [30:0] filter_cover = covering_words(byte_length,filter_address[1:0]);
     wire [8:0] first_beats = burst_size({input_address[31:2],2'b00}, input_cover);
 
+    // ---------------- filter cache bookkeeping ----------------
+    reg fc_valid, fc_app;
+    reg [29:0] fc_lo, fc_hi, fc_end_r;
+    reg [14:0] fc_wbase;
+    wire [29:0] fw0 = filter_address[31:2];
+    wire [31:0] fw_end = {2'b00,fw0} + {1'b0,filter_cover};
+    wire fc_inside = (fw0 >= fc_lo) && (fw_end <= {2'b00,fc_hi});
+    wire fc_full_hit = fcache_enable && reuse_hit && fc_valid && fc_inside &&
+                       (input_address[1:0] == filter_address[1:0]) &&
+                       (byte_length != 0);
+    wire [29:0] fc_base = fc_valid ? fc_lo : fw0;
+    wire [31:0] fc_span = fw_end - {2'b00,fc_base};
+    wire fc_can_app = fcache_enable && reuse_enable && (byte_length != 0) &&
+                      (!fc_valid || ((fw0 >= fc_lo) && (fw0 <= fc_hi) &&
+                                     (fw_end > {2'b00,fc_hi}))) &&
+                      (fc_span <= FC_WORDS);
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire [29:0] fc_rel0_full = fw0 - fc_lo; // < FC_WORDS when used
+    /* verilator lint_on UNUSEDSIGNAL */
+    // Fast (no-AXI) path state.
+    reg fast;
+    reg [8:0] fast_k, fast_rows, s1_k;
+    reg [12:0] fast_row_base;
+    reg [1:0] fast_rot;
+    reg s1_valid, s2_valid;
+
     // Two-entry descriptor FIFO. The AXI ID is fixed, so responses are ordered.
     reg [8:0] q_beats [0:1];
     reg q_filter [0:1];
@@ -160,6 +197,53 @@ module npu_burst_dot_product #(
             input_buffer[input_received[IB-1:0]] <= m_axi_rdata;
     end
 
+    // Banked replica of input words 0..1023 (word i in bank i%4, row i/4),
+    // read four words per cycle by the fast path. Same write condition.
+    wire in_rep_we = emit_valid && !is_filter && (input_received < 1024);
+    wire [127:0] fast_in_row;
+    wire [127:0] fast_fc_row;
+    reg  [127:0] in_q;
+    wire [14:0] fc_wrel = fc_wbase + filter_received[14:0];
+    wire fc_we = emit_valid && is_filter && fc_app;
+    wire [3:0] rot_mask = (4'b0001 << fast_rot) - 4'b0001; // banks below rot
+    genvar bk;
+    generate for (bk=0; bk<4; bk=bk+1) begin: banks
+        (* ram_style = "distributed" *) reg [31:0] in_rep [0:255];
+        always @(posedge clk)
+            if (in_rep_we && input_received[1:0] == bk) in_rep[input_received[9:2]] <= m_axi_rdata;
+        assign fast_in_row[32*bk +: 32] = in_rep[fast_k[7:0]];
+        (* ram_style = "block" *) reg [31:0] fc_mem [0:FC_DEPTH-1];
+        reg [31:0] fc_q;
+        wire [12:0] raddr = fast_row_base + {4'd0,fast_k} + {12'd0,rot_mask[bk]};
+        always @(posedge clk) begin
+            if (fc_we && fc_wrel[1:0] == bk) fc_mem[fc_wrel[14:2]] <= m_axi_rdata;
+            fc_q <= fc_mem[raddr];
+        end
+        assign fast_fc_row[32*bk +: 32] = fc_q;
+    end endgenerate
+    // Rotate cached words so word j of this row is filter word rel0+4k+j.
+    reg [1:0] s1_rot;
+    wire [255:0] fc_dbl = {fast_fc_row, fast_fc_row};
+    /* verilator lint_off UNUSEDSIGNAL */
+    wire [255:0] fc_rot_sh = fc_dbl >> {s1_rot,5'd0};
+    /* verilator lint_on UNUSEDSIGNAL */
+    wire [127:0] fc_word_row = fc_rot_sh[127:0];
+    reg [16:0] fprod [0:15];
+    wire [20:0] fast_sum;
+    genvar fl;
+    generate for (fl=0; fl<16; fl=fl+1) begin: flanes
+        wire [12:0] pos = {s1_k, 4'd0} + fl;
+        wire v = ({20'd0,pos} >= {31'd0,filter_low}) &&
+                 ({20'd0,pos} < {1'b0,length_r} + {31'd0,filter_low});
+        wire [16:0] pv = product(in_q[8*fl +: 8], fc_word_row[8*fl +: 8], offset_r, v);
+        always @(posedge clk) fprod[fl] <= pv;
+    end endgenerate
+    function [20:0] sx; input [16:0] x; sx = {{4{x[16]}},x}; endfunction
+    assign fast_sum = sx(fprod[0]) + sx(fprod[1]) + sx(fprod[2]) + sx(fprod[3]) +
+                      sx(fprod[4]) + sx(fprod[5]) + sx(fprod[6]) + sx(fprod[7]) +
+                      sx(fprod[8]) + sx(fprod[9]) + sx(fprod[10]) + sx(fprod[11]) +
+                      sx(fprod[12]) + sx(fprod[13]) + sx(fprod[14]) + sx(fprod[15]);
+
     wire [32:0] filter_position = {filter_received,2'b00};
     wire [32:0] filter_limit = {1'b0,length_r} + {31'd0,filter_low};
     wire [3:0] lane_valid;
@@ -186,9 +270,9 @@ module npu_burst_dot_product #(
     wire [18:0] lane_sum = {{2{p0[16]}},p0} + {{2{p1[16]}},p1} +
                            {{2{p2[16]}},p2} + {{2{p3[16]}},p3};
     reg mac_valid;
-    reg [18:0] mac_sum;
+    reg [20:0] mac_sum;
     reg [31:0] accumulator;
-    wire [31:0] accumulated = accumulator + (mac_valid ? {{13{mac_sum[18]}},mac_sum} : 32'd0);
+    wire [31:0] accumulated = accumulator + (mac_valid ? {{11{mac_sum[20]}},mac_sum} : 32'd0);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -201,13 +285,37 @@ module npu_burst_dot_product #(
             q_head <= 0; q_tail <= 0; q_count <= 0; beat_index <= 0; discard <= 0;
             mac_valid <= 0; mac_sum <= 0; accumulator <= 0;
             reuse_valid <= 0; reuse_address <= 0; reuse_length <= 0;
+            fc_valid <= 0; fc_app <= 0; fc_lo <= 0; fc_hi <= 0; fc_end_r <= 0; fc_wbase <= 0;
+            fast <= 0; fast_k <= 0; fast_rows <= 0; fast_row_base <= 0; fast_rot <= 0;
+            s1_valid <= 0; s2_valid <= 0; s1_k <= 0; s1_rot <= 0; in_q <= 0;
         end else begin
             done <= 0;
-            mac_valid <= emit_valid && is_filter;
-            mac_sum <= lane_sum;
+            mac_valid <= (emit_valid && is_filter) || s2_valid;
+            mac_sum <= s2_valid ? fast_sum : {{2{lane_sum[18]}},lane_sum};
             accumulator <= accumulated;
-            if (reuse_clear) reuse_valid <= 0;
-            if (start && !active && reuse_hit) begin
+            // Fast pipeline: S0 issue row reads, S1 multiply, S2 sum, then MAC.
+            s1_valid <= fast && (fast_k != fast_rows);
+            s1_k <= fast_k;
+            s1_rot <= fast_rot;
+            in_q <= fast_in_row;
+            s2_valid <= s1_valid;
+            if (fast && (fast_k != fast_rows)) fast_k <= fast_k + 1'b1;
+            if (reuse_clear) begin reuse_valid <= 0; fc_valid <= 0; end
+            if (fast && (fast_k == fast_rows) && !s1_valid && !s2_valid) begin
+                result <= accumulated;
+                done <= 1;
+                fast <= 0;
+            end
+            if (start && !active && !fast && fc_full_hit) begin
+                // Both operands are local: no AXI request at all.
+                fast <= 1; fast_k <= 0;
+                fast_rows <= filter_cover[10:2] + {8'd0,(filter_cover[1:0] != 0)};
+                fast_row_base <= fc_rel0_full[14:2]; fast_rot <= fc_rel0_full[1:0];
+                status <= 0; accumulator <= 0; mac_valid <= 0;
+                offset_r <= input_offset;
+                input_low <= input_address[1:0]; filter_low <= filter_address[1:0];
+                length_r <= byte_length;
+            end else if (start && !active && !fast && reuse_hit) begin
                 // All ptr1 words are already in input_buffer[0..]. Only ptr2
                 // is fetched; the scheduler issues its first AR next cycle.
                 active <= 1; status <= 0; accumulator <= 0; mac_valid <= 0;
@@ -215,6 +323,12 @@ module npu_burst_dot_product #(
                 input_low <= input_address[1:0]; filter_low <= filter_address[1:0];
                 length_r <= byte_length;
                 filter_next <= {filter_address[31:2],2'b00};
+                fc_app <= fc_can_app;
+                fc_wbase <= fc_valid ? fc_rel0_full[14:0] : 15'd0;
+                fc_end_r <= fw_end[29:0];
+                if (fc_can_app && !fc_valid) begin
+                    fc_valid <= 1; fc_lo <= fw0; fc_hi <= fw0;
+                end
                 input_left <= 0;
                 filter_left <= filter_cover;
                 input_issued <= input_cover;
@@ -222,7 +336,7 @@ module npu_burst_dot_product #(
                 filter_issued <= 0; filter_received <= 0;
                 m_axi_arvalid <= 0;
                 q_head <= 0; q_tail <= 0; q_count <= 0; beat_index <= 0; discard <= 0;
-            end else if (start && !active) begin
+            end else if (start && !active && !fast) begin
                 // A miss overwrites the RAM: invalidate, record the new key.
                 reuse_valid <= 0;
                 reuse_address <= input_address; reuse_length <= byte_length;
@@ -232,6 +346,12 @@ module npu_burst_dot_product #(
                 length_r <= byte_length;
                 input_next <= {input_address[31:2],2'b00} + {21'd0,first_beats,2'b00};
                 filter_next <= {filter_address[31:2],2'b00};
+                fc_app <= fc_can_app;
+                fc_wbase <= fc_valid ? fc_rel0_full[14:0] : 15'd0;
+                fc_end_r <= fw_end[29:0];
+                if (fc_can_app && !fc_valid) begin
+                    fc_valid <= 1; fc_lo <= fw0; fc_hi <= fw0;
+                end
                 input_left <= (byte_length == 0) ? 0 : input_cover - {22'd0,first_beats};
                 filter_left <= (byte_length == 0) ? 0 : filter_cover;
                 input_issued <= (byte_length == 0) ? 0 : {22'd0,first_beats};
@@ -289,6 +409,10 @@ module npu_burst_dot_product #(
                                    (length_r != 0) &&
                                    ({1'b0,input_received} <= BUFFER_WORDS);
                     active <= 0;
+                    // Extend the filter window only after an error-free call.
+                    if (status != 0) fc_valid <= 0;
+                    else if (fc_app) fc_hi <= fc_end_r;
+                    fc_app <= 0;
                 end
             end
         end

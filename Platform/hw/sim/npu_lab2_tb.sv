@@ -137,6 +137,7 @@ module npu_lab2_tb;
     integer    exp_count = 0;
     bit        keep_p1 = 0;     // run_case: leave the bytes under ptr1 unchanged
     bit        expect_hit = 0;  // expected AR list: ptr1 words already held
+    bit        expect_fast = 0; // expected AR list: empty (filter-cache full hit)
     bit        keep_p2 = 0;     // run_case: leave the bytes under ptr2 unchanged
     integer    reuse_hits = 0, reuse_refetches = 0, reuse_data_changes = 0;
     integer    exp_index = 0;
@@ -158,6 +159,7 @@ module npu_lab2_tb;
             bl = (n == 0) ? 0 : (n + p2[1:0] + 3)/4;
             ai = 0; bi = 0; ac = 0; bc = 0;
             if (expect_hit) begin ai = al; al = 0; end
+            if (expect_fast) begin al = 0; bl = 0; end
             while (al != 0 || bl != 0) begin
                 ab = al; if (ab > 256) ab = 256;
                 if (ab > 1024-a[11:2]) ab = 1024-a[11:2];
@@ -186,7 +188,7 @@ module npu_lab2_tb;
     integer ar_ready_pct = 50;
     integer r_valid_pct  = 50;
     integer latency_mode = -1; // -1 regression, 0 zero wait, 1 random stalls
-    integer cycle_number = 0, command_cycles = 0;
+    integer cycle_number = 0, command_cycles = 0, last_compute_cycles = 0;
     integer first_r_cycle, last_r_cycle, last_input_cycle, first_filter_ar_cycle;
     integer first_filter_offer_cycle;
     integer last_beat_cycle, command_beats, command_gaps;
@@ -479,6 +481,7 @@ module npu_lab2_tb;
             cmd_burst_index = 0;
             npu_cmd(32'd1, p1, p2, rd);
             compute_count = compute_count + 1;
+            last_compute_cycles = command_cycles;
             perf_active = 0;
             check(!r_act && q_count == 0 && !rvalid && !arvalid,
                   "done before all accepted/held AXI requests drained");
@@ -494,6 +497,7 @@ module npu_lab2_tb;
                 if (!expect_hit)
                 check(first_filter_offer_cycle >= 0 && first_filter_offer_cycle <= last_input_cycle,
                       "ptr2 ARVALID did not overlap ptr1 data (including random AR stalls)");
+                if (!expect_fast)
                 check(cycle_number-1-last_r_cycle <= 2, "NPU_done more than 2 cycles after final RLAST");
                 if (latency_mode == 0 && !expect_hit) begin
                     check(first_filter_ar_cycle <= last_input_cycle,
@@ -612,6 +616,67 @@ module npu_lab2_tb;
             new_ref = reference(p1, p2, off, n);
             if (new_ref != old_ref) reuse_data_changes = reuse_data_changes + 1;
             reuse_call(p1, p2, off, n, 1, 1, 0, INJ_NONE, 0, 0, 0, {tag, "-changed"});
+        end
+    endtask
+
+    // ------------------------------------------------------------------
+    // Filter cache (REUSE funct7 = 4) spec model. ptr1 reuse: key of the
+    // last error-free armed call whose ptr1 covered <= 1024 words. Filter
+    // window [m_lo, m_hi): an armed+fc streaming call with N > 0 appends
+    // when its ptr2 words start inside or at the end of the window and the
+    // window stays <= 32768 words; it becomes valid after no error. A call
+    // that hits ptr1, lies in the window and has equal alignments must
+    // issue no AR. Memory under both operands stays fixed while armed.
+    // ------------------------------------------------------------------
+    bit m_armed = 0, m_fc = 0, m_rv = 0, m_fv = 0;
+    reg [31:0] m_rp1;
+    integer m_rn;
+    longint m_lo, m_hi;
+    integer fast_hits = 0, fc_streams = 0, fc_data_changes = 0, fc_appends = 0;
+
+    task automatic fc_arm(input bit fc, input bit on);
+        reg [31:0] rd;
+        begin
+            npu_cmd(fc ? 32'd4 : 32'd3, {$urandom, on}, $urandom, rd);
+            check(rd == {31'd0, on}, $sformatf("REUSE%s(%0d) returned %h", fc ? "+FC" : "", on, rd));
+            m_armed = on; m_fc = fc && on; m_rv = 0; m_fv = 0;
+        end
+    endtask
+
+    task automatic fc_call(input [31:0] p1, input [31:0] p2, input integer off,
+                           input integer n, input integer mode, input integer burst,
+                           input integer param, input [2:0] st, input string tag);
+        integer c1, c2;
+        longint w0, we;
+        bit hit, fast, app;
+        begin
+            c1 = (n + p1[1:0] + 3)/4; c2 = (n + p2[1:0] + 3)/4;
+            w0 = p2 >> 2; we = w0 + c2;
+            hit = m_armed && m_rv && (p1 == m_rp1) && (n == m_rn);
+            fast = m_fc && hit && m_fv && (w0 >= m_lo) && (we <= m_hi) &&
+                   (p1[1:0] == p2[1:0]) && (n != 0);
+            app = 0;
+            if (!fast) begin
+                app = m_fc && (n != 0) &&
+                      (!m_fv || ((w0 >= m_lo) && (w0 <= m_hi) && (we > m_hi))) &&
+                      ((we - (m_fv ? m_lo : w0)) <= 32768);
+                if (app && !m_fv) begin m_fv = 1; m_lo = w0; m_hi = w0; end
+                if (!hit) m_rv = 0;
+            end
+            if (fast && mode != INJ_NONE) $fatal(1, "tb: no AXI error can be injected on a fast hit");
+            keep_p1 = 1; keep_p2 = 1; expect_hit = hit; expect_fast = fast;
+            run_case(p1, p2, off, n, mode, burst, param, st, tag);
+            keep_p1 = 0; keep_p2 = 0; expect_hit = 0; expect_fast = 0;
+            if (fast) fast_hits = fast_hits + 1;
+            else begin
+                fc_streams = fc_streams + 1;
+                if (st != 0) begin m_rv = 0; m_fv = 0; end
+                else begin
+                    if (app) begin m_hi = we; fc_appends = fc_appends + 1; end
+                    m_rv = m_armed && (n != 0) && (c1 <= 1024);
+                    m_rp1 = p1; m_rn = n;
+                end
+            end
         end
     endtask
 
@@ -916,6 +981,112 @@ module npu_lab2_tb;
             check(reuse_data_changes > 100, "changed-memory cases did not change results");
             $display("[INFO] reuse: hits=%0d forced-refetches=%0d changed-data=%0d",
                      reuse_hits, reuse_refetches, reuse_data_changes);
+        end
+
+        // 8. Filter cache (REUSE funct7 = 4) with 16-lane local MAC.
+        begin : fcache_tests
+            integer t, c, k, px, nn, nc, m, i, old_ref;
+            reg [31:0] q [0:2];
+            reg [31:0] fb, x;
+            reg [1:0] al;
+            for (t = 0; t < 64; t = t + 1) begin
+                case (t % 8)
+                    0: nn = 300; 1: nn = 1 + $urandom % 64; 2: nn = 299; 3: nn = 301;
+                    4: nn = 1 + $urandom % 400; 5: nn = 1 + $urandom % 4;
+                    6: nn = 1021 + $urandom % 4; default: nn = 1 + $urandom % 2000;
+                endcase
+                nc = 1 + $urandom % 12;
+                if (nc * (nn + 4) > 24000) nc = 24000 / (nn + 4);
+                al = $urandom;
+                x = $urandom % 1024;
+                fb = 32'h6000_8000 + ((t + 1) << 16) + {x[29:0], 2'b00} + al;
+                for (k = 0; k < 3; k = k + 1) begin
+                    q[k] = 32'h6000_0000 + ((t + 1) << 16) + k * (nn + 16) + 4;
+                    q[k] = {q[k][31:2], (k == 2 && (t % 2)) ? al + 2'd1 : al};
+                end
+                for (i = 0; i < 3 * (nn + 16) + 8; i = i + 1) begin
+                    x = 32'h6000_0000 + ((t + 1) << 16) + i; mem[x[15:0]] = $urandom;
+                end
+                for (i = 0; i < (nc + 3) * nn + 8; i = i + 1) begin
+                    x = fb + i; mem[x[15:0]] = $urandom;
+                end
+                fc_arm(1, 1);
+                // Pixel-major passes: pass 0 fills, later passes hit.
+                for (px = 0; px < 3; px = px + 1)
+                    for (c = 0; c < nc; c = c + 1)
+                        fc_call(q[px], fb + c * nn, pick_offset(t + c + px), nn,
+                                INJ_NONE, 0, 0, 0, "fc-pass");
+                // Random filter order on pixel 0, including the self operand.
+                for (c = 0; c < 2 * nc; c = c + 1)
+                    fc_call(q[0], fb + ($urandom % nc) * nn, pick_offset(c), nn,
+                            INJ_NONE, 0, 0, 0, "fc-random");
+                fc_call(q[0], q[0], -128, nn, INJ_NONE, 0, 0, 0, "fc-self");
+                // Just past the window: contiguous, so it appends; then hits.
+                fc_call(q[0], fb + nc * nn, 3, nn, INJ_NONE, 0, 0, 0, "fc-extend");
+                fc_call(q[1], fb + nc * nn, 3, nn, INJ_NONE, 0, 0, 0, "fc-extend-px");
+                fc_call(q[1], fb + nc * nn, 4, nn, INJ_NONE, 0, 0, 0, "fc-extend-hit");
+                // A ptr2 starting at least one word past the window end must
+                // not extend it; a vector spanning that gap must stream.
+                fc_call(q[1], fb + (nc + 1) * nn + 8, 6, nn, INJ_NONE, 0, 0, 0, "fc-gap");
+                fc_call(q[1], fb + (nc + 1) * nn + 4, 8, nn, INJ_NONE, 0, 0, 0, "fc-gap-span");
+                fc_call(q[1], fb + (nc + 1) * nn + 8, 6, nn, INJ_NONE, 0, 0, 0, "fc-gap-again");
+                // An AXI error (ptr1 miss, so never a fast hit) empties the
+                // window; the next pass refills it.
+                if (nn >= 64) begin
+                    m = 1 + (t % 3);
+                    inj_resp = (t % 2) ? 2'b10 : 2'b11;
+                    fc_call(q[2], fb + (nc + 1) * nn, 1, nn, m, 0,
+                            (m == INJ_MISSING_LAST) ? 2 : 1 + $urandom % 12,
+                            (m == INJ_EARLY_LAST) ? 3'b001 :
+                            (m == INJ_MISSING_LAST) ? 3'b010 : 3'b100, "fc-error");
+                    for (c = 0; c < nc; c = c + 1)
+                        fc_call(q[1], fb + c * nn, 2, nn, INJ_NONE, 0, 0, 0, "fc-after-error");
+                    for (c = 0; c < nc; c = c + 1)
+                        fc_call(q[1], fb + c * nn, 5, nn, INJ_NONE, 0, 0, 0, "fc-refilled");
+                end
+                // Disarm, change the filters, re-arm: the new bytes are used.
+                fc_arm(1, 0);
+                old_ref = reference(q[0], fb, 7, nn);
+                for (i = 0; i < nc * nn; i = i + 1) begin
+                    x = fb + i; mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+                end
+                if (reference(q[0], fb, 7, nn) != old_ref) fc_data_changes = fc_data_changes + 1;
+                fc_call(q[0], fb, 7, nn, INJ_NONE, 0, 0, 0, "fc-disarmed-changed");
+                fc_arm(1, 1);
+                for (px = 0; px < 2; px = px + 1)
+                    for (c = 0; c < nc; c = c + 1)
+                        fc_call(q[px], fb + c * nn, 7 + c, nn, INJ_NONE, 0, 0, 0, "fc-rearmed");
+                // A second funct7=4 arm empties the window and ptr1 copy.
+                fc_arm(1, 1);
+                for (c = 0; c < nc; c = c + 1)
+                    fc_call(q[0], fb + c * nn, 9, nn, INJ_NONE, 0, 0, 0, "fc-rearm-twice");
+                // funct7 = 3 arm: ptr1 reuse only, never a fast hit.
+                fc_arm(0, 1);
+                for (px = 0; px < 2; px = px + 1)
+                    for (c = 0; c < nc; c = c + 1)
+                        fc_call(q[1], fb + c * nn, -1, nn, INJ_NONE, 0, 0, 0, "fc-funct7-3");
+                fc_arm(0, 0);
+            end
+            // Fast-hit latency, zero-wait slave, N = 300, all alignments.
+            latency_mode = 0;
+            for (k = 0; k < 4; k = k + 1) begin
+                fc_arm(1, 1);
+                for (px = 0; px < 2; px = px + 1)
+                    for (c = 0; c < 4; c = c + 1) begin
+                        fc_call(32'h6000_0100 + px * 512 + k, 32'h6000_8100 + c * 300 + k,
+                                -128, 300, INJ_NONE, 0, 0, 0, "fc-latency");
+                        if (px == 1 && c > 0) begin
+                            $display("FC_FAST_LATENCY N=300 align=%0d cycles=%0d", k, last_compute_cycles);
+                            check(last_compute_cycles <= 26, "fast hit N=300 exceeds 26 cycles");
+                        end
+                    end
+            end
+            latency_mode = -1;
+            fc_arm(1, 0);
+            check(fast_hits > 500, "too few filter-cache fast hits");
+            check(fc_data_changes > 40, "filter changes did not change results");
+            $display("[INFO] fcache: fast=%0d streamed=%0d appends=%0d changed-data=%0d",
+                     fast_hits, fc_streams, fc_appends, fc_data_changes);
         end
 
         // Drain and final accounting.

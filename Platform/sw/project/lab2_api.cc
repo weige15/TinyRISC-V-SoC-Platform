@@ -54,8 +54,13 @@ extern "C" void hw_simd_mac_assume_clean_end(void) {}
 // Arming and disarming both invalidate the NPU copy, so data fetched outside
 // the armed window is never reused. Disarmed (reset default), every call,
 // including every standalone hw_simd_mac, fetches both operands.
+// Arming uses funct7=4, which also enables the NPU filter cache: ptr2 words
+// fetched over AXI by armed calls are kept, and a call that hits both the
+// ptr1 copy and the cache issues no AXI request (16-lane local MAC). The
+// kernel stores only to its output tensor (disjoint from input and filter)
+// while armed, so both cached operands stay equal to memory.
 extern "C" void hw_simd_mac_reuse_arm(void) {
-    cfu_raw_op(4, 3, 1, 0);
+    cfu_raw_op(4, 4, 1, 0);
 }
 
 extern "C" void hw_simd_mac_reuse_disarm(void) {

@@ -131,11 +131,20 @@ module NPU (
     //                         COMPUTE reuses that call's AXI-fetched ptr1 bytes
     //                         and bursts only ptr2. Disarmed (reset default),
     //                         every COMPUTE fetches both operands.
+    //   funct7 = 4 (REUSE+FILTER CACHE): as REUSE, and while armed also keep
+    //                         the AXI-fetched ptr2 words of armed calls in a
+    //                         contiguous filter-cache window. A COMPUTE that
+    //                         hits ptr1 reuse, has ptr2 inside the window and
+    //                         equal ptr1/ptr2 byte alignment issues no AXI
+    //                         request and runs a 16-lane MAC from local RAM.
+    //                         Contract: memory under both operands of armed
+    //                         calls is unchanged until disarm.
     localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE      = 32'd3;
+    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE_FC   = 32'd4;
 
     reg [3:0] state_r;
     // Single-word AXI read (funct3 = 001) address channel registers.
@@ -145,10 +154,12 @@ module NPU (
     reg [ 7:0] burst_dot_product_offset_r;
     wire [2:0] burst_dot_product_status;
     reg reuse_armed_r;
+    reg fcache_armed_r;
     // Arm/disarm, and any NPU AXI write (which may change memory under ptr1).
     wire reuse_clear = (state_r == STATE_IDLE) && NPU_start &&
         (((funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) &&
-          (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE)) ||
+          ((funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE) ||
+           (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE_FC))) ||
          (funct3_i[2:0] == 3'b010));
 
     // Inputs the NPU does not use.
@@ -177,6 +188,7 @@ module NPU (
         .byte_length    (burst_dot_product_length_r),
         .input_offset   (burst_dot_product_offset_r),
         .reuse_enable   (reuse_armed_r),
+        .fcache_enable  (fcache_armed_r),
         .reuse_clear    (reuse_clear),
         .done           (burst_dot_product_done),
         .result         (burst_dot_product_result),
@@ -259,6 +271,7 @@ module NPU (
             burst_dot_product_length_r <= 32'd0;
             burst_dot_product_offset_r <= 8'd0;
             reuse_armed_r <= 1'b0;
+            fcache_armed_r <= 1'b0;
         end else begin
             NPU_done <= 1'b0;
             case (state_r)
@@ -301,6 +314,12 @@ module NPU (
                                 state_r <= STATE_DONE;
                             end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE) begin
                                 reuse_armed_r <= rs1_i[0];
+                                fcache_armed_r <= 1'b0;
+                                NPU_out <= {31'd0, rs1_i[0]};
+                                state_r <= STATE_DONE;
+                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE_FC) begin
+                                reuse_armed_r <= rs1_i[0];
+                                fcache_armed_r <= rs1_i[0];
                                 NPU_out <= {31'd0, rs1_i[0]};
                                 state_r <= STATE_DONE;
                             end else begin
