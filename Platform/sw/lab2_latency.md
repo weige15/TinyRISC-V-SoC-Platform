@@ -9,9 +9,13 @@ The average is taken over all five labels in `models/label` (label0, label1, lab
 | 2 | Merge full filter rows only at fully in-bounds output positions; 1x1 stride-1 fast path hoists row/channel pointers and quantization values; border positions use per-tap checks | **1,665,382,298** | **−59.9%** | **−8.50%** | 1267 | 757 | 4 | 0.5 (0/1) | 0.091 | host and board acceptance pass | yes |
 | 3 | Stateless two-command MAC; always-clean ordinary API; explicit inline precleaned convolution path; no SET/range/counter bookkeeping | **1,470,259,856** | **−64.6%** | **−19.22%** | 1267 | 757 | 4 | 0.5 (0/1) | 0.091 | binary coverage, extended RTL, host and board acceptance pass | yes |
 | 4 | RTL: overlapped maximal bursts, circular operand RAM, arrival-cycle MAC, immediate result/done retirement | **1,407,784,607** | **−66.14%** | **−22.66%** | 3090 | 685 | 4 | 0 (0/0) | 0.187 | four RTL seeds, negative controls, host and fresh board acceptance pass | yes |
-| 5 | ptr1 operand reuse: NPU keeps the last AXI-fetched ptr1 vector; armed only inside `ConvPerChannel`; pointwise loop made pixel-major so 299 of 300 calls per pixel burst only ptr2 | **1,374,100,586** | **−66.95%** | **−24.51%** | 3160 | 773 | 4 | 0 (0/0) | 0.596 | four RTL seeds incl. reuse cases, reuse and stream negative controls, host and fresh board acceptance pass | yes |
+| 5 | ptr1 operand reuse: NPU keeps the last AXI-fetched ptr1 vector; armed only inside `ConvPerChannel`; pointwise loop made pixel-major so 299 of 300 calls per pixel burst only ptr2 | **1,374,100,586** | **−66.95%** | **−24.51%** | 3160 | 773 | 4 | 0 (0/0) | 0.596 | four RTL seeds incl. reuse cases, reuse and stream negative controls, host and fresh board acceptance pass | superseded by 7, 8 |
+| 5b | Row 5 sources rebuilt and re-measured in the attempt 6–8 session (same-session reference for the keep/revert decisions) | 1,373,910,680 | −66.95% | −24.52% | 3160 | 773 | 4 | 0 (0/0) | 0.596 | board set/random/conv/goldens pass | reference |
+| 6 | Deeper buffers: operand ring RAM 1024 → 2048 words (`CHUNK_WORDS` 256 → 512) | 1,373,914,984 | −66.95% | −24.52% | 4687 | 780 | 4 | 0 (0/0) | 0.308 | four RTL seeds, host and board pass | **no, reverted** (+4,304 vs 5b) |
+| 7 | Filter cache (REUSE `funct7=4`, 128-KiB contiguous ptr2 window in BRAM) + 16-lane MAC that runs without AXI when ptr1 reuse and filter cache both hit | 1,326,271,660 | −68.10% | −27.13% | 6049 | 1347 | 4 | 32 (32/0) | 0.056 | four RTL seeds incl. new section 8, 8/8 filter-cache negative controls, host and board pass | superseded by 8 (−3.47% vs 5b) |
+| 8 | Same filter cache, MAC widened to 32 lanes (8 banks) | **1,321,874,023** | **−68.20%** | **−27.38%** | 7964 | 1780 | 4 | 32 (32/0) | 0.171 | four RTL seeds, 8/8 filter-cache negative controls, host and board pass | **KEPT (current configuration)** |
 
-Limits (Goal 6): LUT ≤ 20,000, FF ≤ 5,000, DSP ≤ 30, RAMB18 ≤ 270, RAMB36 ≤ 135, WNS ≥ 0. All are met.
+Limits (Goal 6): LUT ≤ 20,000, FF ≤ 5,000, DSP ≤ 30, RAMB18 ≤ 270, RAMB36 ≤ 135, WNS ≥ 0. All are met. Kept configuration (row 8): 7,964 / 20,000 LUT, 1,780 / 5,000 FF, 4 / 30 DSP, 32 / 135 BRAM36-equivalent, WNS +0.171 ns.
 
 ## Where the time went (Goal 5 baseline)
 
@@ -391,3 +395,114 @@ python3 Platform/hw/sim/check_stream_mutations.py /tmp/lab2-stream-mutations
 ~/NNchip/scratch/conv_host_test/build_and_run.sh
 make -C Platform prog && make -C Platform run   # menu: l, t, r, c, x, t
 ```
+
+
+## Attempts 6–8: wider SIMD, deeper buffers, filter cache (2026-10-13)
+
+Starting point: row 5, whose `post_route_utilization_npu.rpt` showed 3,160 LUT,
+773 FF, 4 DSP, 0 BRAM and WNS +0.596 ns. That left a lot of room under the
+limits (LUT ≤ 20,000, FF ≤ 5,000, DSP ≤ 30, BRAM36-equivalent ≤ 135, WNS ≥ 0).
+Each idea was one commit, rebuilt, programmed and measured on the board. It
+was kept only if the five-label average went down and the whole GATE passed.
+
+### Can extra lanes help? (decided before adding any)
+
+**Not on the AXI path.** The bus is 32 bits wide, so at most 4 bytes arrive per
+cycle. Row 4's stream is already bubble-free: N=300 takes B+3 cycles. With
+ptr1 reuse (O5), a hit still has to stream ptr2 at 4 bytes per cycle, which is
+75–76 beats or 79–80 cycles. The 4 existing lanes already consume each beat
+on the cycle it arrives. Lanes 5..k would have no bytes to work on, so wider
+SIMD alone cannot reduce cycles. It was not built as a separate attempt.
+
+**Only once both operands are on chip.** Extra lanes can help only after ptr2
+also comes from local RAM, i.e. with a filter cache. A filter cache alone,
+still at 4 lanes, would read 4 bytes per cycle from BRAM, the same rate as the
+bus. That would give no gain, so the cache was paired with the wider MAC
+(row 7). Row 8 then measures whether going wider still helps.
+
+### Same-session baseline (row 5b) and noise
+
+Row 5's bitstream had not been saved, so its sources were rebuilt and run
+again. The build is deterministic: LUT, FF and WNS are identical. The average
+was 1,373,910,680, which is 189,906 cycles below the original row-5 run. That
+is the run-to-run spread between programming sessions. Rows 6–8 are judged
+against 5b and against each other.
+
+### Attempt 6: deeper buffers (reverted)
+
+`NPU.v` instantiates the engine with `CHUNK_WORDS=512`, so the circular operand
+RAM grows to 2048 words. The testbench's "never reuse oversize vectors" cutoff
+was changed to follow the RAM size. Expected gain was zero:
+- no model call has N > 300 (75 words), far below the old 1024-word ring;
+- `input_room` never throttles;
+- the stream had no bubbles to remove.
+
+Measured: 1,373,914,984 (label0..label11: 1,303,066,174 / 1,413,968,306 /
+1,417,101,866 / 1,341,315,846 / 1,394,122,728), **+4,304 vs 5b**. Cost: 4,687
+LUT, 780 FF, WNS +0.308 ns. The checks were green: four RTL seeds FAIL=0;
+board 3/3, 100/100, conv 3/3, 5×12 goldens. Commits `5a0cf49`, `01f39e3`;
+reverted in `084724c`.
+
+### Attempt 7: filter cache + 16-lane local MAC (superseded by 8)
+
+- **Opt-in.** New CUSTOM-0 `funct3=4, funct7=4`, "REUSE + FILTER CACHE". It arms
+  ptr1 reuse exactly like `funct7=3` and also enables the cache. `funct7=3` is
+  unchanged and never enables it. Every existing reuse test keeps its meaning,
+  including tests that rewrite ptr2 memory while armed.
+- **Fill.** `hw_simd_mac_reuse_arm()` (used only by `ConvPerChannel`) now issues
+  `funct7=4`. While armed, the ptr2 words of each streamed, error-free call are
+  written into a contiguous window `[fc_lo, fc_hi)` of word addresses. The
+  window lives in 4 BRAM banks and holds up to 32,768 words (128 KiB).
+- **Extend.** A call extends the window only if its ptr2 words start inside it
+  or exactly at its end. In the pixel-major pointwise loop, filters
+  `filter + c·300` are contiguous, so pixel 0 caches all 300 filters
+  (90,000 B).
+- **Full hit.** A COMPUTE that hits ptr1 reuse, whose ptr2 words lie inside the
+  window, and whose ptr1 and ptr2 byte alignments are equal issues **no AXI
+  request**. The engine reads four input words per cycle from a banked LUTRAM
+  replica of the ptr1 words. It reads four filter words per cycle from the
+  BRAM banks, rotated by the window offset, into 16 masked lanes. The pipeline
+  is read → registered products → sum → accumulate.
+- **Invalidation.** These empty the window: every arm/disarm (`funct7` 3 or 4),
+  every NPU AXI write, and any AXI error.
+- **Contract.** While armed, memory under both operands is unchanged. The
+  kernel stores only to its output tensor, which is disjoint from input and
+  filter. The cached bytes all come from earlier AXI bursts.
+- **Latency.** Zero-wait RTL, N=300, all 4 alignments: **23 cycles**, versus
+  79–80 for a ptr1-only hit.
+
+Measured: **1,326,271,660** (1,255,422,030 / 1,366,323,698 / 1,369,460,895 /
+1,293,674,040 / 1,346,477,636), **−3.47% vs 5b**. Resources: 6,049 LUT, 1,347
+FF, 4 DSP, 32 RAMB36, WNS +0.056 ns. Commit `f865e1c`.
+
+### Attempt 8: 32 lanes (kept)
+
+Same cache with 8 banks: 8 input words and 8 filter words per cycle, 32 lanes.
+N=300 takes 10 rows instead of 19, and a full hit takes **14 cycles** (all 4
+alignments).
+
+Measured: **1,321,874,023** (1,251,024,708 / 1,361,927,720 / 1,365,061,250 /
+1,289,276,074 / 1,342,080,361), **−0.33% vs row 7** (−4.40 M cycles, about 23×
+the session-to-session spread) and **−3.79% vs 5b**. Resources: 7,964 LUT,
+1,780 FF, 4 DSP, 32 RAMB36 (BRAM36-eq. 32), WNS +0.171 ns. Commit `6cecfae`.
+Each further doubling (to 64 lanes) could save at most about 5 cycles on each
+of about 490 k full hits, or about 0.18%. The remaining time is CPU-side
+(depthwise convolution in software, per-call overhead). Wider SIMD therefore
+stops paying off here.
+
+### GATE for the kept configuration (row 8)
+
+| Gate | Evidence | Result |
+|---|---|---|
+| RTL regression, 4 seeds (sections 1–7 unchanged, plus new section 8: pixel-major fill and hit passes, random filter order, self operand, window extension, 1-word gap must not extend, error empties window, disarm→mutate filters→re-arm uses new bytes, double arm, `funct7=3` never fast, fast-hit latency) | PASS 13,516,265 / 13,723,586 / 13,817,340 / 14,244,448, **FAIL=0**; legacy burst, misaligned read and misaligned write benches pass; Verilator `-Wall` lint clean; fast hits per seed 1,034–1,237 | `results/lab2_opt/att8/rtl_suite.log`, `rtl/` |
+| Filter-cache negative controls (`hw/sim/check_fcache_mutations.py`) | 8/8 mutants detected: ignore window, keep on arm/disarm, keep on error, no rotation, ignore alignment, no lane mask, append across a gap, ignore enable | `results/lab2_opt/att8/mutations.log` |
+| Host convolution test | `ALL PASS: 2540/2540`, 1,172,436 outputs, 0 mismatches, 0 stale hits | `results/lab2_opt/att8/host.log` |
+| Board: Lab 2 set / random / basic conv / five labels | Pass 3/3, Pass 100/100, 3 × `[PASS]`, all five labels `ALL 12 GOLDEN OUTPUTS PASS` | `results/lab2_opt/att8/board_uart.log` |
+| Latency gate (≥ 20% below Goal 5) | 1,321,874,023 < 3,325,805,286 | PASS |
+| Limits / timing | 7,964 LUT, 1,780 FF, 4 DSP, 32 RAMB36 + 0 RAMB18; WNS +0.171 ns, "All user specified timing constraints are met" | `results/lab2_opt/att8/post_route_utilization_npu.rpt`, `post_route_timing_summary.rpt.gz` |
+| Tested image | `out.bit` `30137a08…6d93`, `main.bin` `424db967…c3ff`; RTL source hashes in `rtl/source_sha256.txt` match the committed sources | `results/lab2_opt/att8/board_image_sha256.txt`, `source_sha256.txt` |
+
+Reproduce one attempt (build, program, board GATE, summary):
+`results/lab2_opt/run_attempt.sh <outdir>`. RTL:
+`bash hw/sim/run_lab2_stream_tests.sh <dir>` and
+`python3 hw/sim/check_fcache_mutations.py <dir>`.

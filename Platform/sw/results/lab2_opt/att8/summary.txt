@@ -1,0 +1,8 @@
+set: ['Pass 3/3'] random: ['Pass 100/100']
+conv PASS lines: 3, FAIL lines: 0
+labels all-pass: ['label0', 'label1', 'label6', 'label8', 'label11']
+cycles: [1251024708, 1361927720, 1365061250, 1289276074, 1342080361]
+total 6609370113 avg 1321874022.6
+NPU LUT 7964 FF 1780 RAMB36 32 RAMB18 0 DSP 4
+WNS 0.171
+timing met: True

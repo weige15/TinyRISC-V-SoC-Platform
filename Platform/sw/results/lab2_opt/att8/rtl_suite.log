@@ -1,0 +1,9 @@
+srcs/npu_burst_dot_product.v:245: warning: @* is sensitive to all 32 words in array 'fprod'.
+RESULT: PASS=13516265 FAIL=0
+RESULT: PASS=13723586 FAIL=0
+RESULT: PASS=13817340 FAIL=0
+RESULT: PASS=14244448 FAIL=0
+[PASS] All 366 burst dot product checks
+[PASS] All aligned/misaligned AXI read reconstruction checks
+[PASS] All aligned/misaligned AXI write byte-placement and handshake checks
+PASS: logs and source hashes in /home/kuotzuwei15/NNchip/scratch/lab2_opt/att8/rtl

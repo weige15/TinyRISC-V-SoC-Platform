@@ -1,0 +1,1555 @@
+make: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+>> [SERVER] Warming up Vivado JTAG Server in background...
+make[1]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+>> [SW] Building Application...
+make -C /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw all BUILD_DIR=/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw
+make[2]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+Checking SW build environment...
+OK: toolchain=riscv64-unknown-elf, model=models/ds_cnn_stream_fe.tflite, profile=ds_cnn_stream_fe, arena=2000000 bytes
+make[3]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+make[4]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/cfu.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/cfu.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/menu.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/menu.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/model_io.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/model_io.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/perf.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/perf.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/software_cfu.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/software_cfu.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c app/tflm_runner.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/tflm_runner.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c main.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/main.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/ds_cnn_stream_fe_profile.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/ds_cnn_stream_fe_profile.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/label/label0_board.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label0_board.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/label/label11_board.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label11_board.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/label/label1_board.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label1_board.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/label/label6_board.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label6_board.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c models/label/label8_board.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label8_board.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c project/conv_test.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/conv_test.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c project/lab2_api.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/lab2_api.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c project/lab2_test.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/lab2_test.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c project/proj_menu.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/proj_menu.o
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -O3 -g -ffunction-sections -fdata-sections -fno-builtin --param ggc-min-expand=0 --param ggc-min-heapsize=1024000 -MMD -MP -std=c++11 -fno-rtti -fno-exceptions -fpermissive -DTFLM_MODEL_ENABLED=1 -DMODEL_NAME=\"ds_cnn_stream_fe.tflite\" -DTENSOR_ARENA_SIZE=2000000 -I. -Iapp -Iproject -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/generated -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/flatbuffers/include -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/gemmlowp -I/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/src/third_party/ruy -c project/tflm_ops.cc -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/tflm_ops.o
+>> [LINK] Finalizing ELF...
+riscv64-unknown-elf-g++ -march=rv32im -mabi=ilp32 -mcmodel=medany -T runtime/linker.ld -nostartfiles -Wl,--gc-sections -Wl,--no-relax -o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/main.elf /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/runtime/crt0.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/cfu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/menu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/model_io.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/perf.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/software_cfu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/app/tflm_runner.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/main.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/ds_cnn_stream_fe_profile.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label0_board.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label11_board.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label1_board.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label6_board.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/models/label/label8_board.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/conv_test.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/lab2_api.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/lab2_test.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/proj_menu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/project/tflm_ops.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/model_data.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/runtime/syscalls.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/schema/schema_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/quantization_util.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/spectrogram.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/tensor_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/mfcc_mel_filterbank.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/portable_tensor_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/mfcc_function.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/internal/mfcc_dct.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/kernels/kernel_util.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/string_util.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/core/c/common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/core/api/op_resolver.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/core/api/tensor_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/core/api/error_reporter.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/core/api/flatbuffer_conversions.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_context.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/flatbuffer_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/tflite_bridge/flatbuffer_conversions_bridge.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/tflite_bridge/op_resolver_bridge.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/tflite_bridge/micro_error_reporter.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/quantize_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/arg_min_max.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/maximum_minimum.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/floor_div.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/softmax.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/log_softmax.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/elementwise.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/prelu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/leaky_relu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/leaky_relu_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/fill.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/read_variable.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/div.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/squeeze.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/mirror_pad.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/tanh.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/prelu_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/unpack.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/pooling_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/depth_to_space.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/neg.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/shape.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/if.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/broadcast_to.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/resize_bilinear.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/reduce_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/cast.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/batch_to_space_nd.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/concatenation.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/reduce.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/detection_postprocess.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/depthwise_conv.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/expand_dims.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/circular_buffer.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/mul.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/sub_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/mul_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/activations.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/select.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/mfcc.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/slice.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/testdata/conv_test_data.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/floor_mod.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/exp.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/hard_swish.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/activations_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/circular_buffer_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/depthwise_conv_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/ceil.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/floor.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/call_once.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/round.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/assign_variable.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/l2norm.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/svdf_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/logistic_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/pad.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/logistic.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/var_handle.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/micro_tensor_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/add_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/kernel_util.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/transpose_conv.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/zeros_like.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/fully_connected_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/audio_spectrogram.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/gather.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/add.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/cumsum.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/split.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/squared_difference.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/space_to_batch_nd.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/quantize.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/lstm_eval.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/logical_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/pack.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/add_n.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/dequantize.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/conv_test_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/logical.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/kernel_runner.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/strided_slice.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/pooling.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/space_to_depth.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/softmax_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/hard_swish_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/resize_nearest_neighbor.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/transpose.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/gather_nd.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/dequantize_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/reshape.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/comparisons.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/conv_common.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/unidirectional_sequence_lstm.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/elu.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/conv.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/broadcast_args.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/sub.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/l2_pool_2d.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/while.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/fully_connected.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/svdf.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/kernels/split_v.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/arena_allocator/recording_single_arena_buffer_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/arena_allocator/non_persistent_arena_buffer_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/arena_allocator/single_arena_buffer_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/arena_allocator/persistent_arena_buffer_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/mock_micro_graph.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/recording_micro_allocator.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_time.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_interpreter.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_profiler.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/fake_micro_context.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/system_setup.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_string.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/memory_helpers.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/test_helper_custom_ops.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_utils.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/test_helpers.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/all_ops_resolver.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_resource_variable.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_allocation_info.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/memory_planner/non_persistent_buffer_planner_shim.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/memory_planner/linear_memory_planner.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/memory_planner/greedy_memory_planner.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_log.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/tensorflow/lite/micro/micro_graph.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/third_party/kissfft/kiss_fft.o /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/obj/third_party/fft2d/fft4g.o -lm -lstdc++ -lc
+riscv64-unknown-elf-objcopy -O binary /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/main.elf /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/main.bin
+make[4]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+make[3]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+make[2]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+make[1]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+>> [UART] Starting pipeline...
+make[1]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+make[1]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+python3 /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/upload.py /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/main.bin
+>> [INFO] Vivado background engine not found. Initializing...
+>> [INFO] Vivado background engine is ready! Future uploads will be instant.
+>> Listening on /dev/ttyUSB1 ...
+SYNC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>> Jump to 0x60000000
+!@#
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> l
+Running Lab menu
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> t
+Running Lab2 set tests
+start lab2 set tests
+testcase 0
+N = 4
+input_offset = 8
+buffer1: 0 1 2 3
+buffer2: 0 1 2 3
+ ref ans = 62
+your ans = 62
+AC
+================
+testcase 1
+N = 8
+input_offset = 11
+buffer1: 121 18 -82 -102 -19 14 -41 64
+buffer2: -96 -118 98 39 -67 -19 -47 -4
+ ref ans = -25430
+your ans = -25430
+AC
+================
+testcase 2
+N = 24
+input_offset = -45
+buffer1: -72 -118 -22 26 80 103 -83 -11 47 116 49 -17 43 -56 -27 -31 106 2 62 54 55 -100 112 18
+buffer2: 123 39 25 124 45 -13 -86 -47 26 125 34 80 9 -72 -114 76 -124 85 25 -58 -32 -58 -124 53
+ ref ans = -9494
+your ans = -9494
+AC
+================
+Pass 3/3
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> r
+Running Lab2 random tests
+start lab2 random test
+Pass 100/100
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> c
+Running Convolution golden tests
+[PASS] Testcase1, Output Correct, Cycles=14639
+[PASS] Testcase2, Output Correct, Cycles=92147
+[PASS] Testcase3, Output Correct, Cycles=366187
+Basic Conv Test: (    472973) Cycles total
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> x---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> t
+Running TFLM inference, verification, and cycles
+
+=== TFLM Functional Verification ===
+Model: ds_cnn_stream_fe.tflite (589000 bytes)
+Convolution path: accelerated NPU burst dot product (CONV_2D), channel-blocked int8 kernel (DEPTHWISE_CONV_2D)
+Tensor arena: 2000000 bytes
+Profile: ds_cnn_stream_fe
+Input profile: board audio fixtures
+Output profile: golden output and argmax class, tolerance=0
+Samples: 5
+AllocateTensors: kTfLiteOk
+
+--- Sample 1/5 ---
+Input: label0, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0x418d80ea
+1        : 0xc099a1e8
+2        : 0xc0c20fe2
+3        : 0xc0815fec
+4        : 0xc0ca25e1
+5        : 0xc10d80ea
+6        : 0xc0015fec
+7        : 0xc0d23be0
+8        : 0xc0815fec
+9        : 0xc0a9cde6
+10       : 0xc125c2e6
+11       : 0xc099a1e8
+Idx 0: Actual=0x418d80ea, Golden=0x418d80ea [PASS]
+Idx 1: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Idx 2: Actual=0xc0c20fe2, Golden=0xc0c20fe2 [PASS]
+Idx 3: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Idx 4: Actual=0xc0ca25e1, Golden=0xc0ca25e1 [PASS]
+Idx 5: Actual=0xc10d80ea, Golden=0xc10d80ea [PASS]
+Idx 6: Actual=0xc0015fec, Golden=0xc0015fec [PASS]
+Idx 7: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 8: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Idx 9: Actual=0xc0a9cde6, Golden=0xc0a9cde6 [PASS]
+Idx 10: Actual=0xc125c2e6, Golden=0xc125c2e6 [PASS]
+Idx 11: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Prediction: 0, expected: 0 [PASS]
+[Status] label0: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1251024708
+Time (50000000 Hz): 25020 ms
+
+--- Sample 2/5 ---
+Input: label1, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1c41562
+1        : 0x4129cde6
+2        : 0xc12dd8e5
+3        : 0xc0da51de
+4        : 0xbe815fec
+5        : 0xc0f293da
+6        : 0x3f015fec
+7        : 0xc0118bea
+8        : 0xc08975eb
+9        : 0xc0d23be0
+10       : 0xc0da51de
+11       : 0xc1056aeb
+Idx 0: Actual=0xc1c41562, Golden=0xc1c41562 [PASS]
+Idx 1: Actual=0x4129cde6, Golden=0x4129cde6 [PASS]
+Idx 2: Actual=0xc12dd8e5, Golden=0xc12dd8e5 [PASS]
+Idx 3: Actual=0xc0da51de, Golden=0xc0da51de [PASS]
+Idx 4: Actual=0xbe815fec, Golden=0xbe815fec [PASS]
+Idx 5: Actual=0xc0f293da, Golden=0xc0f293da [PASS]
+Idx 6: Actual=0x3f015fec, Golden=0x3f015fec [PASS]
+Idx 7: Actual=0xc0118bea, Golden=0xc0118bea [PASS]
+Idx 8: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 9: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 10: Actual=0xc0da51de, Golden=0xc0da51de [PASS]
+Idx 11: Actual=0xc1056aeb, Golden=0xc1056aeb [PASS]
+Prediction: 1, expected: 1 [PASS]
+[Status] label1: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1361927720
+Time (50000000 Hz): 27238 ms
+
+--- Sample 3/5 ---
+Input: label6, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1bbff63
+1        : 0xc099a1e8
+2        : 0xc07293da
+3        : 0xc0420fe2
+4        : 0xc06267dd
+5        : 0xc10975eb
+6        : 0x413e04e3
+7        : 0xbfa1b7e7
+8        : 0xc0faa9d9
+9        : 0xc08975eb
+10       : 0xbfa1b7e7
+11       : 0xc0815fec
+Idx 0: Actual=0xc1bbff63, Golden=0xc1bbff63 [PASS]
+Idx 1: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Idx 2: Actual=0xc07293da, Golden=0xc07293da [PASS]
+Idx 3: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 4: Actual=0xc06267dd, Golden=0xc06267dd [PASS]
+Idx 5: Actual=0xc10975eb, Golden=0xc10975eb [PASS]
+Idx 6: Actual=0x413e04e3, Golden=0x413e04e3 [PASS]
+Idx 7: Actual=0xbfa1b7e7, Golden=0xbfa1b7e7 [PASS]
+Idx 8: Actual=0xc0faa9d9, Golden=0xc0faa9d9 [PASS]
+Idx 9: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 10: Actual=0xbfa1b7e7, Golden=0xbfa1b7e7 [PASS]
+Idx 11: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Prediction: 6, expected: 6 [PASS]
+[Status] label6: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1365061250
+Time (50000000 Hz): 27301 ms
+
+--- Sample 4/5 ---
+Input: label8, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc139f9e3
+1        : 0xbf815fec
+2        : 0xc0d23be0
+3        : 0x00000000
+4        : 0xc0420fe2
+5        : 0x3f015fec
+6        : 0xc0c20fe2
+7        : 0xc0420fe2
+8        : 0x40118bea
+9        : 0xc0015fec
+10       : 0xc08975eb
+11       : 0x3e815fec
+Idx 0: Actual=0xc139f9e3, Golden=0xc139f9e3 [PASS]
+Idx 1: Actual=0xbf815fec, Golden=0xbf815fec [PASS]
+Idx 2: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 3: Actual=0x00000000, Golden=0x00000000 [PASS]
+Idx 4: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 5: Actual=0x3f015fec, Golden=0x3f015fec [PASS]
+Idx 6: Actual=0xc0c20fe2, Golden=0xc0c20fe2 [PASS]
+Idx 7: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 8: Actual=0x40118bea, Golden=0x40118bea [PASS]
+Idx 9: Actual=0xc0015fec, Golden=0xc0015fec [PASS]
+Idx 10: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 11: Actual=0x3e815fec, Golden=0x3e815fec [PASS]
+Prediction: 8, expected: 8 [PASS]
+[Status] label8: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1289276074
+Time (50000000 Hz): 25785 ms
+
+--- Sample 5/5 ---
+Input: label11, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1add8e5
+1        : 0xbfe267dd
+2        : 0xc0faa9d9
+3        : 0xbf015fec
+4        : 0xc0b1e3e4
+5        : 0xc031e3e4
+6        : 0xc119a1e8
+7        : 0xc0d23be0
+8        : 0xc0d23be0
+9        : 0xc0b1e3e4
+10       : 0xc0523be0
+11       : 0x4139f9e3
+Idx 0: Actual=0xc1add8e5, Golden=0xc1add8e5 [PASS]
+Idx 1: Actual=0xbfe267dd, Golden=0xbfe267dd [PASS]
+Idx 2: Actual=0xc0faa9d9, Golden=0xc0faa9d9 [PASS]
+Idx 3: Actual=0xbf015fec, Golden=0xbf015fec [PASS]
+Idx 4: Actual=0xc0b1e3e4, Golden=0xc0b1e3e4 [PASS]
+Idx 5: Actual=0xc031e3e4, Golden=0xc031e3e4 [PASS]
+Idx 6: Actual=0xc119a1e8, Golden=0xc119a1e8 [PASS]
+Idx 7: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 8: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 9: Actual=0xc0b1e3e4, Golden=0xc0b1e3e4 [PASS]
+Idx 10: Actual=0xc0523be0, Golden=0xc0523be0 [PASS]
+Idx 11: Actual=0x4139f9e3, Golden=0x4139f9e3 [PASS]
+Prediction: 11, expected: 11 [PASS]
+[Status] label11: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1342080361
+Time (50000000 Hz): 26841 ms
+
+Total for 5 samples:
+Cycles: 6609370113
+Time (50000000 Hz): 132187 ms
+---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> 

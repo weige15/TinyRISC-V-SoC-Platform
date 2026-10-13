@@ -1,0 +1,2 @@
+7be6c852a63a618fafc01da9e6531039c3c2e39f282f55ddb0dfd86f03ce336e  /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/out.bit
+424db96755edf3b42e5fd1630404f9c4fad1b503469c5fa4240fb710dfe5c3ff  /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/sw/main.bin

@@ -1,0 +1,8 @@
+RESULT: PASS=13947905 FAIL=0
+RESULT: PASS=13793848 FAIL=0
+RESULT: PASS=14349971 FAIL=0
+RESULT: PASS=13853500 FAIL=0
+[PASS] All 366 burst dot product checks
+[PASS] All aligned/misaligned AXI read reconstruction checks
+[PASS] All aligned/misaligned AXI write byte-placement and handshake checks
+PASS: logs and source hashes in /home/kuotzuwei15/NNchip/scratch/lab2_opt/att7/rtl

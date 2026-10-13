@@ -1,0 +1,32 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.1 (lin64) Build 5076996 Wed May 22 18:36:09 MDT 2024
+| Date         : Tue Oct 13 17:47:45 2026
+| Host         : bababooey running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_utilization -cells MMIO_i/NPU_0/inst -hierarchical -file /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/reports/post_route_utilization_npu.rpt
+| Design       : SoC
+| Device       : xc7a100tcsg324-1
+| Speed File   : -1
+| Design State : Routed
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-------------------------+-----------------------+------------+------------+---------+------+-----+--------+--------+------------+
+|         Instance        |         Module        | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP Blocks |
++-------------------------+-----------------------+------------+------------+---------+------+-----+--------+--------+------------+
+| inst                    |                   NPU |       3160 |       1934 |    1226 |    0 | 773 |      0 |      0 |          4 |
+|   inst                  |                   NPU |       3160 |       1934 |    1226 |    0 | 773 |      0 |      0 |          4 |
+|     (inst)              |                   NPU |        268 |        268 |       0 |    0 | 273 |      0 |      0 |          4 |
+|     u_burst_dot_product | npu_burst_dot_product |       2893 |       1667 |    1226 |    0 | 500 |      0 |      0 |          0 |
++-------------------------+-----------------------+------------+------------+---------+------+-----+--------+--------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+
