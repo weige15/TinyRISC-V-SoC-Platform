@@ -10,7 +10,7 @@ M = {
  'ignore-window': ("wire fc_full_hit = fcache_enable && reuse_hit && fc_valid && fc_inside &&", "wire fc_full_hit = fcache_enable && reuse_hit && fc_valid &&"),
  'keep-on-clear': ("if (reuse_clear) begin reuse_valid <= 0; fc_valid <= 0; end", "if (reuse_clear) begin reuse_valid <= 0; end"),
  'keep-on-error': ("if (status != 0) fc_valid <= 0;", "if (1'b0) fc_valid <= 0;"),
- 'no-rotate': ("wire [255:0] fc_rot_sh = fc_dbl >> {s1_rot,5'd0};", "wire [255:0] fc_rot_sh = fc_dbl;"),
+ 'no-rotate': ("wire [511:0] fc_rot_sh = fc_dbl >> {s1_rot,5'd0};", "wire [511:0] fc_rot_sh = fc_dbl;"),
  'ignore-alignment': ("(input_address[1:0] == filter_address[1:0]) &&\n                       (byte_length != 0);", "(byte_length != 0);"),
  'no-lane-mask': ("wire [16:0] pv = product(in_q[8*fl +: 8], fc_word_row[8*fl +: 8], offset_r, v);", "wire [16:0] pv = product(in_q[8*fl +: 8], fc_word_row[8*fl +: 8], offset_r, 1'b1);"),
  'append-gap': ("(fw0 <= fc_hi) &&", "(fw0 <= fc_hi + 30'd1) &&"),

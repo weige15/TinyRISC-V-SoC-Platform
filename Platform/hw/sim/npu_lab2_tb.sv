@@ -1077,7 +1077,7 @@ module npu_lab2_tb;
                                 -128, 300, INJ_NONE, 0, 0, 0, "fc-latency");
                         if (px == 1 && c > 0) begin
                             $display("FC_FAST_LATENCY N=300 align=%0d cycles=%0d", k, last_compute_cycles);
-                            check(last_compute_cycles <= 26, "fast hit N=300 exceeds 26 cycles");
+                            check(last_compute_cycles <= 14, "fast hit N=300 exceeds 26 cycles (32 lanes: 14)");
                         end
                     end
             end

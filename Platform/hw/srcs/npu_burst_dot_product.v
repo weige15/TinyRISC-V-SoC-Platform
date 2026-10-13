@@ -21,12 +21,12 @@
 //
 // Filter cache (fcache_enable, only while reuse is armed): ptr2 words fetched
 // by armed, error-free calls are written to a contiguous window
-// [fc_lo, fc_hi) of word addresses held in four 32-bit block-RAM banks. A
+// [fc_lo, fc_hi) of word addresses held in eight 32-bit block-RAM banks. A
 // call extends the window only if its ptr2 words start inside or right at
 // the end of the window. A COMPUTE that hits ptr1 reuse, whose ptr2 words lie
 // inside the window and whose ptr1/ptr2 byte alignments are equal issues no
-// AXI request: four input words (banked replica) and four filter words are
-// read per cycle into a 16-lane MAC. Any reuse_clear or error empties it.
+// AXI request: eight input words (banked replica) and eight filter words
+// are read per cycle into a 32-lane MAC. Any reuse_clear or error empties it.
 module npu_burst_dot_product #(
     parameter integer MAX_BURST_BEATS = 256,
     parameter integer CHUNK_WORDS = 256 // retained parameter; RAM = 4x this size
@@ -50,7 +50,7 @@ module npu_burst_dot_product #(
     localparam integer BUFFER_WORDS = 4 * CHUNK_WORDS;
     localparam integer IB = $clog2(BUFFER_WORDS);
     localparam integer FC_WORDS = 32768;      // 128 KiB filter cache
-    localparam integer FC_DEPTH = FC_WORDS/4; // words per bank
+    localparam integer FC_DEPTH = FC_WORDS/8; // words per bank
     // synthesis translate_off
     initial begin
         if (MAX_BURST_BEATS < 1 || MAX_BURST_BEATS > 256 ||
@@ -144,8 +144,8 @@ module npu_burst_dot_product #(
     // Fast (no-AXI) path state.
     reg fast;
     reg [8:0] fast_k, fast_rows, s1_k;
-    reg [12:0] fast_row_base;
-    reg [1:0] fast_rot;
+    reg [11:0] fast_row_base;
+    reg [2:0] fast_rot;
     reg s1_valid, s2_valid;
 
     // Two-entry descriptor FIFO. The AXI ID is fixed, so responses are ordered.
@@ -197,52 +197,56 @@ module npu_burst_dot_product #(
             input_buffer[input_received[IB-1:0]] <= m_axi_rdata;
     end
 
-    // Banked replica of input words 0..1023 (word i in bank i%4, row i/4),
-    // read four words per cycle by the fast path. Same write condition.
+    // Banked replica of input words 0..1023 (word i in bank i%8, row i/8),
+    // read eight words per cycle by the fast path. Same write condition.
     wire in_rep_we = emit_valid && !is_filter && (input_received < 1024);
-    wire [127:0] fast_in_row;
-    wire [127:0] fast_fc_row;
-    reg  [127:0] in_q;
+    wire [255:0] fast_in_row;
+    wire [255:0] fast_fc_row;
+    reg  [255:0] in_q;
     wire [14:0] fc_wrel = fc_wbase + filter_received[14:0];
     wire fc_we = emit_valid && is_filter && fc_app;
-    wire [3:0] rot_mask = (4'b0001 << fast_rot) - 4'b0001; // banks below rot
+    wire [7:0] rot_mask = (8'd1 << fast_rot) - 8'd1; // banks below rot
     genvar bk;
-    generate for (bk=0; bk<4; bk=bk+1) begin: banks
-        (* ram_style = "distributed" *) reg [31:0] in_rep [0:255];
+    generate for (bk=0; bk<8; bk=bk+1) begin: banks
+        (* ram_style = "distributed" *) reg [31:0] in_rep [0:127];
         always @(posedge clk)
-            if (in_rep_we && input_received[1:0] == bk) in_rep[input_received[9:2]] <= m_axi_rdata;
-        assign fast_in_row[32*bk +: 32] = in_rep[fast_k[7:0]];
+            if (in_rep_we && input_received[2:0] == bk) in_rep[input_received[9:3]] <= m_axi_rdata;
+        assign fast_in_row[32*bk +: 32] = in_rep[fast_k[6:0]];
         (* ram_style = "block" *) reg [31:0] fc_mem [0:FC_DEPTH-1];
         reg [31:0] fc_q;
-        wire [12:0] raddr = fast_row_base + {4'd0,fast_k} + {12'd0,rot_mask[bk]};
+        wire [11:0] raddr = fast_row_base + {3'd0,fast_k} + {11'd0,rot_mask[bk]};
         always @(posedge clk) begin
-            if (fc_we && fc_wrel[1:0] == bk) fc_mem[fc_wrel[14:2]] <= m_axi_rdata;
+            if (fc_we && fc_wrel[2:0] == bk) fc_mem[fc_wrel[14:3]] <= m_axi_rdata;
             fc_q <= fc_mem[raddr];
         end
         assign fast_fc_row[32*bk +: 32] = fc_q;
     end endgenerate
-    // Rotate cached words so word j of this row is filter word rel0+4k+j.
-    reg [1:0] s1_rot;
-    wire [255:0] fc_dbl = {fast_fc_row, fast_fc_row};
+    // Rotate cached words so word j of this row is filter word rel0+8k+j.
+    reg [2:0] s1_rot;
+    wire [511:0] fc_dbl = {fast_fc_row, fast_fc_row};
     /* verilator lint_off UNUSEDSIGNAL */
-    wire [255:0] fc_rot_sh = fc_dbl >> {s1_rot,5'd0};
+    wire [511:0] fc_rot_sh = fc_dbl >> {s1_rot,5'd0};
     /* verilator lint_on UNUSEDSIGNAL */
-    wire [127:0] fc_word_row = fc_rot_sh[127:0];
-    reg [16:0] fprod [0:15];
-    wire [20:0] fast_sum;
+    wire [255:0] fc_word_row = fc_rot_sh[255:0];
+    reg [16:0] fprod [0:31];
+    wire [21:0] fast_sum;
     genvar fl;
-    generate for (fl=0; fl<16; fl=fl+1) begin: flanes
-        wire [12:0] pos = {s1_k, 4'd0} + fl;
-        wire v = ({20'd0,pos} >= {31'd0,filter_low}) &&
-                 ({20'd0,pos} < {1'b0,length_r} + {31'd0,filter_low});
+    generate for (fl=0; fl<32; fl=fl+1) begin: flanes
+        wire [13:0] pos = {s1_k, 5'd0} + fl;
+        wire v = ({19'd0,pos} >= {31'd0,filter_low}) &&
+                 ({19'd0,pos} < {1'b0,length_r} + {31'd0,filter_low});
         wire [16:0] pv = product(in_q[8*fl +: 8], fc_word_row[8*fl +: 8], offset_r, v);
         always @(posedge clk) fprod[fl] <= pv;
     end endgenerate
-    function [20:0] sx; input [16:0] x; sx = {{4{x[16]}},x}; endfunction
-    assign fast_sum = sx(fprod[0]) + sx(fprod[1]) + sx(fprod[2]) + sx(fprod[3]) +
-                      sx(fprod[4]) + sx(fprod[5]) + sx(fprod[6]) + sx(fprod[7]) +
-                      sx(fprod[8]) + sx(fprod[9]) + sx(fprod[10]) + sx(fprod[11]) +
-                      sx(fprod[12]) + sx(fprod[13]) + sx(fprod[14]) + sx(fprod[15]);
+    function [21:0] sx; input [16:0] x; sx = {{5{x[16]}},x}; endfunction
+    // 32 registered products summed in one cycle.
+    reg [21:0] fsum_c;
+    integer fi;
+    always @(*) begin
+        fsum_c = 22'd0;
+        for (fi = 0; fi < 32; fi = fi + 1) fsum_c = fsum_c + sx(fprod[fi]);
+    end
+    assign fast_sum = fsum_c;
 
     wire [32:0] filter_position = {filter_received,2'b00};
     wire [32:0] filter_limit = {1'b0,length_r} + {31'd0,filter_low};
@@ -270,9 +274,9 @@ module npu_burst_dot_product #(
     wire [18:0] lane_sum = {{2{p0[16]}},p0} + {{2{p1[16]}},p1} +
                            {{2{p2[16]}},p2} + {{2{p3[16]}},p3};
     reg mac_valid;
-    reg [20:0] mac_sum;
+    reg [21:0] mac_sum;
     reg [31:0] accumulator;
-    wire [31:0] accumulated = accumulator + (mac_valid ? {{11{mac_sum[20]}},mac_sum} : 32'd0);
+    wire [31:0] accumulated = accumulator + (mac_valid ? {{10{mac_sum[21]}},mac_sum} : 32'd0);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -291,7 +295,7 @@ module npu_burst_dot_product #(
         end else begin
             done <= 0;
             mac_valid <= (emit_valid && is_filter) || s2_valid;
-            mac_sum <= s2_valid ? fast_sum : {{2{lane_sum[18]}},lane_sum};
+            mac_sum <= s2_valid ? fast_sum : {{3{lane_sum[18]}},lane_sum};
             accumulator <= accumulated;
             // Fast pipeline: S0 issue row reads, S1 multiply, S2 sum, then MAC.
             s1_valid <= fast && (fast_k != fast_rows);
@@ -309,8 +313,8 @@ module npu_burst_dot_product #(
             if (start && !active && !fast && fc_full_hit) begin
                 // Both operands are local: no AXI request at all.
                 fast <= 1; fast_k <= 0;
-                fast_rows <= filter_cover[10:2] + {8'd0,(filter_cover[1:0] != 0)};
-                fast_row_base <= fc_rel0_full[14:2]; fast_rot <= fc_rel0_full[1:0];
+                fast_rows <= {1'b0,filter_cover[10:3]} + {8'd0,(filter_cover[2:0] != 0)};
+                fast_row_base <= fc_rel0_full[14:3]; fast_rot <= fc_rel0_full[2:0];
                 status <= 0; accumulator <= 0; mac_valid <= 0;
                 offset_r <= input_offset;
                 input_low <= input_address[1:0]; filter_low <= filter_address[1:0];
