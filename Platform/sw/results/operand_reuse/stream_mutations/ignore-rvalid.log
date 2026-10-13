@@ -1,0 +1,2 @@
+FATAL: /tmp/lab2-mutations-xfv4d0s0/tb.sv:115: [FAIL] t=315000 storage/MAC consumed a beat without RVALID && RREADY
+       Time: 315000  Scope: npu_lab2_tb.check

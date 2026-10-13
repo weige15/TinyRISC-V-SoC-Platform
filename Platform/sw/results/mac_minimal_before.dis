@@ -1,0 +1,166 @@
+60002fc4 <hw_simd_mac>:
+60002fc4:	28068663          	beqz	a3,60003250 <hw_simd_mac+0x28c>
+60002fc8:	fc010113          	addi	sp,sp,-64
+60002fcc:	02812c23          	sw	s0,56(sp)
+60002fd0:	03512223          	sw	s5,36(sp)
+60002fd4:	03612023          	sw	s6,32(sp)
+60002fd8:	02112e23          	sw	ra,60(sp)
+60002fdc:	02912a23          	sw	s1,52(sp)
+60002fe0:	03212823          	sw	s2,48(sp)
+60002fe4:	03312623          	sw	s3,44(sp)
+60002fe8:	03412423          	sw	s4,40(sp)
+60002fec:	01712e23          	sw	s7,28(sp)
+60002ff0:	01812c23          	sw	s8,24(sp)
+60002ff4:	01912a23          	sw	s9,20(sp)
+60002ff8:	01a12823          	sw	s10,16(sp)
+60002ffc:	01b12623          	sw	s11,12(sp)
+60003000:	00320797          	auipc	a5,0x320
+60003004:	0447a783          	lw	a5,68(a5) # 60323044 <_ZN12_GLOBAL__N_113g_clean_countE>
+60003008:	00068413          	mv	s0,a3
+6000300c:	00d50733          	add	a4,a0,a3
+60003010:	00050a93          	mv	s5,a0
+60003014:	00058b13          	mv	s6,a1
+60003018:	00d586b3          	add	a3,a1,a3
+6000301c:	02f05263          	blez	a5,60003040 <hw_simd_mac+0x7c>
+60003020:	00320597          	auipc	a1,0x320
+60003024:	01c58593          	addi	a1,a1,28 # 6032303c <_ZN12_GLOBAL__N_113g_clean_beginE>
+60003028:	0005a503          	lw	a0,0(a1)
+6000302c:	14aafa63          	bgeu	s5,a0,60003180 <hw_simd_mac+0x1bc>
+60003030:	00100813          	li	a6,1
+60003034:	01078663          	beq	a5,a6,60003040 <hw_simd_mac+0x7c>
+60003038:	0045a803          	lw	a6,4(a1)
+6000303c:	1f0afa63          	bgeu	s5,a6,60003230 <hw_simd_mac+0x26c>
+60003040:	0330000f          	fence	rw,rw
+60003044:	fe0af793          	andi	a5,s5,-32
+60003048:	00e7fa63          	bgeu	a5,a4,6000305c <hw_simd_mac+0x98>
+6000304c:	00078513          	mv	a0,a5
+60003050:	0015200f          	0x15200f
+60003054:	02078793          	addi	a5,a5,32
+60003058:	fee7eae3          	bltu	a5,a4,6000304c <hw_simd_mac+0x88>
+6000305c:	fe0b7793          	andi	a5,s6,-32
+60003060:	00d7fa63          	bgeu	a5,a3,60003074 <hw_simd_mac+0xb0>
+60003064:	00078513          	mv	a0,a5
+60003068:	0015200f          	0x15200f
+6000306c:	02078793          	addi	a5,a5,32
+60003070:	fed7eae3          	bltu	a5,a3,60003064 <hw_simd_mac+0xa0>
+60003074:	0330000f          	fence	rw,rw
+60003078:	00000693          	li	a3,0
+6000307c:	0ff67493          	andi	s1,a2,255
+60003080:	00000913          	li	s2,0
+60003084:	00320a17          	auipc	s4,0x320
+60003088:	fb0a0a13          	addi	s4,s4,-80 # 60323034 <_ZN12_GLOBAL__N_112g_set_lengthE>
+6000308c:	00320b97          	auipc	s7,0x320
+60003090:	facb8b93          	addi	s7,s7,-84 # 60323038 <_ZN12_GLOBAL__N_112g_set_offsetE>
+60003094:	00320997          	auipc	s3,0x320
+60003098:	fb498993          	addi	s3,s3,-76 # 60323048 <hw_simd_mac_cnt>
+6000309c:	3ff00d93          	li	s11,1023
+600030a0:	00000c93          	li	s9,0
+600030a4:	00099817          	auipc	a6,0x99
+600030a8:	ad880813          	addi	a6,a6,-1320 # 6009bb7c <_ZL15Test3GoldenData+0x1000>
+600030ac:	0340006f          	j	600030e0 <hw_simd_mac+0x11c>
+600030b0:	0097478b          	0x97478b
+600030b4:	00ea2023          	sw	a4,0(s4)
+600030b8:	009ba023          	sw	s1,0(s7)
+600030bc:	02d64d0b          	0x2d64d0b
+600030c0:	0009a783          	lw	a5,0(s3)
+600030c4:	00178793          	addi	a5,a5,1
+600030c8:	00f9a023          	sw	a5,0(s3)
+600030cc:	059cc58b          	0x59cc58b
+600030d0:	04059a63          	bnez	a1,60003124 <hw_simd_mac+0x160>
+600030d4:	01a90933          	add	s2,s2,s10
+600030d8:	068c7463          	bgeu	s8,s0,60003140 <hw_simd_mac+0x17c>
+600030dc:	000c0693          	mv	a3,s8
+600030e0:	40d40733          	sub	a4,s0,a3
+600030e4:	00040c13          	mv	s8,s0
+600030e8:	00edf663          	bgeu	s11,a4,600030f4 <hw_simd_mac+0x130>
+600030ec:	40068c13          	addi	s8,a3,1024
+600030f0:	40000713          	li	a4,1024
+600030f4:	000a2783          	lw	a5,0(s4)
+600030f8:	00da8633          	add	a2,s5,a3
+600030fc:	00db06b3          	add	a3,s6,a3
+60003100:	faf718e3          	bne	a4,a5,600030b0 <hw_simd_mac+0xec>
+60003104:	000ba783          	lw	a5,0(s7)
+60003108:	faf494e3          	bne	s1,a5,600030b0 <hw_simd_mac+0xec>
+6000310c:	02d64d0b          	0x2d64d0b
+60003110:	0009a783          	lw	a5,0(s3)
+60003114:	00178793          	addi	a5,a5,1
+60003118:	00f9a023          	sw	a5,0(s3)
+6000311c:	059cc58b          	0x59cc58b
+60003120:	fa058ae3          	beqz	a1,600030d4 <hw_simd_mac+0x110>
+60003124:	00080513          	mv	a0,a6
+60003128:	00031097          	auipc	ra,0x31
+6000312c:	f74080e7          	jalr	-140(ra) # 6003409c <printf>
+60003130:	00099817          	auipc	a6,0x99
+60003134:	a4c80813          	addi	a6,a6,-1460 # 6009bb7c <_ZL15Test3GoldenData+0x1000>
+60003138:	01a90933          	add	s2,s2,s10
+6000313c:	fa8c60e3          	bltu	s8,s0,600030dc <hw_simd_mac+0x118>
+60003140:	03c12083          	lw	ra,60(sp)
+60003144:	03812403          	lw	s0,56(sp)
+60003148:	03412483          	lw	s1,52(sp)
+6000314c:	02c12983          	lw	s3,44(sp)
+60003150:	02812a03          	lw	s4,40(sp)
+60003154:	02412a83          	lw	s5,36(sp)
+60003158:	02012b03          	lw	s6,32(sp)
+6000315c:	01c12b83          	lw	s7,28(sp)
+60003160:	01812c03          	lw	s8,24(sp)
+60003164:	01412c83          	lw	s9,20(sp)
+60003168:	01012d03          	lw	s10,16(sp)
+6000316c:	00c12d83          	lw	s11,12(sp)
+60003170:	00090513          	mv	a0,s2
+60003174:	03012903          	lw	s2,48(sp)
+60003178:	04010113          	addi	sp,sp,64
+6000317c:	00008067          	ret
+60003180:	00320817          	auipc	a6,0x320
+60003184:	eac80813          	addi	a6,a6,-340 # 6032302c <_ZN12_GLOBAL__N_111g_clean_endE>
+60003188:	00082883          	lw	a7,0(a6)
+6000318c:	eae8e2e3          	bltu	a7,a4,60003030 <hw_simd_mac+0x6c>
+60003190:	0aab7a63          	bgeu	s6,a0,60003244 <hw_simd_mac+0x280>
+60003194:	00100513          	li	a0,1
+60003198:	eaa784e3          	beq	a5,a0,60003040 <hw_simd_mac+0x7c>
+6000319c:	0045a783          	lw	a5,4(a1)
+600031a0:	eafb60e3          	bltu	s6,a5,60003040 <hw_simd_mac+0x7c>
+600031a4:	00482783          	lw	a5,4(a6)
+600031a8:	e8d7ece3          	bltu	a5,a3,60003040 <hw_simd_mac+0x7c>
+600031ac:	0ff67493          	andi	s1,a2,255
+600031b0:	00000793          	li	a5,0
+600031b4:	00000913          	li	s2,0
+600031b8:	00320a17          	auipc	s4,0x320
+600031bc:	e7ca0a13          	addi	s4,s4,-388 # 60323034 <_ZN12_GLOBAL__N_112g_set_lengthE>
+600031c0:	00320b97          	auipc	s7,0x320
+600031c4:	e78b8b93          	addi	s7,s7,-392 # 60323038 <_ZN12_GLOBAL__N_112g_set_offsetE>
+600031c8:	00320997          	auipc	s3,0x320
+600031cc:	e8098993          	addi	s3,s3,-384 # 60323048 <hw_simd_mac_cnt>
+600031d0:	3ff00513          	li	a0,1023
+600031d4:	02c0006f          	j	60003200 <hw_simd_mac+0x23c>
+600031d8:	0097458b          	0x97458b
+600031dc:	00ea2023          	sw	a4,0(s4)
+600031e0:	009ba023          	sw	s1,0(s7)
+600031e4:	02f6c78b          	0x2f6c78b
+600031e8:	0009a703          	lw	a4,0(s3)
+600031ec:	00f90933          	add	s2,s2,a5
+600031f0:	00060793          	mv	a5,a2
+600031f4:	00170713          	addi	a4,a4,1
+600031f8:	00e9a023          	sw	a4,0(s3)
+600031fc:	f48672e3          	bgeu	a2,s0,60003140 <hw_simd_mac+0x17c>
+60003200:	40f40733          	sub	a4,s0,a5
+60003204:	00040613          	mv	a2,s0
+60003208:	00e57663          	bgeu	a0,a4,60003214 <hw_simd_mac+0x250>
+6000320c:	40000713          	li	a4,1024
+60003210:	40078613          	addi	a2,a5,1024
+60003214:	000a2583          	lw	a1,0(s4)
+60003218:	00fa86b3          	add	a3,s5,a5
+6000321c:	00fb07b3          	add	a5,s6,a5
+60003220:	fab71ce3          	bne	a4,a1,600031d8 <hw_simd_mac+0x214>
+60003224:	000ba583          	lw	a1,0(s7)
+60003228:	fa9598e3          	bne	a1,s1,600031d8 <hw_simd_mac+0x214>
+6000322c:	fb9ff06f          	j	600031e4 <hw_simd_mac+0x220>
+60003230:	00320817          	auipc	a6,0x320
+60003234:	dfc80813          	addi	a6,a6,-516 # 6032302c <_ZN12_GLOBAL__N_111g_clean_endE>
+60003238:	00482883          	lw	a7,4(a6)
+6000323c:	e0e8e2e3          	bltu	a7,a4,60003040 <hw_simd_mac+0x7c>
+60003240:	f4ab6ee3          	bltu	s6,a0,6000319c <hw_simd_mac+0x1d8>
+60003244:	00082503          	lw	a0,0(a6)
+60003248:	f4d566e3          	bltu	a0,a3,60003194 <hw_simd_mac+0x1d0>
+6000324c:	f61ff06f          	j	600031ac <hw_simd_mac+0x1e8>
+60003250:	00000513          	li	a0,0
+60003254:	00008067          	ret

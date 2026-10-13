@@ -1,0 +1,8 @@
+RESULT: PASS=10586432 FAIL=0
+RESULT: PASS=10264679 FAIL=0
+RESULT: PASS=10498827 FAIL=0
+RESULT: PASS=10407305 FAIL=0
+[PASS] All 366 burst dot product checks
+[PASS] All aligned/misaligned AXI read reconstruction checks
+[PASS] All aligned/misaligned AXI write byte-placement and handshake checks
+PASS: logs and source hashes in /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/operand_reuse/rtl

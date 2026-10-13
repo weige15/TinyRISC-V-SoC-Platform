@@ -24,12 +24,16 @@ limitations under the License.
 
 // Cache helpers of Platform/sw/project/lab2_api.cc: write the input and
 // filter tensors back to DRAM once per convolution so the individual
-// hw_simd_mac calls can skip their per-call cache clean and fences. Neither
+// explicit precleaned calls can skip per-call cache clean and fences. Neither
 // range is stored to while it is declared clean (only the output is written,
 // and the kernel checks that it does not overlap them).
 extern "C" void hw_simd_mac_assume_clean_begin(const void* a, uint32_t a_bytes,
                                                const void* b, uint32_t b_bytes);
 extern "C" void hw_simd_mac_assume_clean_end(void);
+// ptr1 operand reuse window of lab2_api.cc. Armed only below, after the bulk
+// clean above, for the rest of one ConvPerChannel call; disarmed on return.
+extern "C" void hw_simd_mac_reuse_arm(void);
+extern "C" void hw_simd_mac_reuse_disarm(void);
 
 namespace tflite {
 namespace reference_integer_ops {
@@ -42,24 +46,30 @@ namespace reference_integer_ops {
 // results (modulo 2^32, like the int32 reference accumulator). Used only when
 // the filter tap sums below do not fit their buffer.
 inline int32_t ConvDotProduct(const int8_t* input, const int8_t* filter,
-                              int32_t input_offset, uint32_t n) {
+                              int32_t input_offset, uint32_t n,
+                              bool precleaned = false) {
   int8_t* in = const_cast<int8_t*>(input);
   int8_t* flt = const_cast<int8_t*>(filter);
+  const auto mac = [precleaned](int8_t* a, int8_t* b, int8_t offset,
+                                uint32_t bytes) {
+    return precleaned ? hw_simd_mac_precleaned(a, b, offset, bytes)
+                      : hw_simd_mac(a, b, offset, bytes);
+  };
   if (input_offset >= -128 && input_offset <= 127) {
-    return hw_simd_mac(in, flt, static_cast<int8_t>(input_offset), n);
+    return mac(in, flt, static_cast<int8_t>(input_offset), n);
   }
   TFLITE_DCHECK_GE(input_offset, -256);
   TFLITE_DCHECK_LE(input_offset, 254);
   const int32_t o1 = input_offset / 2;
   const int32_t o2 = input_offset - o1;
   const uint32_t a =
-      static_cast<uint32_t>(hw_simd_mac(in, flt, static_cast<int8_t>(o1), n));
+      static_cast<uint32_t>(mac(in, flt, static_cast<int8_t>(o1), n));
   // o1 == o2 for the common offset 128, so (x + 64) * w is formed once.
   const uint32_t b =
       o2 == o1 ? a
                : static_cast<uint32_t>(
-                     hw_simd_mac(in, flt, static_cast<int8_t>(o2), n));
-  const uint32_t c = static_cast<uint32_t>(hw_simd_mac(in, flt, 0, n));
+                     mac(in, flt, static_cast<int8_t>(o2), n));
+  const uint32_t c = static_cast<uint32_t>(mac(in, flt, 0, n));
   return static_cast<int32_t>(a + b - c);
 }
 
@@ -131,6 +141,14 @@ inline void ConvPerChannel(
   const int input_batch_stride = input_height * input_row_stride;
   const bool merge_row_taps =
       (filter_input_depth == input_depth) && (dilation_width_factor == 1);
+  // With a 1x1, stride-1 filter and zero padding, every output maps to an
+  // in-bounds input pixel. The dedicated path below increments the input and
+  // output pointers across each row and hoists channel-invariant addresses and
+  // quantization parameters out of the output-x loop.
+  const bool pointwise_fast_path =
+      (filter_height == 1) && (filter_width == 1) && (stride_height == 1) &&
+      (stride_width == 1) && (pad_height == 0) && (pad_width == 0) &&
+      (output_height <= input_height) && (output_width <= input_width);
 
   // Write the input and filter tensors back once; the output must not
   // overlap them because it is stored to while they are declared clean.
@@ -177,16 +195,80 @@ inline void ConvPerChannel(
     }
   }
 
+  // Arm ptr1 reuse only for the precleaned (output-disjoint) case: the input
+  // tensor was written back once above and is not stored to before the
+  // matching disarm, so bytes the NPU fetched over AXI during this call stay
+  // equal to memory. The tap-sum calls above ran unarmed.
+  if (output_disjoint) {
+    hw_simd_mac_reuse_arm();
+  }
+
+  // Keep the original pixel-major ordering for aliased tensors: the fast
+  // path changes the channel/width loop order and is safe only when output is
+  // disjoint from both inputs and filters.
+  if (pointwise_fast_path && output_disjoint) {
+    // Pixel-major: all output channels of one pixel use the same input
+    // vector (ptr1) and N back to back, so the NPU reuses its ptr1 bytes and
+    // bursts only each channel's filter (ptr2).
+    const int output_row_stride = output_width * output_depth;
+    const int output_batch_stride = output_height * output_row_stride;
+    const uint32_t n = static_cast<uint32_t>(filter_input_depth);
+    const int32_t dot_offset = use_tap_sums ? npu_offset : input_offset;
+    for (int batch = 0; batch < batches; ++batch) {
+      const int8_t* input_batch = input_data + batch * input_batch_stride;
+      int8_t* output_batch = output_data + batch * output_batch_stride;
+      for (int out_y = 0; out_y < output_height; ++out_y) {
+        const int8_t* input_pixel = input_batch + out_y * input_row_stride;
+        int8_t* output_pixel = output_batch + out_y * output_row_stride;
+        for (int out_x = 0; out_x < output_width; ++out_x) {
+          const int8_t* filter_channel = filter_data;
+          const int8_t* input_group = input_pixel;
+          int in_group = 0;
+          for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
+            int32_t acc = ConvDotProduct(input_group, filter_channel,
+                                         dot_offset, n, true);
+            if (use_tap_sums) {
+              acc += tap_sums[out_channel];
+            }
+            if (bias_data) {
+              acc += bias_data[out_channel];
+            }
+            acc = MultiplyByQuantizedMultiplier(
+                acc, output_multiplier[out_channel], output_shift[out_channel]);
+            acc += output_offset;
+            acc = std::max(acc, output_activation_min);
+            acc = std::min(acc, output_activation_max);
+            output_pixel[out_channel] = static_cast<int8_t>(acc);
+            filter_channel += filter_channel_stride;
+            if (++in_group == filters_per_group) {
+              in_group = 0;
+              input_group += filter_input_depth;
+            }
+          }
+          input_pixel += input_depth;
+          output_pixel += output_depth;
+        }
+      }
+    }
+    hw_simd_mac_reuse_disarm();
+    hw_simd_mac_assume_clean_end();
+    return;
+  }
+
   for (int batch = 0; batch < batches; ++batch) {
     const int8_t* input_batch = input_data + batch * input_batch_stride;
     for (int out_y = 0; out_y < output_height; ++out_y) {
       const int in_y_origin = (out_y * stride_height) - pad_height;
       for (int out_x = 0; out_x < output_width; ++out_x) {
         const int in_x_origin = (out_x * stride_width) - pad_width;
-        // In-image taps of a merged filter row: in_x = in_x_origin + filter_x
-        // in [0, input_width).
-        const int first_x = std::max(0, -in_x_origin);
-        const int end_x = std::min(filter_width, input_width - in_x_origin);
+        // Merge rows only when the complete filter window is in bounds.
+        // Border output positions use the reference per-tap bounds checks.
+        const int last_in_y =
+            in_y_origin + (filter_height - 1) * dilation_height_factor;
+        const bool merge_full_rows =
+            merge_row_taps && in_x_origin >= 0 &&
+            in_x_origin + filter_width <= input_width && in_y_origin >= 0 &&
+            last_in_y < input_height;
         int8_t* output_pixel =
             output_data + Offset(output_shape, batch, out_y, out_x, 0);
         for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
@@ -195,49 +277,54 @@ inline void ConvPerChannel(
           const int8_t* filter_channel =
               filter_data + out_channel * filter_channel_stride;
           const int32_t* channel_tap_sums =
-              tap_sums + out_channel * filter_height * filter_width;
+              use_tap_sums
+                  ? tap_sums + out_channel * filter_height * filter_width
+                  : nullptr;
           int32_t acc = 0;
-          for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
-            const int in_y = in_y_origin + dilation_height_factor * filter_y;
-            if (in_y < 0 || in_y >= input_height) {
-              continue;  // Zero padding: the whole filter row is outside.
-            }
-            const int8_t* input_row = input_group + in_y * input_row_stride;
-            const int8_t* filter_row = filter_channel + filter_y * filter_row_stride;
-            if (merge_row_taps) {
-              if (first_x < end_x) {
-                const int8_t* in = input_row + (in_x_origin + first_x) * input_depth;
-                const int8_t* flt = filter_row + first_x * filter_input_depth;
-                const uint32_t n =
-                    static_cast<uint32_t>((end_x - first_x) * filter_input_depth);
-                if (use_tap_sums) {
-                  acc += hw_simd_mac(const_cast<int8_t*>(in),
-                                     const_cast<int8_t*>(flt),
-                                     static_cast<int8_t>(npu_offset), n);
-                  for (int filter_x = first_x; filter_x < end_x; ++filter_x) {
-                    acc += channel_tap_sums[filter_y * filter_width + filter_x];
-                  }
-                } else {
-                  acc += ConvDotProduct(in, flt, npu_offset, n);
-                }
-              }
-              continue;
-            }
-            for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
-              const int in_x = in_x_origin + dilation_width_factor * filter_x;
-              if (in_x < 0 || in_x >= input_width) {
-                continue;  // Zero padding.
-              }
-              const int8_t* in = input_row + in_x * input_depth;
-              const int8_t* flt = filter_row + filter_x * filter_input_depth;
-              const uint32_t n = static_cast<uint32_t>(filter_input_depth);
+          if (merge_full_rows) {
+            for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
+              const int in_y = in_y_origin + dilation_height_factor * filter_y;
+              const int8_t* input_row = input_group + in_y * input_row_stride;
+              const int8_t* filter_row =
+                  filter_channel + filter_y * filter_row_stride;
+              const uint32_t n = static_cast<uint32_t>(filter_row_stride);
               if (use_tap_sums) {
-                acc += hw_simd_mac(const_cast<int8_t*>(in),
-                                   const_cast<int8_t*>(flt),
-                                   static_cast<int8_t>(npu_offset), n);
-                acc += channel_tap_sums[filter_y * filter_width + filter_x];
+                acc += ConvDotProduct(input_row + in_x_origin * input_depth,
+                                      filter_row, npu_offset, n, output_disjoint);
+                for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
+                  acc += channel_tap_sums[filter_y * filter_width + filter_x];
+                }
               } else {
-                acc += ConvDotProduct(in, flt, npu_offset, n);
+                acc += ConvDotProduct(input_row + in_x_origin * input_depth,
+                                      filter_row, npu_offset, n, output_disjoint);
+              }
+            }
+          } else {
+            for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
+              const int in_y = in_y_origin + dilation_height_factor * filter_y;
+              if (in_y < 0 || in_y >= input_height) {
+                continue;  // Zero padding: the whole filter row is outside.
+              }
+              const int8_t* input_row = input_group + in_y * input_row_stride;
+              const int8_t* filter_row =
+                  filter_channel + filter_y * filter_row_stride;
+              for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
+                const int in_x =
+                    in_x_origin + dilation_width_factor * filter_x;
+                if (in_x < 0 || in_x >= input_width) {
+                  continue;  // Zero padding.
+                }
+                const int8_t* in = input_row + in_x * input_depth;
+                const int8_t* flt =
+                    filter_row + filter_x * filter_input_depth;
+                const uint32_t n =
+                    static_cast<uint32_t>(filter_input_depth);
+                if (use_tap_sums) {
+                  acc += ConvDotProduct(in, flt, npu_offset, n, output_disjoint);
+                  acc += channel_tap_sums[filter_y * filter_width + filter_x];
+                } else {
+                  acc += ConvDotProduct(in, flt, npu_offset, n, output_disjoint);
+                }
               }
             }
           }
@@ -256,6 +343,7 @@ inline void ConvPerChannel(
   }
 
   if (output_disjoint) {
+    hw_simd_mac_reuse_disarm();
     hw_simd_mac_assume_clean_end();
   }
 }

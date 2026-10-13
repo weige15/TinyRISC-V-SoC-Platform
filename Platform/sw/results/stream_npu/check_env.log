@@ -1,0 +1,4 @@
+make: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'
+Checking SW build environment...
+OK: toolchain=riscv64-unknown-elf, model=models/ds_cnn_stream_fe.tflite, profile=ds_cnn_stream_fe, arena=2000000 bytes
+make: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw'

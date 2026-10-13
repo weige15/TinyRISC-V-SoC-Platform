@@ -1,0 +1,7 @@
+FTDI/UART check
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 0403:6010 Future Technology Devices International, Ltd FT2232C/D/H Dual UART/FIFO IC
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+crw-rw-rw- 1 root dialout 188, 1 Oct 12 23:48 /dev/ttyUSB1
+TARGETS=localhost:3121/xilinx_tcf/Digilent/210319BE7776A DEVICES=xc7a100t_0
+DONE

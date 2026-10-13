@@ -1,0 +1,21 @@
+600034b4 <hw_simd_mac>:
+600034b4:	04068463          	beqz	a3,600034fc <hw_simd_mac+0x48>
+600034b8:	0330000f          	fence	rw,rw
+600034bc:	00d50733          	add	a4,a0,a3
+600034c0:	fe057793          	andi	a5,a0,-32
+600034c4:	00e7f863          	bgeu	a5,a4,600034d4 <hw_simd_mac+0x20>
+600034c8:	0017a00f          	0x17a00f
+600034cc:	02078793          	addi	a5,a5,32
+600034d0:	fee7ece3          	bltu	a5,a4,600034c8 <hw_simd_mac+0x14>
+600034d4:	00d58733          	add	a4,a1,a3
+600034d8:	fe05f793          	andi	a5,a1,-32
+600034dc:	00e7f863          	bgeu	a5,a4,600034ec <hw_simd_mac+0x38>
+600034e0:	0017a00f          	0x17a00f
+600034e4:	02078793          	addi	a5,a5,32
+600034e8:	fee7ece3          	bltu	a5,a4,600034e0 <hw_simd_mac+0x2c>
+600034ec:	0330000f          	fence	rw,rw
+600034f0:	00c6c68b          	0xc6c68b
+600034f4:	02b5450b          	0x2b5450b
+600034f8:	00008067          	ret
+600034fc:	00000513          	li	a0,0
+60003500:	00008067          	ret

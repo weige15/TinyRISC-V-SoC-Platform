@@ -1,0 +1,5 @@
+[INFO] sweep done: 4096 calls, pass=1397529 fail=0
+[INFO] long sweep done: 4928 calls, pass=2561715 fail=0
+[INFO] computes=5454 commands=16362 back-to-back=16361 bursts=14208 multi-beat=13788 split-segments=3410 4k-boundary-bursts=3495 beats=615848 discarded=48
+RESULT: PASS=2859851 FAIL=0
+sim/npu_lab2_tb.sv:579: $finish called at 13392695000 (1ps)

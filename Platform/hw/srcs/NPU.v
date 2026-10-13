@@ -124,10 +124,18 @@ module NPU (
     //   funct7 = 2 (STATUS) : rd = error flags of the last COMPUTE:
     //                         bit 0 early RLAST, bit 1 missing RLAST on beat B,
     //                         bit 2 non-OKAY RRESP; 0 means success.
+    //   funct7 = 3 (REUSE)  : arm (rs1[0] = 1) or disarm (rs1[0] = 0) ptr1
+    //                         operand reuse; rd = rs1[0]. Both invalidate the
+    //                         stored ptr1 words. While armed, a COMPUTE whose
+    //                         ptr1 and N equal those of the previous successful
+    //                         COMPUTE reuses that call's AXI-fetched ptr1 bytes
+    //                         and bursts only ptr2. Disarmed (reset default),
+    //                         every COMPUTE fetches both operands.
     localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
+    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE      = 32'd3;
 
     reg [3:0] state_r;
     // Single-word AXI read (funct3 = 001) address channel registers.
@@ -136,6 +144,12 @@ module NPU (
     reg [31:0] burst_dot_product_length_r;
     reg [ 7:0] burst_dot_product_offset_r;
     wire [2:0] burst_dot_product_status;
+    reg reuse_armed_r;
+    // Arm/disarm, and any NPU AXI write (which may change memory under ptr1).
+    wire reuse_clear = (state_r == STATE_IDLE) && NPU_start &&
+        (((funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) &&
+          (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE)) ||
+         (funct3_i[2:0] == 3'b010));
 
     // Inputs the NPU does not use.
     /* verilator lint_off UNUSEDSIGNAL */
@@ -162,6 +176,8 @@ module NPU (
         .filter_address (rs2_i),
         .byte_length    (burst_dot_product_length_r),
         .input_offset   (burst_dot_product_offset_r),
+        .reuse_enable   (reuse_armed_r),
+        .reuse_clear    (reuse_clear),
         .done           (burst_dot_product_done),
         .result         (burst_dot_product_result),
         .status         (burst_dot_product_status),
@@ -242,6 +258,7 @@ module NPU (
             write_second_pending_r <= 1'b0;
             burst_dot_product_length_r <= 32'd0;
             burst_dot_product_offset_r <= 8'd0;
+            reuse_armed_r <= 1'b0;
         end else begin
             NPU_done <= 1'b0;
             case (state_r)
@@ -282,6 +299,10 @@ module NPU (
                             end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_STATUS) begin
                                 NPU_out <= {29'd0, burst_dot_product_status};
                                 state_r <= STATE_DONE;
+                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE) begin
+                                reuse_armed_r <= rs1_i[0];
+                                NPU_out <= {31'd0, rs1_i[0]};
+                                state_r <= STATE_DONE;
                             end else begin
                                 state_r <= STATE_DONE;
                             end
@@ -311,7 +332,8 @@ module NPU (
                 STATE_BURST_DOT_PRODUCT: begin
                     if (burst_dot_product_done) begin
                         NPU_out <= burst_dot_product_result;
-                        state_r <= STATE_DONE;
+                        NPU_done <= 1'b1;
+                        state_r <= STATE_IDLE;
                     end
                 end
 

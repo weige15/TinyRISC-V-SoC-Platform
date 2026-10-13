@@ -1,0 +1,18 @@
+Static instructions: before 165 after 20
+0 before ordinary cold SET {'instructions': 3}
+0 before ordinary warm SET {'instructions': 3}
+0 before precleaned warm SET {'instructions': 3}
+0 after ordinary {'instructions': 3}
+3 before ordinary cold SET {'instructions': 85, 'stores': 16, 'loads': 16, 'fences': 2, 'clean': 2, 'custom': 3}
+3 before ordinary warm SET {'instructions': 84, 'stores': 14, 'loads': 17, 'fences': 2, 'clean': 2, 'custom': 2}
+3 before precleaned warm SET {'instructions': 84, 'stores': 14, 'loads': 22, 'custom': 1}
+3 after ordinary {'instructions': 18, 'fences': 2, 'clean': 2, 'custom': 2}
+300 before ordinary cold SET {'instructions': 157, 'stores': 16, 'loads': 16, 'fences': 2, 'clean': 20, 'custom': 3}
+300 before ordinary warm SET {'instructions': 156, 'stores': 14, 'loads': 17, 'fences': 2, 'clean': 20, 'custom': 2}
+300 before precleaned warm SET {'instructions': 84, 'stores': 14, 'loads': 22, 'custom': 1}
+300 after ordinary {'instructions': 72, 'fences': 2, 'clean': 20, 'custom': 2}
+1025 before ordinary cold SET {'instructions': 362, 'stores': 19, 'loads': 18, 'fences': 2, 'clean': 66, 'custom': 6}
+1025 before ordinary warm SET {'instructions': 362, 'stores': 19, 'loads': 18, 'fences': 2, 'clean': 66, 'custom': 6}
+1025 before precleaned warm SET {'instructions': 103, 'stores': 19, 'loads': 23, 'custom': 4}
+1025 after ordinary {'instructions': 210, 'fences': 2, 'clean': 66, 'custom': 2}
+PASS: 16384 binary coverage cases; exact line sequence for both buffers, two commands, no loads/stores/internal calls

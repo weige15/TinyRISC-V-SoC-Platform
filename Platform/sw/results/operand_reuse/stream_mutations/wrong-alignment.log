@@ -1,0 +1,4 @@
+      LATENCY mode=  zero N=1 align=0/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=0/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+FATAL: /tmp/lab2-mutations-xfv4d0s0/tb.sv:115: [FAIL] t=9946000 latency p1=60000100 p2=60002101 off=-1 N=1: got x expected -5100
+       Time: 9946000  Scope: npu_lab2_tb.check

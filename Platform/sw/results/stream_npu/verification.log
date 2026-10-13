@@ -1,0 +1,4 @@
+PASS: all 768 latency rows; four complete RTL seeds; protocol/negative controls; host and actual board acceptance.
+Board total=7,038,923,034, average=1,407,784,606.8, previous=1,470,259,856
+NPU resources={'LUT': 3090, 'FF': 685, 'RAMB36': 0, 'RAMB18': 0, 'DSP': 4}; overall WNS=+0.187 ns
+PASS: source hashes, tested images, fresh routed reports, unchanged 50-MHz clock, lower latency row.

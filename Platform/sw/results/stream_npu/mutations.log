@@ -1,0 +1,8 @@
+control: PASS
+serialized-ar: detected
+short-bursts: detected
+extra-done-cycle: detected
+ignore-rvalid: detected
+write-after-error: detected
+wrong-alignment: detected
+All six mutations detected; unmodified control passed.

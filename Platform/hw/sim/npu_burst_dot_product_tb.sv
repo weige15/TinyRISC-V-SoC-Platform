@@ -430,7 +430,7 @@ module npu_burst_dot_product_tb;
         fill_constant(32'h5000, 2600, 8'h80);
         check_dot_product("signed extremes (multi-chunk -128 x -128)", 32'h4001, 32'h5003, 2598);
 
-        // 6. Multi-chunk random vectors (chunks of 1024 bytes).
+        // 6. Long vectors (independent maximal operand bursts).
         check_dot_product("multi-chunk (2500 bytes)", 32'h0103, 32'h1401, 2500);
         check_dot_product("multi-chunk (2048 bytes)", 32'h0400, 32'h1800, 2048);
 
@@ -450,6 +450,24 @@ module npu_burst_dot_product_tb;
         check_dot_product("backpressure (unaligned tail)", 32'h1401, 32'h1C03, 303);
         check_dot_product("backpressure (multi-chunk)", 32'h0103, 32'h1401, 2500);
         check_dot_product("backpressure (burst length 1)", 32'h0102, 32'h0201, 2);
+        // The streaming master no longer needs natural RREADY bubbles. Inject
+        // stalls at its handshake wire to retain the slave-hold and no-consume
+        // coverage, once in each operand, without slowing the production RTL.
+        fork
+            check_dot_product("injected receiver stalls", 32'h0103, 32'h2401, 64);
+            begin
+                @(negedge clk);
+                while (!(M_AXI_RVALID && !dut.u_burst_dot_product.is_filter)) @(negedge clk);
+                force dut.u_burst_dot_product.m_axi_rready = 1'b0;
+                repeat (3) @(negedge clk);
+                release dut.u_burst_dot_product.m_axi_rready;
+                @(negedge clk);
+                while (!(M_AXI_RVALID && dut.u_burst_dot_product.is_filter)) @(negedge clk);
+                force dut.u_burst_dot_product.m_axi_rready = 1'b0;
+                repeat (3) @(negedge clk);
+                release dut.u_burst_dot_product.m_axi_rready;
+            end
+        join
         ar_stall_percent = 0;
         r_gap_percent = 0;
         if (ar_stall_cycles == stall_before) fail("no ARREADY stall cycles were exercised");

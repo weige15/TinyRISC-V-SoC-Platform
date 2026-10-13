@@ -1,0 +1,2 @@
+FATAL: /tmp/lab2-mutations-ag6jrobl/tb.sv:108: [FAIL] t=295000 AR #0 got 60000400/ARLEN 127, expected 60000400/ARLEN 255
+       Time: 295000  Scope: npu_lab2_tb.check

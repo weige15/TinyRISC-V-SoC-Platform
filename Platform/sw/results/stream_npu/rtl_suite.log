@@ -1,0 +1,8 @@
+RESULT: PASS=6528781 FAIL=0
+RESULT: PASS=6675529 FAIL=0
+RESULT: PASS=6647872 FAIL=0
+RESULT: PASS=6487589 FAIL=0
+[PASS] All 366 burst dot product checks
+[PASS] All aligned/misaligned AXI read reconstruction checks
+[PASS] All aligned/misaligned AXI write byte-placement and handshake checks
+PASS: logs and source hashes in /home/kuotzuwei15/NNchip/scratch/stream_npu/final_sim

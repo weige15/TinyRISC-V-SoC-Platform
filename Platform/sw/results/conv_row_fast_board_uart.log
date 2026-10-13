@@ -1,0 +1,289 @@
+SYNCSYNC!@#[2J[H
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> l[2J[H
+Running Lab menu
+[2J[H
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> t[2J[H
+Running Lab2 set tests
+start lab2 set tests
+testcase 0
+N = 4
+input_offset = 8
+buffer1: 0 1 2 3
+buffer2: 0 1 2 3
+ ref ans = 62
+your ans = 62
+AC
+================
+testcase 1
+N = 8
+input_offset = 11
+buffer1: 121 18 -82 -102 -19 14 -41 64
+buffer2: -96 -118 98 39 -67 -19 -47 -4
+ ref ans = -25430
+your ans = -25430
+AC
+================
+testcase 2
+N = 24
+input_offset = -45
+buffer1: -72 -118 -22 26 80 103 -83 -11 47 116 49 -17 43 -56 -27 -31 106 2 62 54 55 -100 112 18
+buffer2: 123 39 25 124 45 -13 -86 -47 26 125 34 80 9 -72 -114 76 -124 85 25 -58 -32 -58 -124 53
+ ref ans = -9494
+your ans = -9494
+AC
+================
+Pass 3/3
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> r[2J[H
+Running Lab2 random tests
+start lab2 random test
+Pass 100/100
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> c[2J[H
+Running Convolution golden tests
+[PASS] Testcase1, Output Correct, Cycles=47844
+[PASS] Testcase2, Output Correct, Cycles=346096
+[PASS] Testcase3, Output Correct, Cycles=1349478
+Basic Conv Test: (    1743418) Cycles total
+---
+
+Lab 2
+=====
+ t: Lab2 set tests
+ r: Lab2 random tests
+ c: Convolution golden tests
+ x: eXit to previous menu
+lab2> x[2J[H---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> t[2J[H
+Running TFLM inference, verification, and cycles
+
+=== TFLM Functional Verification ===
+Model: ds_cnn_stream_fe.tflite (589000 bytes)
+Convolution path: accelerated NPU burst dot product (CONV_2D), channel-blocked int8 kernel (DEPTHWISE_CONV_2D)
+Tensor arena: 2000000 bytes
+Profile: ds_cnn_stream_fe
+Input profile: board audio fixtures
+Output profile: golden output and argmax class, tolerance=0
+Samples: 5
+AllocateTensors: kTfLiteOk
+
+--- Sample 1/5 ---
+Input: label0, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0x418d80ea
+1        : 0xc099a1e8
+2        : 0xc0c20fe2
+3        : 0xc0815fec
+4        : 0xc0ca25e1
+5        : 0xc10d80ea
+6        : 0xc0015fec
+7        : 0xc0d23be0
+8        : 0xc0815fec
+9        : 0xc0a9cde6
+10       : 0xc125c2e6
+11       : 0xc099a1e8
+Idx 0: Actual=0x418d80ea, Golden=0x418d80ea [PASS]
+Idx 1: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Idx 2: Actual=0xc0c20fe2, Golden=0xc0c20fe2 [PASS]
+Idx 3: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Idx 4: Actual=0xc0ca25e1, Golden=0xc0ca25e1 [PASS]
+Idx 5: Actual=0xc10d80ea, Golden=0xc10d80ea [PASS]
+Idx 6: Actual=0xc0015fec, Golden=0xc0015fec [PASS]
+Idx 7: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 8: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Idx 9: Actual=0xc0a9cde6, Golden=0xc0a9cde6 [PASS]
+Idx 10: Actual=0xc125c2e6, Golden=0xc125c2e6 [PASS]
+Idx 11: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Prediction: 0, expected: 0 [PASS]
+[Status] label0: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1593070060
+Time (50000000 Hz): 31861 ms
+
+--- Sample 2/5 ---
+Input: label1, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1c41562
+1        : 0x4129cde6
+2        : 0xc12dd8e5
+3        : 0xc0da51de
+4        : 0xbe815fec
+5        : 0xc0f293da
+6        : 0x3f015fec
+7        : 0xc0118bea
+8        : 0xc08975eb
+9        : 0xc0d23be0
+10       : 0xc0da51de
+11       : 0xc1056aeb
+Idx 0: Actual=0xc1c41562, Golden=0xc1c41562 [PASS]
+Idx 1: Actual=0x4129cde6, Golden=0x4129cde6 [PASS]
+Idx 2: Actual=0xc12dd8e5, Golden=0xc12dd8e5 [PASS]
+Idx 3: Actual=0xc0da51de, Golden=0xc0da51de [PASS]
+Idx 4: Actual=0xbe815fec, Golden=0xbe815fec [PASS]
+Idx 5: Actual=0xc0f293da, Golden=0xc0f293da [PASS]
+Idx 6: Actual=0x3f015fec, Golden=0x3f015fec [PASS]
+Idx 7: Actual=0xc0118bea, Golden=0xc0118bea [PASS]
+Idx 8: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 9: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 10: Actual=0xc0da51de, Golden=0xc0da51de [PASS]
+Idx 11: Actual=0xc1056aeb, Golden=0xc1056aeb [PASS]
+Prediction: 1, expected: 1 [PASS]
+[Status] label1: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1706195804
+Time (50000000 Hz): 34123 ms
+
+--- Sample 3/5 ---
+Input: label6, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1bbff63
+1        : 0xc099a1e8
+2        : 0xc07293da
+3        : 0xc0420fe2
+4        : 0xc06267dd
+5        : 0xc10975eb
+6        : 0x413e04e3
+7        : 0xbfa1b7e7
+8        : 0xc0faa9d9
+9        : 0xc08975eb
+10       : 0xbfa1b7e7
+11       : 0xc0815fec
+Idx 0: Actual=0xc1bbff63, Golden=0xc1bbff63 [PASS]
+Idx 1: Actual=0xc099a1e8, Golden=0xc099a1e8 [PASS]
+Idx 2: Actual=0xc07293da, Golden=0xc07293da [PASS]
+Idx 3: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 4: Actual=0xc06267dd, Golden=0xc06267dd [PASS]
+Idx 5: Actual=0xc10975eb, Golden=0xc10975eb [PASS]
+Idx 6: Actual=0x413e04e3, Golden=0x413e04e3 [PASS]
+Idx 7: Actual=0xbfa1b7e7, Golden=0xbfa1b7e7 [PASS]
+Idx 8: Actual=0xc0faa9d9, Golden=0xc0faa9d9 [PASS]
+Idx 9: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 10: Actual=0xbfa1b7e7, Golden=0xbfa1b7e7 [PASS]
+Idx 11: Actual=0xc0815fec, Golden=0xc0815fec [PASS]
+Prediction: 6, expected: 6 [PASS]
+[Status] label6: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1709349503
+Time (50000000 Hz): 34186 ms
+
+--- Sample 4/5 ---
+Input: label8, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc139f9e3
+1        : 0xbf815fec
+2        : 0xc0d23be0
+3        : 0x00000000
+4        : 0xc0420fe2
+5        : 0x3f015fec
+6        : 0xc0c20fe2
+7        : 0xc0420fe2
+8        : 0x40118bea
+9        : 0xc0015fec
+10       : 0xc08975eb
+11       : 0x3e815fec
+Idx 0: Actual=0xc139f9e3, Golden=0xc139f9e3 [PASS]
+Idx 1: Actual=0xbf815fec, Golden=0xbf815fec [PASS]
+Idx 2: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 3: Actual=0x00000000, Golden=0x00000000 [PASS]
+Idx 4: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 5: Actual=0x3f015fec, Golden=0x3f015fec [PASS]
+Idx 6: Actual=0xc0c20fe2, Golden=0xc0c20fe2 [PASS]
+Idx 7: Actual=0xc0420fe2, Golden=0xc0420fe2 [PASS]
+Idx 8: Actual=0x40118bea, Golden=0x40118bea [PASS]
+Idx 9: Actual=0xc0015fec, Golden=0xc0015fec [PASS]
+Idx 10: Actual=0xc08975eb, Golden=0xc08975eb [PASS]
+Idx 11: Actual=0x3e815fec, Golden=0x3e815fec [PASS]
+Prediction: 8, expected: 8 [PASS]
+[Status] label8: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1632215665
+Time (50000000 Hz): 32644 ms
+
+--- Sample 5/5 ---
+Input: label11, elements=16000, bytes=64000, type=1
+Running inference...
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data:
+0        : 0xc1add8e5
+1        : 0xbfe267dd
+2        : 0xc0faa9d9
+3        : 0xbf015fec
+4        : 0xc0b1e3e4
+5        : 0xc031e3e4
+6        : 0xc119a1e8
+7        : 0xc0d23be0
+8        : 0xc0d23be0
+9        : 0xc0b1e3e4
+10       : 0xc0523be0
+11       : 0x4139f9e3
+Idx 0: Actual=0xc1add8e5, Golden=0xc1add8e5 [PASS]
+Idx 1: Actual=0xbfe267dd, Golden=0xbfe267dd [PASS]
+Idx 2: Actual=0xc0faa9d9, Golden=0xc0faa9d9 [PASS]
+Idx 3: Actual=0xbf015fec, Golden=0xbf015fec [PASS]
+Idx 4: Actual=0xc0b1e3e4, Golden=0xc0b1e3e4 [PASS]
+Idx 5: Actual=0xc031e3e4, Golden=0xc031e3e4 [PASS]
+Idx 6: Actual=0xc119a1e8, Golden=0xc119a1e8 [PASS]
+Idx 7: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 8: Actual=0xc0d23be0, Golden=0xc0d23be0 [PASS]
+Idx 9: Actual=0xc0b1e3e4, Golden=0xc0b1e3e4 [PASS]
+Idx 10: Actual=0xc0523be0, Golden=0xc0523be0 [PASS]
+Idx 11: Actual=0x4139f9e3, Golden=0x4139f9e3 [PASS]
+Prediction: 11, expected: 11 [PASS]
+[Status] label11: ALL 12 GOLDEN OUTPUTS PASS.
+Cycles: 1686080456
+Time (50000000 Hz): 33721 ms
+
+Total for 5 samples:
+Cycles: 8326911488
+Time (50000000 Hz): 166538 ms
+---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> 

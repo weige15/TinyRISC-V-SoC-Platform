@@ -1,0 +1,2 @@
+53e252fa71279178feb44c01dffa9459e029a9805923f2daa34aeecb8771e6b9  Platform/build/out.bit
+946f27f2a535d70db426980d4ff2cf0514a35f9c16aeb5030d46198aac07e79b  Platform/build/sw/main.bin

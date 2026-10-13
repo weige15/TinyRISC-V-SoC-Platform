@@ -1,0 +1,8 @@
+no-enable: FAIL=1156 detected
+ignore-length: FAIL=777 detected
+ignore-address: FAIL=604 detected
+keep-after-error: FAIL=244 detected
+arm-keeps-copy: FAIL=81 detected
+reuse-wrapped-vector: FAIL=104 detected
+never-reuse: FAIL=4360 detected
+All reuse mutations detected.

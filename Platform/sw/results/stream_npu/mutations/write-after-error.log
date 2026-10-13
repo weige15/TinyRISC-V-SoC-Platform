@@ -1,0 +1,2 @@
+FATAL: /tmp/lab2-mutations-ag6jrobl/tb.sv:108: [FAIL] t=8995000 local storage/MAC written after an error
+       Time: 8995000  Scope: npu_lab2_tb.check

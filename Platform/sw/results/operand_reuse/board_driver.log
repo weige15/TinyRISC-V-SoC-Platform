@@ -1,0 +1,4 @@
+>> [INFO] Vivado background engine not found. Initializing...
+>> [INFO] Vivado background engine is ready! Future uploads will be instant.
+UART listening; waiting for bootloader SYNC/menu (CPU RESET if needed).
+Board run complete
