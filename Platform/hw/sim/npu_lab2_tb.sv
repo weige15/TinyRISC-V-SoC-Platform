@@ -33,7 +33,6 @@
 // NPU_done monitor: exactly one pulse per command, never while idle.
 //////////////////////////////////////////////////////////////////////////////////
 module npu_lab2_tb;
-    localparam integer TB_RAM_WORDS = 2048; // operand ring RAM words in the DUT
 
     // ------------------------------------------------------------------
     // Clock / reset / DUT
@@ -869,11 +868,10 @@ module npu_lab2_tb;
                 end
             end
             // Same p1 and N, but the earlier vector wrapped / overflowed the
-            // RAM (more than TB_RAM_WORDS words): never reused.
+            // RAM (more than 1024 words): never reused.
             for (t = 0; t < 8; t = t + 1) begin
-                // t < 4: N = 4*TB_RAM_WORDS-2+t at byte offset 3-t covers
-                // TB_RAM_WORDS+1 words.
-                nn = (t < 4) ? 4*TB_RAM_WORDS - 2 + t : 16385;
+                // t < 4: N = 4094 + t at byte offset 3 - t covers 1025 words.
+                nn = (t < 4) ? 4094 + t : 16385;
                 q1 = 32'h6000_0000 + (t << 16) + (3 - (t % 4));
                 reuse_call(q1, q1 + 32'h8000, 1, nn, 0, 0, 0, INJ_NONE, 0, 0, 0, "armed-oversize");
                 reuse_call(q1, q1 + 32'h8000, 2, nn, 1, 0, 0, INJ_NONE, 0, 0, 0, "armed-oversize-again");

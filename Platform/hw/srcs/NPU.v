@@ -168,7 +168,7 @@ module NPU (
     wire        burst_dot_product_arvalid;
     wire        burst_dot_product_rready;
 
-    npu_burst_dot_product #(.CHUNK_WORDS(512)) u_burst_dot_product (
+    npu_burst_dot_product u_burst_dot_product (
         .clk            (clk),
         .rst_n          (rst_n),
         .start          (burst_dot_product_start),
