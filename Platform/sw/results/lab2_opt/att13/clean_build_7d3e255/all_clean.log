@@ -1,0 +1,6 @@
+make: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+>> [SERVER] Cleaning up background Vivado processes...
+>> Cleaning everything...
+rm -rf /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build
+rm -rf ./hw/CUSTOM_SoC.gen
+make: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'

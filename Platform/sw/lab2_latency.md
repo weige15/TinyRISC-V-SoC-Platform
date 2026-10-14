@@ -630,9 +630,14 @@ The final configuration is row 13, preserving the real C-MAC entry, full
 9-bit prepared offsets, startup-zeroed one-shot state, immutable-interval
 cache correctness, and unaligned-pointer support. The average below is its
 normal-firmware **reference capture**, not a relabelled fresh hardware build.
-Resource/timing figures describe the identical implemented RTL used for that
-capture. Committed clean-build verification must independently meet the GATE
-and 1% bound; its UART/reports are additional acceptance evidence.
+Final resource/timing figures below are from the actual committed clean
+`all_clean` → `prog` build of `7d3e255`, not the older reused reports. Its fresh
+ELF and BIN are byte-identical to row 13. That build/program succeeds; an initial
+UART controller stopped before testing because its host PATH lacked the
+RISC-V `nm` utility, not because of a firmware failure. The harness environment
+fix is verified independently. See `att13/clean_build_7d3e255/` for exact scope.
+The resulting documentation revision still requires its own committed
+clean-build UART/GATE acceptance and the ordered Goals 8–9.
 
 | Metric | Value |
 |---|---:|
@@ -641,6 +646,6 @@ and 1% bound; its UART/reports are additional acceptance evidence.
 | Baseline / final speedup | **3.121405352×** |
 | Reduction from baseline | **67.963148%** |
 | Difference from historical best row 8 | **+0.754997%** |
-| NPU LUT / FF / DSP48E1 | **8,323 / 1,784 / 4** |
+| Final NPU LUT / FF / DSP48E1 | **8,320 / 1,784 / 4** |
 | NPU RAMB36E1 / RAMB18E1 | **32 / 0** |
-| Overall setup WNS / TNS | **+0.194 ns / 0 ns** |
+| Final overall setup WNS / TNS | **+0.168 ns / 0 ns** |

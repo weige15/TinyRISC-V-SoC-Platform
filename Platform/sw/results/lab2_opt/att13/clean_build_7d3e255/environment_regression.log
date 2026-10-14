@@ -1,0 +1,7 @@
+test_missing_image_is_still_rejected (test_capture_environment.CaptureEnvironmentChecks.test_missing_image_is_still_rejected) ... ok
+test_real_elf_with_toolchain_free_parent_path (test_capture_environment.CaptureEnvironmentChecks.test_real_elf_with_toolchain_free_parent_path) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.109s
+
+OK

@@ -1,0 +1,15 @@
+{
+  "resources": {
+    "LUT": 8320,
+    "FF": 1784,
+    "DSP": 4,
+    "RAMB36": 32,
+    "RAMB18": 0,
+    "BRAM36_equivalent": 32.0
+  },
+  "timing": {
+    "WNS_ns": 0.168,
+    "TNS_ns": 0.0,
+    "setup_failing_endpoints": 0
+  }
+}

@@ -1,0 +1,10 @@
+CLEAN_COMMANDS_AND_INPUT_AUDIT_PASS 7d3e255ff169dd9daa0d5e66a8b7870477a0ed4f
+FRESH_REPORTS {'LUT': 8320, 'FF': 1784, 'DSP': 4, 'RAMB36': 32, 'RAMB18': 0, 'BRAM36_equivalent': Fraction(32, 1)} {'WNS_ns': Fraction(21, 125), 'TNS_ns': Fraction(0, 1), 'setup_failing_endpoints': 0}
+Starting stock make-run capture; CPU RESET is never automatic.
+Traceback (most recent call last):
+  File "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/capture_after_clean_build.py", line 71, in <module>
+    main()
+  File "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/capture_after_clean_build.py", line 64, in main
+    assert result.returncode == 0, 'Capture failed; inspect controller.log'
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Capture failed; inspect controller.log

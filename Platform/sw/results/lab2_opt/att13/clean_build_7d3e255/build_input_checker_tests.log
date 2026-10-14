@@ -1,0 +1,11 @@
+test_additional_field_rejected (test_build_inputs.GeneratedXciChecks.test_additional_field_rejected) ... ok
+test_exact_four_permission_transformations (test_build_inputs.GeneratedXciChecks.test_exact_four_permission_transformations) ... ok
+test_hardware_parameter_change_rejected (test_build_inputs.GeneratedXciChecks.test_hardware_parameter_change_rejected) ... ok
+test_partial_permission_change_rejected (test_build_inputs.GeneratedXciChecks.test_partial_permission_change_rejected) ... ok
+test_tlm_change_only (test_build_inputs.GeneratedXciChecks.test_tlm_change_only) ... ok
+test_wrong_path_rejected (test_build_inputs.GeneratedXciChecks.test_wrong_path_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK

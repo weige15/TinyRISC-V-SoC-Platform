@@ -1,0 +1,31 @@
+
+****** Vivado v2024.1 (64-bit)
+  **** SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+  **** IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+  **** SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+  **** Start of session at: Wed Oct 14 16:40:03 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source /home/kuotzuwei15/NNchip/scratch/one_boot_acceptance_fixed/preflight.tcl -notrace
+open_hw_manager: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1424.473 ; gain = 0.027 ; free physical = 2155 ; free virtual = 48076
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2024.1.0
+  ****** Build date   : Apr 27 2024-09:40:49
+    **** Build number : 2024.1.1714182049
+      ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+      ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+
+
+PREFLIGHT_TARGETS=localhost:3121/xilinx_tcf/Digilent/210319BE7776A
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210319BE7776A
+PREFLIGHT_DEVICES=xc7a100t_0
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Digilent/210319BE7776A
+PREFLIGHT_PASS
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 14 16:40:13 2026...

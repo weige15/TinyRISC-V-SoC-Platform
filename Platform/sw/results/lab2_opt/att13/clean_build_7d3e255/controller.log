@@ -1,0 +1,11 @@
+START {'command': 'source /home/kuotzuwei15/NNchip/env.sh >/dev/null && PYTHONUNBUFFERED=1 make -C Platform run MODEL_FILE=ds_cnn_stream_fe.tflite MODEL_PROFILE=ds_cnn_stream_fe APP_DEFINES=', 'pid': 819921, 'port': '/dev/ttyUSB1', 'bitstream_sha256': 'f2d88537e473789d318f401523145ef372dcfd651bfc5bc91e0aa4442565ff2d', 'image_sha256': '47c8f3343157e5562968ea6b198a77195c97eb0d22ab8fd3e8564b9d70a1e145', 'elf_sha256': '6ff54ccdea91cac8d25f1b52c19dd1eb94716148b59c85d113b0b49b103de60a'}
+IMAGE_VERIFIED {'actual_bin_sha256': '47c8f3343157e5562968ea6b198a77195c97eb0d22ab8fd3e8564b9d70a1e145', 'actual_elf_sha256': '6ff54ccdea91cac8d25f1b52c19dd1eb94716148b59c85d113b0b49b103de60a'}
+BLOCKED {'reason': 'actual ELF command state is not startup initialized'}
+Traceback (most recent call last):
+  File "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/run_normal_capture.py", line 173, in <module>
+    main()
+  File "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/run_normal_capture.py", line 129, in main
+    require(check.returncode == 0, "actual ELF command state is not startup initialized")
+  File "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/run_normal_capture.py", line 34, in require
+    raise RuntimeError(message)
+RuntimeError: actual ELF command state is not startup initialized

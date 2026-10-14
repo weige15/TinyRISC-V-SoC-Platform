@@ -1,0 +1,33 @@
+{
+  "byte_identical_count": 895,
+  "input_count": 900,
+  "exact_vivado_generated_xci_changes": [
+    {
+      "path": "Platform/hw/srcs/sources_1/bd/MMIO/ip/MMIO_CPU_0_0/MMIO_CPU_0_0.xci",
+      "input_sha256": "46f879a13849d20a921d9054802ca8422ab8c52f8c0427b120d9742fcdd83cbc",
+      "generated_sha256": "dd809405f9188d4a35bbf1611a69b833e25669e9d5c14afead7662a1ba73a37f"
+    },
+    {
+      "path": "Platform/hw/srcs/sources_1/bd/MMIO/ip/MMIO_NPU_0_0/MMIO_NPU_0_0.xci",
+      "input_sha256": "21d60420b01168401f55c351f693ebe16d44fb807adedbff58961c0429701411",
+      "generated_sha256": "6daa9128ea001902be02508b1efa08561041cc2841f064b34af175bf08debe6c"
+    },
+    {
+      "path": "Platform/hw/srcs/sources_1/bd/MMIO/ip/MMIO_dcache_axiBus_bridge_0_1/MMIO_dcache_axiBus_bridge_0_1.xci",
+      "input_sha256": "2dada8f5e1818055002717615d9518a534629fdca471ec25e8308df07d1c3116",
+      "generated_sha256": "d5750a1eb6cf300247ed5c57945a613b0647d26f91284a65f03141f014b8c2b7"
+    },
+    {
+      "path": "Platform/hw/srcs/sources_1/bd/MMIO/ip/MMIO_icache_axiBus_bridge_0_0/MMIO_icache_axiBus_bridge_0_0.xci",
+      "input_sha256": "c51499bbe1ebaa52f1394ea4be955e78574516fa4a62d32e3c8061111f5a8e2c",
+      "generated_sha256": "0996ca67ec5cb8c8cb8876a9486cca7759fc8e1b94d79763efa9f74c18dab53a"
+    },
+    {
+      "path": "Platform/hw/srcs/sources_1/bd/MMIO/ip/MMIO_smartconnect_0_2/MMIO_smartconnect_0_2.xci",
+      "input_sha256": "11ef8c1dffc7f3bef6a6e1f2ecfb3d1c668cd7adcf62a9131e699f195faa513c",
+      "generated_sha256": "0a10db74533114d6118ed5c93e7ba81524d7f16fad26ba077e80046ace7b2dfd"
+    }
+  ],
+  "unexpected_changes": [],
+  "scope": "Input identity plus exact observed generated-metadata transformations; not a hardware/UART/GATE acceptance."
+}

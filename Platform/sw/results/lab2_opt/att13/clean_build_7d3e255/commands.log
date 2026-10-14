@@ -1,0 +1,2 @@
+make -C Platform all_clean
+make -C Platform prog
