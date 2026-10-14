@@ -33,7 +33,7 @@ module npu_burst_dot_product #(
 ) (
     input clk, input rst_n, input start,
     input [31:0] input_address, filter_address, byte_length,
-    input [7:0] input_offset,
+    input [8:0] input_offset,
     input reuse_enable, input reuse_clear, input fcache_enable,
     output reg done,
     output reg [31:0] result,
@@ -60,7 +60,7 @@ module npu_burst_dot_product #(
     end
     // synthesis translate_on
     reg active;
-    reg [7:0] offset_r;
+    reg [8:0] offset_r;
     reg [1:0] input_low, filter_low;
     reg [31:0] length_r;
     reg [31:0] input_next, filter_next;
@@ -257,12 +257,15 @@ module npu_burst_dot_product #(
                                  (filter_position + lane < filter_limit);
     end endgenerate
     function [16:0] product;
-        input [7:0] a, b, off;
+        input [7:0] a, b;
+        input [8:0] off;
         input valid;
-        reg signed [8:0] x;
+        // Full signed-9 offset plus signed-8 input needs 10 sum bits.
+        // Product range [-49152,49152] still fits signed 17 bits.
+        reg signed [9:0] x;
         reg signed [16:0] p;
         begin
-            x = $signed({a[7],a}) + $signed({off[7],off});
+            x = $signed({{2{a[7]}},a}) + $signed({off[8],off});
             p = x * $signed(b);
             product = valid ? p : 17'd0;
         end

@@ -1,0 +1,36 @@
+
+/home/kuotzuwei15/NNchip/scratch/lab2_finalization/fused_prepare/main.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+60003070 <hw_simd_mac>:
+60003070:	0031a817          	auipc	a6,0x31a
+60003074:	dd082803          	lw	a6,-560(a6) # 6031ce40 <_ZN12_GLOBAL__N_114g_conv_commandE>
+60003078:	0031a797          	auipc	a5,0x31a
+6000307c:	dc07a423          	sw	zero,-568(a5) # 6031ce40 <_ZN12_GLOBAL__N_114g_conv_commandE>
+60003080:	04068e63          	beqz	a3,600030dc <hw_simd_mac+0x6c>
+60003084:	04084663          	bltz	a6,600030d0 <hw_simd_mac+0x60>
+60003088:	0330000f          	fence	rw,rw
+6000308c:	00d50733          	add	a4,a0,a3
+60003090:	fe057793          	andi	a5,a0,-32
+60003094:	00e7f863          	bgeu	a5,a4,600030a4 <hw_simd_mac+0x34>
+60003098:	0017a00f          	0x17a00f
+6000309c:	02078793          	addi	a5,a5,32
+600030a0:	fee7ece3          	bltu	a5,a4,60003098 <hw_simd_mac+0x28>
+600030a4:	00d58733          	add	a4,a1,a3
+600030a8:	fe05f793          	andi	a5,a1,-32
+600030ac:	00e7f863          	bgeu	a5,a4,600030bc <hw_simd_mac+0x4c>
+600030b0:	0017a00f          	0x17a00f
+600030b4:	02078793          	addi	a5,a5,32
+600030b8:	fee7ece3          	bltu	a5,a4,600030b0 <hw_simd_mac+0x40>
+600030bc:	0330000f          	fence	rw,rw
+600030c0:	00081863          	bnez	a6,600030d0 <hw_simd_mac+0x60>
+600030c4:	00c6c68b          	0xc6c68b
+600030c8:	02b5450b          	0x2b5450b
+600030cc:	00008067          	ret
+600030d0:	0b06c68b          	0xb06c68b
+600030d4:	02b5450b          	0x2b5450b
+600030d8:	00008067          	ret
+600030dc:	00000513          	li	a0,0
+600030e0:	00008067          	ret

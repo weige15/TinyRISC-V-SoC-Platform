@@ -10,7 +10,12 @@
 //   funct3 = 100, funct7 = 2 : STATUS  rd = {bit2 bad RRESP, bit1 missing RLAST,
 //                                           bit0 early RLAST} of the last COMPUTE
 //   funct3 = 100, funct7 = 3 : REUSE   arm (rs1[0]=1) / disarm ptr1 reuse
+//   funct3 = 100, funct7 = 5 : SET9    N = rs1, signed offset = rs2[8:0]
 //
+// AXI provenance: npu_axi_trace_scoreboard.svh records public AR/R evidence
+// and checks every active byte at multiplier input and MAC retirement.
+// +axi_trace=PATH persists every accepted R beat and its MAC byte links;
+// +reuse_safety_only runs explicit cases (a)-(d) with both reuse modes.
 // Reuse tests (section 7): unarmed calls with the same ptr1/N after the memory
 // under ptr1 changed must refetch ptr1 (exact AR list) and see the new bytes;
 // armed calls with an unchanged ptr1/N must issue ONLY ptr2 bursts and still
@@ -31,6 +36,9 @@
 //   * Error injection: early RLAST, beat B without RLAST (+ extra beats),
 //     non-OKAY RRESP (SLVERR / DECERR).
 // NPU_done monitor: exactly one pulse per command, never while idle.
+// Directed TA error matrix runs first (or alone with +errors_only): both
+// operands x eight response/last cases x B={16,256} x accepted/held prefetch.
+// See lab2_error_coverage.md for the handshake and physical-storage checks.
 //////////////////////////////////////////////////////////////////////////////////
 module npu_lab2_tb;
 
@@ -113,6 +121,7 @@ module npu_lab2_tb;
         end else begin
             fail_count = fail_count + 1;
             if (fail_count <= 40) $display("[FAIL] t=%0t %s", $time, what);
+            if ($test$plusargs("fail_fast")) $fatal(1, "assertion failed: %s", what);
         end
     endtask
 
@@ -144,6 +153,28 @@ module npu_lab2_tb;
     integer    split_segments = 0;     // segments fetched with > 1 burst
     integer    multi_beat_bursts = 0;  // AR handshakes with ARLEN > 0
     integer    boundary_bursts = 0;    // bursts ending exactly at 4 KiB
+
+    // Explicit requirements, independent of the random/latency/reuse tests.
+    // A bit is credited only after an error-free, reference-matching COMPUTE.
+    bit [79:0] length_coverage [0:1024]; // 16 alignment pairs x 5 offsets
+    bit [39:0] top_coverage [0:1024];    // either operand at window end x 4 x 5
+    integer required_cases = 0, top_cases = 0, wrap_cases = 0;
+
+    function automatic bit required_length(input integer n);
+        required_length = (n >= 1 && n <= 300) || n == 511 || n == 512 ||
+                          n == 513 || n == 1024;
+    endfunction
+
+    function automatic integer offset_index(input integer off);
+        case (off)
+            -128: offset_index = 0;
+            -1:   offset_index = 1;
+            0:    offset_index = 2;
+            1:    offset_index = 3;
+            127:  offset_index = 4;
+            default: offset_index = -1;
+        endcase
+    endfunction
 
     // Independent reference cursors. Prefer a full filter burst as soon as
     // its input span has been requested. Each operand's bursts are maximal;
@@ -230,9 +261,224 @@ module npu_lab2_tb;
     integer total_bursts = 0;
     integer total_beats  = 0;
 
+    // ------------------------------------------------------------------
+    // Directed error contract monitor. Its FIFO/beat counts come ONLY from
+    // public AR/R handshakes, not DUT status, DUT counters or slave r_beat.
+    // B and beat positions in logs are one-based; injection params are zero-based.
+    // ------------------------------------------------------------------
+    bit error_matrix = 0, error_watch = 0, error_recovery = 0;
+    integer error_profile = 0; // 0: next AR accepted, 1: next AR held at error
+    string ew_tag;
+    integer ew_mode, ew_target, ew_param, ew_ars, ew_closed, ew_done_samples;
+    integer ew_b [0:MAX_EXP-1], ew_taken [0:MAX_EXP-1];
+    integer ew_random_stalls [0:MAX_EXP-1];
+    integer ew_error_cycle, ew_error_burst, ew_error_beat, ew_target_last_cycle;
+    integer ew_ars_at_error, ew_other_at_error, ew_last_cycle, ew_tail_beats;
+    integer ew_tail_storage_cycles, ew_input_writes, ew_filter_writes;
+    bit ew_started, ew_failed, ew_held, ew_held_at_error;
+    reg [31:0] ew_held_addr;
+    reg [7:0] ew_held_len;
+    bit [7:0] error_coverage [0:7]; // B x ptr x AR profile; all eight cases
+    integer error_cases = 0, error_recoveries = 0;
+
+    task automatic watch_start(input string tag, input integer mode, target, param);
+        integer j;
+        begin
+            ew_tag = tag; ew_mode = mode; ew_target = target; ew_param = param;
+            ew_ars = 0; ew_closed = 0; ew_done_samples = 0;
+            ew_started = 0; ew_failed = 0; ew_held = 0; ew_held_at_error = 0;
+            ew_error_cycle = -1; ew_target_last_cycle = -1; ew_last_cycle = -1;
+            ew_error_burst = -1; ew_error_beat = -1;
+            ew_ars_at_error = 0; ew_other_at_error = 0; ew_tail_beats = 0;
+            ew_tail_storage_cycles = 0; ew_input_writes = 0; ew_filter_writes = 0;
+            for (j = 0; j < MAX_EXP; j = j+1) begin
+                ew_b[j] = 0; ew_taken[j] = 0; ew_random_stalls[j] = 0;
+            end
+            error_watch = 1;
+        end
+    endtask
+
+    // Called before the slave changes any of its own queue/beat variables.
+    task automatic watch_tick;
+        integer beat, last_at;
+        bit bad;
+        begin
+            // watch_start follows SET's done with no command gap. Do not
+            // mistake that prior pulse for COMPUTE's before its start edge.
+            if (npu_start) ew_started = 1;
+            if (ew_ars > ew_closed)
+                check(rready === 1'b1, {ew_tag, ": RREADY unusable before RLAST"});
+            // An old held offer is irrevocable. Nothing else may even be
+            // OFFERED after detection, including an AR which never handshakes.
+            if (ew_failed) begin
+                if (ew_held)
+                    check(arvalid === 1'b1 && araddr === ew_held_addr && arlen === ew_held_len,
+                          {ew_tag, ": pre-error held AR changed/cancelled"});
+                else
+                    check(arvalid === 1'b0, $sformatf("%s: new AR offer after error ARREADY=%b", ew_tag, arready));
+            end
+            if (arvalid && arready) begin
+                check(ew_ars < MAX_EXP, {ew_tag, ": monitor FIFO overflow"});
+                ew_b[ew_ars] = int'(arlen) + 1;
+                ew_ars = ew_ars + 1;
+                if (ew_failed) ew_held = 0;
+            end
+            if (rvalid) check(rready === 1'b1, {ew_tag, ": offered R beat not accepted"});
+            if (rvalid && rready) begin
+                check(ew_closed < ew_ars, {ew_tag, ": R without accepted AR"});
+                beat = ew_taken[ew_closed];
+                last_at = ew_b[ew_closed]-1;
+                if (ew_closed == ew_target) begin
+                    if (ew_mode == INJ_EARLY_LAST) last_at = ew_param;
+                    if (ew_mode == INJ_MISSING_LAST) last_at = last_at + ew_param;
+                end
+                // Non-vacuity: check the ACTUAL injected handshake, not just
+                // that an injection was configured in the stimulus generator.
+                check(rlast === (beat == last_at), {ew_tag, ": wrong actual RLAST position"});
+                check(rresp === ((ew_closed == ew_target && ew_mode == INJ_BAD_RESP &&
+                                  beat == ew_param) ? inj_resp : 2'b00),
+                      {ew_tag, ": wrong actual RRESP/beat"});
+                bad = (rresp != 0) || (rlast && beat != ew_b[ew_closed]-1) ||
+                      (!rlast && beat == ew_b[ew_closed]-1);
+                if (bad && !ew_failed) begin
+                    ew_failed = 1; ew_error_cycle = cycle_number;
+                    ew_error_burst = ew_closed; ew_error_beat = beat;
+                    ew_ars_at_error = ew_ars;
+                    ew_other_at_error = ew_ars-ew_closed-1;
+                    ew_held = arvalid && !arready;
+                    ew_held_at_error = ew_held;
+                    ew_held_addr = araddr; ew_held_len = arlen;
+                end
+                if (beat >= ew_b[ew_closed]) ew_tail_beats = ew_tail_beats + 1;
+                if (ew_failed || beat >= ew_b[ew_closed]) begin
+                    check(dut.u_burst_dot_product.emit_valid === 1'b0 &&
+                          dut.u_burst_dot_product.in_rep_we === 1'b0 &&
+                          dut.u_burst_dot_product.fc_we === 1'b0,
+                          {ew_tag, ": operand write enable after error/beat B"});
+                end
+                ew_taken[ew_closed] = beat+1;
+                if (rlast) begin
+                    check(ew_taken[ew_closed] == last_at+1,
+                          {ew_tag, ": did not accept every beat through RLAST"});
+                    if (ew_closed == ew_target) ew_target_last_cycle = cycle_number;
+                    ew_closed = ew_closed+1;
+                    ew_last_cycle = cycle_number;
+                end
+            end
+            // Check write enables during RVALID stalls too.
+            if (ew_failed || !rvalid || !rready)
+                check(dut.u_burst_dot_product.emit_valid === 1'b0 &&
+                      dut.u_burst_dot_product.in_rep_we === 1'b0 &&
+                      dut.u_burst_dot_product.fc_we === 1'b0,
+                      {ew_tag, ": storage write during discard/stall"});
+            if (dut.u_burst_dot_product.in_rep_we) ew_input_writes++;
+            if (dut.u_burst_dot_product.fc_we) ew_filter_writes++;
+        end
+    endtask
+
+    // Sample registered done AFTER the rising-edge handshakes/NBAs, so even
+    // a pulse on the cycle of an error (but before actual RLAST) is rejected.
+    always @(posedge clk) begin
+        #0.1; // after NBA, before npu_cmd's #1 return/checks
+        if (rst_n && error_watch && ew_started) begin
+            check(npu_done === 1'b0 || npu_done === 1'b1, {ew_tag, ": unknown done"});
+            if (npu_done === 1'b1) begin
+                ew_done_samples++;
+                check(ew_target_last_cycle >= 0, {ew_tag, ": NPU_done before affected RLAST"});
+                check(ew_closed == ew_ars && !ew_held && arvalid === 1'b0,
+                      {ew_tag, ": NPU_done before other requested bursts drained"});
+                check(ew_done_samples == 1, {ew_tag, ": NPU_done repeated or wider than one cycle"});
+            end
+        end
+    end
+
+    // Physical RAM stability, not just the emit_valid proxy. At every negedge
+    // AFTER beat B without RLAST, snapshot ALL operand locations, then compare
+    // after the next write edge, including the late-RLAST handshake itself.
+    // Both the input RAM, its banked replicas, and the enabled filter cache are
+    // covered. Four-state case equality also detects an X -> data rogue write.
+    function automatic bit tail_pending;
+        tail_pending = error_watch && ew_closed < ew_ars &&
+                       ew_taken[ew_closed] >= ew_b[ew_closed];
+    endfunction
+    reg [31:0] input_snapshot [0:1023];
+    always @(negedge clk) begin : guard_input_ram
+        integer j;
+        if (tail_pending()) begin
+            ew_tail_storage_cycles++;
+            for (j=0; j<1024; j=j+1)
+                input_snapshot[j] = dut.u_burst_dot_product.input_buffer[j];
+            @(posedge clk); #1;
+            for (j=0; j<1024; j=j+1)
+                check(input_snapshot[j] === dut.u_burst_dot_product.input_buffer[j],
+                      "physical input_buffer changed after beat B");
+        end
+    end
+    genvar eb;
+    generate for (eb=0; eb<8; eb=eb+1) begin : guard_operand_banks
+        reg [31:0] replica_snapshot [0:127];
+        reg [31:0] filter_snapshot [0:4095];
+        always @(negedge clk) begin : guard_bank
+            integer j;
+            if (tail_pending()) begin
+                for (j=0; j<128; j=j+1)
+                    replica_snapshot[j] = dut.u_burst_dot_product.banks[eb].in_rep[j];
+                for (j=0; j<4096; j=j+1)
+                    filter_snapshot[j] = dut.u_burst_dot_product.banks[eb].fc_mem[j];
+                @(posedge clk); #1;
+                for (j=0; j<128; j=j+1)
+                    check(replica_snapshot[j] === dut.u_burst_dot_product.banks[eb].in_rep[j],
+                          "physical input replica changed after beat B");
+                for (j=0; j<4096; j=j+1)
+                    check(filter_snapshot[j] === dut.u_burst_dot_product.banks[eb].fc_mem[j],
+                          "physical filter cache changed after beat B");
+            end
+        end
+    end endgenerate
+
+    task automatic watch_finish;
+        integer expected_last, expected_error;
+        begin
+            // No reset, STATUS or next command hides a sticky/second done.
+            // The global monitor continues checking all later idle cycles.
+            repeat (32) begin @(posedge clk); #1; end
+            check(ew_done_samples == 1, {ew_tag, ": not exactly one done pulse"});
+            check(npu_done === 1'b0, {ew_tag, ": done did not stay low"});
+            check(ew_target_last_cycle >= 0 && ew_closed == ew_ars && !ew_held,
+                  {ew_tag, ": incomplete RLAST drain"});
+            check(ew_random_stalls[ew_target] > 0, {ew_tag, ": no random RVALID stalls at target"});
+            expected_last = ew_b[ew_target]-1;
+            if (ew_mode == INJ_EARLY_LAST) expected_last = ew_param;
+            if (ew_mode == INJ_MISSING_LAST) expected_last += ew_param;
+            check(ew_taken[ew_target] == expected_last+1, {ew_tag, ": target accepted-beat total"});
+            if (ew_mode != INJ_NONE) begin
+                expected_error = (ew_mode == INJ_MISSING_LAST) ? ew_b[ew_target]-1 : ew_param;
+                check(ew_failed && ew_error_burst == ew_target && ew_error_beat == expected_error,
+                      {ew_tag, ": error not observed on intended burst/beat"});
+                check(ew_ars == ew_ars_at_error + int'(ew_held_at_error),
+                      {ew_tag, ": wrong number of ARs after error"});
+                if (error_profile == 0)
+                    check(ew_other_at_error > 0, {ew_tag, ": accepted other burst not exercised"});
+                else
+                    check(ew_held_at_error, {ew_tag, ": pre-error held AR not exercised"});
+            end else check(!ew_failed, {ew_tag, ": correct RLAST treated as error"});
+            if (ew_mode == INJ_MISSING_LAST) begin
+                check(ew_tail_beats == ew_param, {ew_tag, ": wrong discarded tail length"});
+                check(ew_tail_storage_cycles >= ew_param, {ew_tag, ": physical RAM guard not exercised"});
+                check(ew_input_writes > 0, {ew_tag, ": input RAM write checks vacuous"});
+                if (ew_target == 1)
+                    check(ew_filter_writes > 0, {ew_tag, ": filter RAM write checks vacuous"});
+            end
+            error_watch = 0;
+        end
+    endtask
+
+    `include "npu_axi_trace_scoreboard.svh"
+
     always @(posedge clk) begin : slave
         reg [32:0] end_addr;
         integer b;
+        bit release_held, gate_target, send_beat;
         if (!rst_n) begin
             arready <= 1'b0;
             rvalid  <= 1'b0;
@@ -240,6 +486,8 @@ module npu_lab2_tb;
             q_head = 0; q_tail = 0; q_count = 0;
             ar_pending = 1'b0;
         end else begin
+            provenance_tick();
+            if (error_watch) watch_tick();
             // ---------------- AR channel ----------------
             if (ar_pending) begin
                 check(arvalid === 1'b1, "ARVALID dropped before ARREADY");
@@ -248,6 +496,17 @@ module npu_lab2_tb;
             end
             if (perf_active && arvalid && exp_filter[exp_index] && first_filter_offer_cycle < 0)
                 first_filter_offer_cycle = cycle_number;
+            // Check offered requests too, not only accepted handshakes.
+            // Widen BEFORE adding, so a wrapped 32-bit end cannot pass.
+            if (arvalid === 1'b1) begin
+                if (error_seen)
+                    check(held_on_error && araddr === held_error_addr && arlen === held_error_len,
+                          "new AR offered after error instead of draining");
+                end_addr = {1'b0, araddr} + 33'd4 * (int'(arlen) + 1);
+                check(araddr >= 32'h6000_0000 && end_addr <= 33'h0_6800_0000,
+                      $sformatf("offered AR outside window: %h len=%0d end=%h",
+                                araddr, arlen, end_addr));
+            end
             if (arvalid === 1'b1 && arready) begin
                 b = arlen + 1;
                 end_addr = {1'b0, araddr} + 33'd4 * b;
@@ -288,7 +547,13 @@ module npu_lab2_tb;
             ar_pending   = (arvalid === 1'b1) && !arready;
             ar_prev_addr = araddr;
             ar_prev_len  = arlen;
-            arready <= (($urandom % 100) < ar_ready_pct);
+            release_held = (ew_error_cycle >= 0 && cycle_number-ew_error_cycle >= 3) ||
+                           (ew_mode == INJ_NONE && ew_target_last_cycle >= 0);
+            if (error_watch && !error_recovery && error_profile == 1 &&
+                exp_index == ew_target+1 && !release_held)
+                arready <= 1'b0;
+            else
+                arready <= (($urandom % 100) < ar_ready_pct);
 
             // ---------------- R channel ----------------
             if (rvalid) check(rready === 1'b1,"master stalled an arriving R beat");
@@ -351,9 +616,23 @@ module npu_lab2_tb;
                 cmd_burst_index = cmd_burst_index + 1;
                 r_act = 1'b1;
             end
+            // Deliberately arrange a second requested burst before the first
+            // target beat, even for SLVERR-first. Profile 1 holds that offer
+            // through detection; profile 0 accepts it before streaming target.
+            gate_target = error_watch && !error_recovery && r_act &&
+                          cmd_burst_index-1 == ew_target && r_beat == 0 &&
+                          ((error_profile == 0) ? (ew_ars < ew_target+2) :
+                           !(arvalid && !arready && exp_index == ew_target+1));
+            send_beat = (($urandom % 100) < r_valid_pct);
+            if (error_watch && r_act && !gate_target && !(rvalid && !rready) && !send_beat)
+                ew_random_stalls[cmd_burst_index-1]++;
+            // Require a genuinely random stall in each monitored burst.
+            // A lucky initial run of 'send' draws waits for the first 'stall'.
+            if (error_watch && r_act && ew_random_stalls[cmd_burst_index-1] == 0)
+                send_beat = 0;
             if (rvalid && rready !== 1'b1) begin
                 // Hold RVALID/RDATA/RLAST/RRESP until RREADY.
-            end else if (r_act && (($urandom % 100) < r_valid_pct)) begin
+            end else if (r_act && !gate_target && send_beat) begin
                 rvalid <= 1'b1;
                 rdata  <= mem_word(r_addr);
                 rlast  <= (r_beat == r_last_at);
@@ -414,8 +693,8 @@ module npu_lab2_tb;
             while (npu_done !== 1'b1) begin
                 @(posedge clk); #1;
                 cycles = cycles + 1;
-                if (cycles > 200000) begin
-                    check(1'b0, "timeout waiting for NPU_done");
+                if (cycles > (error_matrix ? 10000 : 200000)) begin
+                    check(1'b0, $sformatf("timeout waiting for NPU_done (f7=%0d tag=%s)", f7, ew_tag));
                     $display("RESULT: PASS=%0d FAIL=%0d (timeout)", pass_count, fail_count);
                     $fatal(1,"timeout");
                 end
@@ -427,20 +706,40 @@ module npu_lab2_tb;
 
     function automatic integer reference(input [31:0] p1, input [31:0] p2,
                                          input integer off, input integer n);
-        integer i, acc;
-        reg [31:0] x, y;
+        integer i, term;
+        // Form the product in a SIGNED context before adding its 32-bit
+        // pattern to an unsigned wraparound accumulator. Otherwise SV can
+        // propagate unsignedness into the byte extensions (-1 becomes 255).
+        reg [31:0] acc, x, y;
         begin
             acc = 0;
             for (i = 0; i < n; i = i + 1) begin
                 x = p1 + i;
                 y = p2 + i;
-                acc = acc + ($signed(mem[x[15:0]]) + off) * $signed(mem[y[15:0]]);
+                term = ($signed(mem[x[15:0]]) + off) * $signed(mem[y[15:0]]);
+                acc = acc + term;
             end
-            reference = acc;
+            reference = $signed(acc);
+        end
+    endfunction
+
+    function automatic longint signed reference_wide(input [31:0] p1, p2,
+                                                      input integer off, n);
+        integer j;
+        reg [31:0] x, y;
+        begin
+            reference_wide = 0;
+            for (j = 0; j < n; j = j + 1) begin
+                x = p1 + j; y = p2 + j;
+                reference_wide += (longint'($signed(mem[x[15:0]])) + off) *
+                                  longint'($signed(mem[y[15:0]]));
+            end
         end
     endfunction
 
     integer compute_count = 0;
+    bit use_set9 = 0; // Driver command selection ONLY, not a DUT offset flag.
+    bit last_case_ok = 0;
 
     // One hw_simd_mac-style call: SET, COMPUTE, STATUS. With an error
     // injected, already issued/pending requests must drain before done;
@@ -450,8 +749,10 @@ module npu_lab2_tb;
                             input integer burst, input integer param,
                             input [2:0] expected_status, input string tag);
         reg [31:0] rd, st;
-        integer i, expected;
+        integer i, expected, oi, failures_before;
         begin
+            failures_before = fail_count;
+            last_case_ok = 0;
             if (!keep_p1)
                 for (i = 0; i < n; i = i + 1) begin
                     rd = p1 + i; mem[rd[15:0]] = $urandom;
@@ -464,9 +765,16 @@ module npu_lab2_tb;
 
             ar_ready_pct = (latency_mode == 0) ? 100 : 20 + ($urandom % 81);
             r_valid_pct  = (latency_mode == 0) ? 100 : 20 + ($urandom % 81);
+            if (error_matrix) begin
+                ar_ready_pct = 100; // explicit held-AR profile overrides this
+                r_valid_pct = 25 + ($urandom % 41);
+            end
 
-            npu_cmd(32'd0, n, off, rd);
+            npu_cmd(use_set9 ? 32'd5 : 32'd0, n, off, rd);
             check(rd == n, $sformatf("%s SET returned %h", tag, rd));
+            check(dut.burst_dot_product_offset_r === off[8:0],
+                  $sformatf("%s SET offset bits got %h expected %h", tag,
+                            dut.burst_dot_product_offset_r, off[8:0]));
 
             exp_index = 0;
             expected_bursts(p1,p2,n);
@@ -479,8 +787,12 @@ module npu_lab2_tb;
             inj_burst = burst;
             inj_param = param;
             cmd_burst_index = 0;
+            if (error_matrix) watch_start(tag, mode, burst, param);
             npu_cmd(32'd1, p1, p2, rd);
             compute_count = compute_count + 1;
+            check(dut.u_burst_dot_product.offset_r === off[8:0],
+                  $sformatf("%s engine offset bits got %h expected %h", tag,
+                            dut.u_burst_dot_product.offset_r, off[8:0]));
             last_compute_cycles = command_cycles;
             perf_active = 0;
             check(!r_act && q_count == 0 && !rvalid && !arvalid,
@@ -512,10 +824,21 @@ module npu_lab2_tb;
                       $sformatf("%s p1=%h p2=%h off=%0d N=%0d: got %0d expected %0d",
                                 tag, p1, p2, off, n, $signed(rd), expected));
             end
+            if (error_matrix) watch_finish();
             inj_mode = INJ_NONE;
             npu_cmd(32'd2, 32'd0, 32'd0, st);
             check(st == {29'd0, expected_status},
                   $sformatf("%s status %b expected %b", tag, st[2:0], expected_status));
+            oi = offset_index(off);
+            if (mode == INJ_NONE && st === 32'd0 && rd === expected &&
+                required_length(n) && oi >= 0) begin
+                length_coverage[n][(int'(p1[1:0])*4 + int'(p2[1:0]))*5 + oi] = 1;
+                if ({1'b0,p1} + n == 33'h0_6800_0000)
+                    top_coverage[n][int'(p2[1:0])*5 + oi] = 1;
+                if ({1'b0,p2} + n == 33'h0_6800_0000)
+                    top_coverage[n][20 + int'(p1[1:0])*5 + oi] = 1;
+            end
+            last_case_ok = (fail_count == failures_before);
         end
     endtask
 
@@ -547,6 +870,34 @@ module npu_lab2_tb;
             default: pick_offset = $signed($urandom % 256) - 128;
         endcase
     endfunction
+
+    // Full Cartesian product, not a rotating choice of offset/alignment.
+    // Also end EACH operand exactly at 0x67ffffff, with every possible
+    // alignment of the other operand. The ending operand's alignment is
+    // necessarily (-N)%4; arbitrary alignment AND that end are impossible.
+    task automatic length_matrix(input integer nn);
+        integer a, b, oi;
+        reg [31:0] pa, pb;
+        begin
+            for (a = 0; a < 4; a = a + 1)
+                for (b = 0; b < 4; b = b + 1)
+                    for (oi = 0; oi < 5; oi = oi + 1) begin
+                        pa = (oi % 2 == 0) ? 32'h60000ffc + a : place(nn, a[1:0], 0);
+                        pb = (oi % 2 == 0) ? 32'h60008ffc + b : place(nn, b[1:0], 0);
+                        run_case(pa, pb, pick_offset(oi), nn, INJ_NONE, 0, 0, 0,
+                                 "length-alignment-offset-matrix");
+                        required_cases = required_cases + 1;
+                    end
+            for (a = 0; a < 4; a = a + 1)
+                for (oi = 0; oi < 5; oi = oi + 1) begin
+                    run_case(32'h68000000 - nn, 32'h60002000 + a,
+                             pick_offset(oi), nn, INJ_NONE, 0, 0, 0, "ptr1-window-end");
+                    run_case(32'h60002000 + a, 32'h68000000 - nn,
+                             pick_offset(oi), nn, INJ_NONE, 0, 0, 0, "ptr2-window-end");
+                    top_cases = top_cases + 2;
+                end
+        end
+    endtask
 
     // ------------------------------------------------------------------
     // ptr1 reuse helpers
@@ -680,6 +1031,272 @@ module npu_lab2_tb;
         end
     endtask
 
+    // Explicit +128 command-path matrix. All 16 ptr1/ptr2 alignments, exact
+    // unquantized sums, 4-KiB crossings, random stalls, three data patterns.
+    // Each conv-style sequence is immediately followed by a plain SET8 call.
+    integer offset9_tuples = 0, offset9_plain = 0, offset9_wide = 0;
+    bit [15:0] offset9_coverage [0:5][0:2][0:1][0:6];
+    bit [255:0] offset9_plain_sweep = 0;
+    function automatic integer plain_offset9(input integer oi);
+        case (oi)
+            0: plain_offset9 = -128;
+            1: plain_offset9 = -127;
+            2: plain_offset9 = -102;
+            3: plain_offset9 = -1;
+            4: plain_offset9 = 0;
+            5: plain_offset9 = 1;
+            6: plain_offset9 = 127;
+            default: plain_offset9 = 0;
+        endcase
+    endfunction
+
+    task automatic offset9_sequence(input [31:0] a, b, input integer nn, off,
+                                    input bit armed, output bit ok);
+        integer before_seq;
+        reg [31:0] x;
+        begin
+            before_seq = fail_count;
+            if (armed) fc_arm(1, 1);
+            use_set9 = 1;
+            fc_call(a, b, 128, nn, INJ_NONE, 0, 0, 0, "offset128-conv");
+            offset9_wide++;
+            if (armed) begin
+                // Same addresses/length: genuine ptr1 hit, also fast-filter
+                // hit for equal byte alignments. Product() serves both paths.
+                fc_call(a, b, 128, nn, INJ_NONE, 0, 0, 0, "offset128-conv-reuse");
+                offset9_wide++;
+                fc_arm(0, 0); // EXACT production disarm command (funct7=3).
+            end
+            use_set9 = 0;
+            // Same key but changed memory: forgotten disarm cannot hide
+            // behind a miss; plain SET must replace the whole offset latch.
+            x = a; mem[x[15:0]] = mem[x[15:0]] ^ 8'h7f;
+            x = b; mem[x[15:0]] = 8'd3;
+            check(!dut.reuse_armed_r && !dut.fcache_armed_r, "plain call inherited reuse state");
+            fc_call(a, b, off, nn, INJ_NONE, 0, 0, 0, "plain-after-offset128");
+            offset9_plain++;
+            ok = (fail_count == before_seq) && last_case_ok;
+        end
+    endtask
+
+    task automatic run_offset9_matrix;
+        integer ni, nn, al, bl, pat, oi, armed, j, old_tuples, before_matrix;
+        integer start_fast, start_hits;
+        reg [31:0] a, b, x;
+        bit ok;
+        begin
+            before_matrix = fail_count; start_fast = fast_hits; start_hits = reuse_hits;
+            fc_arm(0, 0);
+            for (ni=0; ni<6; ni++) begin
+                case (ni)
+                    0: nn=1; 1: nn=3; 2: nn=4; 3: nn=255; 4: nn=256; 5: nn=300;
+                endcase
+                old_tuples = offset9_tuples;
+                for (pat=0; pat<3; pat++) for (armed=0; armed<2; armed++) for (oi=0; oi<7; oi++) begin
+                    offset9_coverage[ni][pat][armed][oi] = 0;
+                    for (al=0; al<4; al++) for (bl=0; bl<4; bl++) begin
+                        a=32'h60000ffc+al; b=32'h60008ffc+bl;
+                        for (j=0; j<nn; j++) begin
+                            x=a+j;
+                            mem[x[15:0]] = pat == 0 ? $urandom : pat == 1 ? 0 : (j%2 ? 8'h7f : 8'h80);
+                            x=b+j;
+                            // Nonzero positive sum(weights) makes an offset
+                            // error observable even when random weights cancel.
+                            mem[x[15:0]] = pat == 0 ? $urandom : 1;
+                        end
+                        offset9_sequence(a, b, nn, plain_offset9(oi), armed != 0, ok);
+                        if (ok) offset9_coverage[ni][pat][armed][oi][al*4+bl] = 1;
+                        offset9_tuples++;
+                    end
+                    check(offset9_coverage[ni][pat][armed][oi] === 16'hffff,
+                          $sformatf("offset128 coverage missing N=%0d pat=%0d reuse=%0d plain_off=%0d",
+                                    nn, pat, armed, plain_offset9(oi)));
+                end
+                $display("OFFSET9_COVERAGE: N=%0d alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=%0d",
+                         nn, offset9_tuples-old_tuples);
+            end
+            // Additionally exercise all 256 possible plain int8 arguments,
+            // each immediately after a +128 armed/reused conv-style sequence.
+            for (oi=-128; oi<=127; oi++) begin
+                a=32'h60000100+(oi&3); b=32'h60008100+((oi>>2)&3);
+                for (j=0; j<300; j++) begin
+                    x=a+j; mem[x[15:0]]=8'h7f;
+                    x=b+j; mem[x[15:0]]=1;
+                end
+                offset9_sequence(a, b, 300, oi, 1, ok);
+                if (ok) offset9_plain_sweep[oi+128]=1;
+            end
+            check(offset9_plain_sweep === {256{1'b1}}, "post128 plain int8 sweep incomplete");
+            check(offset9_tuples == 6*16*3*2*7 && offset9_plain == offset9_tuples+256 &&
+                  offset9_wide == 6*16*3*7*3+512, "offset9 matrix counts");
+            check(fast_hits > start_fast && reuse_hits > start_hits, "offset9 reuse/fast path not exercised");
+            $display("OFFSET9_RESULT: tuples=%0d wide=%0d alternating_plain=%0d int8_sweep=256 reuse_hits=%0d fast_hits=%0d failures=%0d",
+                     offset9_tuples, offset9_wide, offset9_plain, reuse_hits-start_hits,
+                     fast_hits-start_fast, fail_count-before_matrix);
+        end
+    endtask
+
+    // ------------------------------------------------------------------
+    // TA matrix: distinct first/middle/last positions, two operand targets,
+    // small and maximum B, and both kinds of already-issued second request.
+    // N is LONGER than one burst, so suppression of future ARs is not vacuous.
+    // First ptr1 and ptr2 bursts each have B beats and end at a 4-KiB boundary.
+    // The ordinary scheduler could issue more bursts without the error.
+    // ------------------------------------------------------------------
+    task automatic run_error_matrix;
+        integer sz, side, profile, scenario, b, nn, mode, param, group;
+        integer before_case, before_recovery, old_ref, j;
+        integer observed_beats, observed_ars, observed_other, observed_tail, observed_stalls;
+        reg [31:0] a, f;
+        reg [2:0] st;
+        string kind, tag, profile_name;
+        begin
+            error_matrix = 1;
+            for (j=0; j<8; j=j+1) error_coverage[j] = 0;
+            for (sz=0; sz<2; sz=sz+1)
+                for (side=0; side<2; side=side+1)
+                    for (profile=0; profile<2; profile=profile+1)
+                        for (scenario=0; scenario<8; scenario=scenario+1) begin
+                            b = (sz == 0) ? 16 : 256;
+                            nn = 4*b + 64;
+                            a = 32'h60001000 - 4*b;
+                            f = 32'h60009000 - 4*b;
+                            mode = INJ_BAD_RESP; st = 3'b100; inj_resp = 2'b10;
+                            case (scenario)
+                                0: begin kind="slverr-first"; param=0; end
+                                1: begin kind="slverr-middle"; param=b/2; end
+                                2: begin kind="slverr-last"; param=b-1; end
+                                3: begin kind="decerr-middle"; param=b/2; inj_resp=2'b11; end
+                                4: begin kind="early-rlast"; mode=INJ_EARLY_LAST; param=b/2-1; st=1; end
+                                5: begin kind="correct-rlast"; mode=INJ_NONE; param=0; st=0; end
+                                6: begin kind="rlast-late-1"; mode=INJ_MISSING_LAST; param=1; st=2; end
+                                7: begin kind="rlast-late-5"; mode=INJ_MISSING_LAST; param=5; st=2; end
+                            endcase
+                            if (profile == 0) profile_name = "accepted-other";
+                            else profile_name = "held-other";
+                            tag = $sformatf("ptr%0d/%s/B%0d/%s", side+1, kind, b, profile_name);
+                            before_case = fail_count;
+                            error_profile = profile; error_recovery = 0;
+                            // Arm fresh on each primary case so ptr2 physical
+                            // storage (filter cache) is exercised, never a hit.
+                            fc_arm(1, 1);
+                            run_case(a, f, -17, nn, mode, side, param, st, tag);
+                            check(ew_b[side] == b && exp_filter[side] == (side == 1),
+                                  {tag, ": wrong operand/B targeted"});
+                            check(exp_count > ew_ars_at_error || mode == INJ_NONE,
+                                  {tag, ": no future AR work to suppress"});
+                            observed_beats = ew_taken[side]; observed_ars = ew_ars;
+                            observed_other = ew_other_at_error + int'(ew_held_at_error);
+                            observed_tail = ew_tail_beats; observed_stalls = ew_random_stalls[side];
+                            if (mode != INJ_NONE) begin
+                                before_recovery = fail_count;
+                                old_ref = reference(a, f, -17, nn);
+                                // ALL operand bytes change, same pointers/N/off.
+                                // No reset, re-arm, disarm or model FIFO clearing
+                                // is allowed between error and exact recovery.
+                                mutate_p1(a, nn, 1); mutate_p1(f, nn, 1);
+                                check(reference(a, f, -17, nn) != old_ref,
+                                      {tag, ": fresh recovery reference unchanged"});
+                                keep_p1 = 1; keep_p2 = 1; error_recovery = 1;
+                                run_case(a, f, -17, nn, INJ_NONE, 0, 0, 0, {tag, "/recovery"});
+                                keep_p1 = 0; keep_p2 = 0; error_recovery = 0;
+                                if (fail_count == before_recovery) error_recoveries++;
+                                $display("RECOVERY %s %s exact=%0d fresh_bytes=%0d", tag,
+                                         fail_count == before_recovery ? "PASS" : "FAIL",
+                                         reference(a, f, -17, nn), 2*nn);
+                            end
+                            group = sz*4 + side*2 + profile;
+                            if (fail_count == before_case) begin
+                                error_coverage[group][scenario] = 1;
+                                error_cases++;
+                            end
+                            $display("ERROR_CASE %s %s accepted_beats=%0d ARs=%0d other=%0d discarded=%0d random_stalls=%0d",
+                                     tag, fail_count == before_case ? "PASS" : "FAIL",
+                                     observed_beats, observed_ars, observed_other, observed_tail, observed_stalls);
+                        end
+            fc_arm(1, 0);
+            error_matrix = 0;
+            for (j=0; j<8; j=j+1)
+                check(error_coverage[j] === 8'hff, $sformatf("error matrix coverage group %0d mask=%h", j, error_coverage[j]));
+            check(error_cases == 64 && error_recoveries == 56, "error/recovery matrix incomplete");
+            $display("ERROR_COVERAGE: cases=%0d/64 recoveries=%0d/56 masks=%h,%h,%h,%h,%h,%h,%h,%h",
+                     error_cases, error_recoveries, error_coverage[0], error_coverage[1],
+                     error_coverage[2], error_coverage[3], error_coverage[4], error_coverage[5],
+                     error_coverage[6], error_coverage[7]);
+        end
+    endtask
+
+    // Explicit O5 safety cases. Counts advance only after exact AR-list,
+    // byte-provenance, result and STATUS checks all pass. Both command modes
+    // are exercised: funct7=3 ptr1-only and funct7=4 used by ConvPerChannel.
+    integer safety_cases [0:5];
+    task automatic safety_call(input integer which, input string tag,
+                               input [31:0] a, b, input integer nn);
+        begin
+            fc_call(a, b, 3, nn, INJ_NONE, 0, 0, 0, tag);
+            if (last_case_ok) safety_cases[which]++;
+        end
+    endtask
+
+    task automatic run_reuse_safety;
+        integer mode, al, bl, j, nn, old_ref;
+        reg [31:0] a, b, x;
+        begin
+            for (j=0; j<6; j++) safety_cases[j] = 0;
+            for (mode=0; mode<2; mode++)
+                for (al=0; al<4; al++)
+                    for (bl=0; bl<4; bl++) begin
+                        nn = (al == 0) ? 3 : (al == 1) ? 64 : (al == 2) ? 300 : 4093;
+                        a = 32'h60000ffc + al; b = 32'h60008ffc + bl;
+                        // Deterministic nonzero filters; mutation of EVERY
+                        // input byte provably changes the reference result.
+                        for (j=0; j<nn+4; j++) begin
+                            x=a+j; mem[x[15:0]]=1; x=b+j; mem[x[15:0]]=1;
+                        end
+                        fc_arm(mode != 0, 1);
+                        fc_call(a,b,3,nn,INJ_NONE,0,0,0,"safety-prime");
+                        // (a) same pointer/N, armed across MAC calls.
+                        safety_call(0,"a-armed-same-key",a,b,nn);
+                        old_ref = reference(a,b,3,nn);
+                        // (b) conv scope exit invalidates; arena changes at
+                        // the SAME address; next conv arms and refetches.
+                        fc_arm(mode != 0, 0);
+                        for (j=0; j<nn; j++) begin x=a+j; mem[x[15:0]]=2; end
+                        check(reference(a,b,3,nn) != old_ref,"arena mutation did not change reference");
+                        fc_arm(mode != 0, 1);
+                        safety_call(1,"b-conv-arena-new-layer",a,b,nn);
+                        safety_call(0,"a-new-layer-hit",a,b,nn);
+                        // Arm ALONE must invalidate even an identical copy;
+                        // a later changed byte must be delivered by a new R.
+                        fc_arm(mode != 0, 1);
+                        safety_call(2,"b-rearm-identical-must-refetch",a,b,nn);
+                        fc_arm(mode != 0, 1);
+                        for (j=0; j<nn; j++) begin x=a+j; mem[x[15:0]]=3; end
+                        safety_call(2,"b-rearm-changed-must-refetch",a,b,nn);
+                        // Disarm ALONE, then repeated unarmed changed calls.
+                        fc_arm(mode != 0, 0);
+                        for (j=0; j<nn; j++) begin x=a+j; mem[x[15:0]]=4; end
+                        safety_call(3,"c-disarm-changed",a,b,nn);
+                        for (j=0; j<nn; j++) begin x=a+j; mem[x[15:0]]=5; end
+                        safety_call(3,"c-unarmed-changed-again",a,b,nn);
+                        fc_arm(mode != 0, 1);
+                        fc_call(a,b,3,nn,INJ_NONE,0,0,0,"d-prime");
+                        safety_call(4,"d-different-N",a,b,nn-1);
+                        safety_call(4,"d-old-N-again",a,b,nn);
+                        safety_call(5,"d-different-ptr1",a+1,b,nn);
+                        fc_arm(mode != 0, 0);
+                    end
+            for (j=0; j<6; j++) begin
+                check(safety_cases[j] == ((j == 1 || j == 5) ? 32 : 64),
+                      $sformatf("reuse safety coverage group %0d count=%0d",j,safety_cases[j]));
+                $display("REUSE_SAFETY_CASE: group=%0d passed=%0d",j,safety_cases[j]);
+            end
+            check(sb_fast_bytes > 0,"no local-cache MAC provenance checked");
+            $display("REUSE_SAFETY: armed_same=%0d arena_new_layer=%0d rearm=%0d unarmed_changed=%0d changed_N=%0d changed_ptr1=%0d failures=%0d",
+                     safety_cases[0],safety_cases[1],safety_cases[2],safety_cases[3],safety_cases[4],safety_cases[5],fail_count);
+        end
+    endtask
+
     // ------------------------------------------------------------------
     // Test sequence
     // ------------------------------------------------------------------
@@ -687,9 +1304,35 @@ module npu_lab2_tb;
     reg [31:0] p1, p2, rd;
     integer seed;
 
+    // Optional laptop-demo driver lives in the parent NNchip repo, not the ZIP.
+`ifdef NNCHIP_DEMO
+    `include "lab2_demo_cases.svh"
+`endif
+
     initial begin
         if (!$value$plusargs("seed=%d", seed)) seed = 20261007;
+        $display("[INFO] seed=%0d", seed);
         k = $urandom(seed);
+        sb_count[0] = 0; sb_count[1] = 0; sb_sum[0] = 0; sb_sum[1] = 0;
+        if ($value$plusargs("axi_trace=%s", trace_path)) begin
+            trace_fd = $fopen(trace_path, "w");
+            if (!trace_fd) $fatal(1, "cannot open AXI trace %s", trace_path);
+            $fdisplay(trace_fd, "# R: seq,call,cycle,address,data,resp,last,usable,filter,epoch");
+            $fdisplay(trace_fd, "# M: call,cycle,operand,address,byte,Rseq,Rcycle,local");
+        end
+        for (i = 0; i <= 1024; i = i + 1) begin
+            length_coverage[i] = 0; top_coverage[i] = 0;
+        end
+        // Lock down sign extension in the oracle itself (independent known
+        // answers), before trusting the randomized DUT/reference comparison.
+        mem[0] = 8'hff; mem[4096] = 8'h01;
+        check(reference(32'h60000000, 32'h60001000, 0, 1) == -1,
+              "reference sign extension of input -1");
+        check(reference(32'h60001000, 32'h60000000, 0, 1) == -1,
+              "reference sign extension of filter -1");
+        mem[0] = 8'h80; mem[4096] = 8'h80;
+        check(reference(32'h60000000, 32'h60001000, -128, 1) == 32768,
+              "reference int9 input-plus-offset");
         for (i = 0; i < 65536; i = i + 1) mem[i] = $urandom;
 
         rst_n = 1'b0;
@@ -698,6 +1341,38 @@ module npu_lab2_tb;
         // Idle: NPU_done must stay low (checked by the monitor).
         repeat (20) @(posedge clk);
         #1;
+
+`ifdef NNCHIP_DEMO
+        run_demo_case(); // self-checking short run; finishes before the full suite
+`endif
+        if (!$test$plusargs("errors_only") && !$test$plusargs("offset9_only")) run_reuse_safety();
+        if ($test$plusargs("reuse_safety_only")) begin
+            repeat (10) begin @(posedge clk); #1; end
+            check(start_count == done_count && !busy, "reuse safety command/done accounting");
+            provenance_finish();
+            $display("RESULT: PASS=%0d FAIL=%0d cases=%0d", pass_count, fail_count, compute_count);
+            if (fail_count != 0) $fatal(1, "reuse safety failed");
+            $finish;
+        end
+        if (!$test$plusargs("errors_only")) run_offset9_matrix();
+        if ($test$plusargs("offset9_only")) begin
+            repeat (10) begin @(posedge clk); #1; end
+            check(start_count == done_count && !busy, "offset9 command/done accounting");
+            provenance_finish();
+            $display("RESULT: PASS=%0d FAIL=%0d cases=%0d", pass_count, fail_count, compute_count);
+            if (fail_count != 0) $fatal(1, "offset9 matrix failed");
+            $finish;
+        end
+        run_error_matrix();
+        if ($test$plusargs("errors_only")) begin
+            repeat (32) begin @(posedge clk); #1; end
+            check(start_count == done_count && !busy, "error-suite command/done accounting");
+            provenance_finish();
+            $display("ERROR_RESULT: cases=%0d recoveries=%0d failures=%0d", error_cases, error_recoveries, fail_count);
+            $display("RESULT: PASS=%0d FAIL=%0d cases=%0d", pass_count, fail_count, compute_count);
+            if (fail_count != 0) $fatal(1, "Lab 2 error matrix failed");
+            $finish;
+        end
 
         // Latency matrix: every requested length, all 16 alignment pairs,
         // both a genuinely zero-wait slave and independently random AR/R stalls.
@@ -733,25 +1408,16 @@ module npu_lab2_tb;
         run_case(32'h6800_0000 - 1, 32'h67ff_fffe, 0, 1, INJ_NONE, 0, 0, 3'd0,
                  "window-top-1");
 
-        // 4. Exhaustive sweep: N = 1..256 x ptr1[1:0] x ptr2[1:0].
-        k = 0;
-        for (n = 1; n <= 256; n = n + 1) begin
-            for (o1 = 0; o1 < 4; o1 = o1 + 1) begin
-                for (o2 = 0; o2 < 4; o2 = o2 + 1) begin
-                    off = pick_offset(k);
-                    p1 = place(n, o1[1:0], (k % 3) == 0);
-                    p2 = place(n, o2[1:0], (k % 5) == 1);
-                    run_case(p1, p2, off, n, INJ_NONE, 0, 0, 3'd0, "sweep");
-                    k = k + 1;
-                end
-            end
-        end
-        $display("[INFO] sweep done: %0d calls, pass=%0d fail=%0d",
-                 k, pass_count, fail_count);
+        // 4. Every N=1..300 (including every directed small length), plus
+        // 511/512/513/1024, x all 16 alignments x ALL five required offsets.
+        for (n = 1; n <= 1024; n = n + 1)
+            if (required_length(n)) length_matrix(n);
+        k = required_cases;
+        $display("[INFO] required matrix: %0d calls + %0d window-end calls, fail=%0d",
+                 required_cases, top_cases, fail_count);
 
-        // 4b. Long vectors up to one full input-buffer chunk (1024 bytes):
-        //     every N in
-        //     257..1024 with rotating alignments, and N = 1021..1024 with
+        // 4b. Additional sweep of every N in 257..1024 with rotating
+        //     alignments, and N = 1021..1024 with
         //     all 16 alignment pairs (segments of 257 words need 2 bursts).
         for (n = 257; n <= 1024; n = n + 1) begin
             off = pick_offset(k);
@@ -805,6 +1471,25 @@ module npu_lab2_tb;
                          INJ_NONE,0,0,0,"long-latency");
             end
         latency_mode = -1;
+
+        // Actual positive AND negative int32 overflow. Keep the prepared
+        // periodic memory (the slave aliases 64 KiB); a 64-bit oracle proves
+        // these cases really cross the signed limits, rather than merely
+        // comparing small sums stored in 32 bits.
+        keep_p1 = 1; keep_p2 = 1; latency_mode = 0;
+        for (i = 0; i < 65536; i = i + 1) mem[i] = 8'h80;
+        check(reference_wide(32'h60000001, 32'h60040003, -128, 70000) > 64'sh7fffffff,
+              "positive wrap case does not overflow int32");
+        run_case(32'h60000001, 32'h60040003, -128, 70000, INJ_NONE, 0, 0, 0,
+                 "positive-int32-wrap");
+        wrap_cases = wrap_cases + 1;
+        for (i = 0; i < 65536; i = i + 1) mem[i] = (i % 2) ? 8'h7f : 8'h80;
+        check(reference_wide(32'h60000001, 32'h60040002, 127, 140000) < -64'sh80000000,
+              "negative wrap case does not overflow int32");
+        run_case(32'h60000001, 32'h60040002, 127, 140000, INJ_NONE, 0, 0, 0,
+                 "negative-int32-wrap");
+        wrap_cases = wrap_cases + 1;
+        keep_p1 = 0; keep_p2 = 0; latency_mode = -1;
 
         // 5. Error injection, each followed by a normal call.
         for (inj = 0; inj < 60; inj = inj + 1) begin
@@ -983,7 +1668,7 @@ module npu_lab2_tb;
                      reuse_hits, reuse_refetches, reuse_data_changes);
         end
 
-        // 8. Filter cache (REUSE funct7 = 4) with 16-lane local MAC.
+        // 8. Filter cache (REUSE funct7 = 4) with 32-lane local MAC.
         begin : fcache_tests
             integer t, c, k, px, nn, nc, m, i, old_ref;
             reg [31:0] q [0:2];
@@ -1089,17 +1774,34 @@ module npu_lab2_tb;
                      fast_hits, fc_streams, fc_appends, fc_data_changes);
         end
 
+        // Audit every required tuple; totals alone cannot hide a missing N,
+        // alignment, offset, or an untested ending operand.
+        for (n = 1; n <= 1024; n = n + 1)
+            if (required_length(n)) begin
+                check(length_coverage[n] === {80{1'b1}},
+                      $sformatf("incomplete length/alignment/offset coverage N=%0d mask=%h",
+                                n, length_coverage[n]));
+                check(top_coverage[n] === {40{1'b1}},
+                      $sformatf("incomplete window-end coverage N=%0d mask=%h", n, top_coverage[n]));
+            end
+        check(required_cases == 304*16*5, "required matrix case count");
+        check(top_cases == 304*2*4*5, "window-end case count");
+        check(wrap_cases == 2, "signed wrap cases missing");
+        $display("COVERAGE: lengths=304 (1..300,511,512,513,1024) alignments=16 offsets=5 matrix=%0d window_end=%0d signed_wrap=%0d",
+                 required_cases, top_cases, wrap_cases);
+
         // Drain and final accounting.
         repeat (10) @(posedge clk);
         check(start_count == done_count,
               $sformatf("starts %0d != done pulses %0d", start_count, done_count));
         check(back_to_back > 0, "no back-to-back command issued");
         check(busy == 1'b0, "command still pending at end");
+        provenance_finish();
         $display("[INFO] computes=%0d commands=%0d back-to-back=%0d bursts=%0d multi-beat=%0d split-segments=%0d 4k-boundary-bursts=%0d beats=%0d discarded=%0d",
                  compute_count, start_count, back_to_back, total_bursts,
                  multi_beat_bursts, split_segments, boundary_bursts,
                  total_beats, extra_beats_taken);
-        $display("RESULT: PASS=%0d FAIL=%0d", pass_count, fail_count);
+        $display("RESULT: PASS=%0d FAIL=%0d cases=%0d", pass_count, fail_count, compute_count);
         if (fail_count != 0) $fatal(1,"Lab 2 regression failed");
         $finish;
     end

@@ -1,0 +1,3 @@
+tracked upstream blob: 5ddf04aea6e4de39dfe9021ad52437b57034407b
+current upstream blob: 5ddf04aea6e4de39dfe9021ad52437b57034407b
+9ebe12d5acfcebadb7c00cc38eee32f6d74b81ce4e29e664bbf590de0b28dca3  ../tflite-micro/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h

@@ -1,0 +1,2 @@
+HOST MUTATION: stale-across-layers REJECTED (actual output mismatches)
+ARENA_RESULT: pairs=64 layers=128 shared_address_pairs=64 changed_outputs=256 mismatches=256 stale_hits=256 model_failures=0 failures=129

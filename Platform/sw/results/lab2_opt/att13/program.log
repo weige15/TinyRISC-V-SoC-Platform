@@ -1,0 +1,71 @@
+make: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+>> [SERVER] Cleaning up background Vivado processes...
+>> [BOOT] Building Bootloader (HEX for Custom CPU)...
+make -C /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/boot all BUILD_DIR=/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/boot
+make[1]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/boot'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/boot'
+>> [HW] Running Hardware Pipeline...
+bash ./hw/run_hw.sh
+>> [INFO] Vivado is already available in your shell environment.
+>> [HW] RTL, Bootloader, and Config are up to date. Skipping Full Synthesis.
+
+=========================================================
+>> [HW] Implementation Reports Summary
+=========================================================
+>> [TIMING] Worst Negative Slack (WNS): 0.194 ns
+>> [TIMING] Worst Path Details (Max Delay Paths):
+     Source:                 MMIO_i/mig_7series_0/u_MMIO_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/xadc_supplied_temperature.rst_r2_reg/C
+     Destination:            MMIO_i/mig_7series_0/u_MMIO_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/xadc_supplied_temperature.sample_timer_reg[0]/R
+---------------------------------------------------------
+>> [UTIL] Top SoC Utilization:
+   | Slice LUTs                 | 36857 |     0 |          0 |     63400 | 58.13 |
+   | Slice Registers            | 32536 |     0 |          0 |    126800 | 25.66 |
+   | Slice Registers                            | 32536 |     0 |          0 |    126800 | 25.66 |
+   | Block RAM Tile    |   51 |     0 |          0 |       135 | 37.78 |
+---------------------------------------------------------
+>> [UTIL] NPU Module Utilization:
+   LUTs:        8323 , FFs:  1784 , RAMB36:      32 , RAMB18:       0 , DSP:           4 
+=========================================================
+
+>> [HW] Programming FPGA with /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/build/out.bit...
+
+****** Vivado v2024.1 (64-bit)
+  **** SW Build 5076996 on Wed May 22 18:36:09 MDT 2024
+  **** IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+  **** SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+  **** Start of session at: Wed Oct 14 16:07:17 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/program.tcl -notrace
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2024.1
+  **** Build date : May 22 2024 at 19:19:01
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2024.1.0
+  ****** Build date   : Apr 27 2024-09:40:49
+    **** Build number : 2024.1.1714182049
+      ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+      ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+
+
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210319BE7776A
+INFO: [Labtools 27-3164] End of startup status: HIGH
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Digilent/210319BE7776A
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 14 16:07:29 2026...
+make[1]: Entering directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+make[1]: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+make: Leaving directory '/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform'
+PROGRAM_EXIT=0

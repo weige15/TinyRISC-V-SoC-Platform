@@ -1,0 +1,17 @@
+
+/home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_block/main.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+60003440 <lab2_prepared_mac>:
+60003440:	1ff67613          	andi	a2,a2,511
+60003444:	00070663          	beqz	a4,60003450 <lab2_prepared_mac+0x10>
+60003448:	800007b7          	lui	a5,0x80000
+6000344c:	00f66633          	or	a2,a2,a5
+60003450:	20066793          	ori	a5,a2,512
+60003454:	0031a717          	auipc	a4,0x31a
+60003458:	9ef72623          	sw	a5,-1556(a4) # 6031ce40 <_ZN12_GLOBAL__N_114g_conv_commandE>
+6000345c:	00000613          	li	a2,0
+60003460:	00000317          	auipc	t1,0x0
+60003464:	f6c30067          	jr	-148(t1) # 600033cc <hw_simd_mac>

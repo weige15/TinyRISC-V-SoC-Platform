@@ -20,7 +20,7 @@ mutations = {
     'ignore-length': [(E, '(byte_length == reuse_length);', "1'b1;")],
     'ignore-address': [(E, '(input_address == reuse_address) &&', '')],
     'keep-after-error': [(E, '(status == 0) &&\n', '\n')],
-    'arm-keeps-copy': [(E, 'if (reuse_clear) reuse_valid <= 0;', '')],
+    'arm-keeps-copy': [(E, 'if (reuse_clear) begin reuse_valid <= 0; fc_valid <= 0; end', '')],
     'reuse-wrapped-vector': [(E, "({1'b0,input_received} <= BUFFER_WORDS)", "1'b1")],
     'never-reuse': [(E, 'wire reuse_hit = reuse_enable &&', "wire reuse_hit = 1'b0 &&")],
 }
@@ -34,7 +34,7 @@ def run(name, edits):
         tmp = pathlib.Path(tmp)
         for k, v in srcs.items():
             (tmp / (k + '.v')).write_text(v)
-        subprocess.run(['iverilog', '-g2012', '-s', 'npu_lab2_tb', '-o', str(tmp / 'r.vvp'),
+        subprocess.run(['iverilog', '-g2012', '-I', str(hw / 'sim'), '-s', 'npu_lab2_tb', '-o', str(tmp / 'r.vvp'),
                         str(tb), str(tmp / 'top.v'), str(tmp / 'engine.v')], check=True)
         r = subprocess.run(['vvp', '-n', str(tmp / 'r.vvp'), '+seed=7'], text=True,
                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=1800)

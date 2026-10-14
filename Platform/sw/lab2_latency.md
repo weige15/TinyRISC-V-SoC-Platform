@@ -13,9 +13,14 @@ The average is taken over all five labels in `models/label` (label0, label1, lab
 | 5b | Row 5 sources rebuilt and re-measured in the attempt 6–8 session (same-session reference for the keep/revert decisions) | 1,373,910,680 | −66.95% | −24.52% | 3160 | 773 | 4 | 0 (0/0) | 0.596 | board set/random/conv/goldens pass | reference |
 | 6 | Deeper buffers: operand ring RAM 1024 → 2048 words (`CHUNK_WORDS` 256 → 512) | 1,373,914,984 | −66.95% | −24.52% | 4687 | 780 | 4 | 0 (0/0) | 0.308 | four RTL seeds, host and board pass | **no, reverted** (+4,304 vs 5b) |
 | 7 | Filter cache (REUSE `funct7=4`, 128-KiB contiguous ptr2 window in BRAM) + 16-lane MAC that runs without AXI when ptr1 reuse and filter cache both hit | 1,326,271,660 | −68.10% | −27.13% | 6049 | 1347 | 4 | 32 (32/0) | 0.056 | four RTL seeds incl. new section 8, 8/8 filter-cache negative controls, host and board pass | superseded by 8 (−3.47% vs 5b) |
-| 8 | Same filter cache, MAC widened to 32 lanes (8 banks) | **1,321,874,023** | **−68.20%** | **−27.38%** | 7964 | 1780 | 4 | 32 (32/0) | 0.171 | four RTL seeds, 8/8 filter-cache negative controls, host and board pass | **KEPT (current configuration)** |
+| 8 | Same filter cache, MAC widened to 32 lanes (8 banks) | **1,321,874,023** | **−68.20%** | **−27.38%** | 7964 | 1780 | 4 | 32 (32/0) | 0.171 | historical RTL/host/board checks; old inline path predates real-C-entry requirement | historical timing reference |
+| 9 | Normal-firmware correctness baseline: offset-9, real C MAC, scoped cleanup, startup-zeroed preparation, stock-header declarations | 1,416,791,860.4 | −65.92% | −22.16% | 8323 | 1784 | 4 | 32 (32/0) | 0.194 | set/random/conv/60 goldens pass; +7.180551% vs row 8 | diagnostic baseline |
+| 10 | Pack one-shot preparation into one 32-bit command; preserve distinct prepared-zero state and clear before N=0 | 1,401,231,310.6 | −66.29% | −23.02% | 8323 | 1784 | 4 | 32 (32/0) | 0.194 | host/stock-header and cold-program board checks pass; +6.003393% vs row 8 | superseded by 11 |
+| 11 | One kernel-side preparation adapter, tail-calling the sole non-inlined/non-cloned C MAC; no direct CFU in kernel/adapter | **1,382,495,604.8** | **−66.75%** | **−24.05%** | 8323 | 1784 | 4 | 32 (32/0) | 0.194 | host/stock-header and board checks pass; +4.586033% vs row 8 | superseded by 12, 13 |
+| 12 | 32-channel blocks for immutable unpadded multirow windows; first pixel warms filter cache with genuine work | 1,339,918,891.8 | −67.77% | −26.39% | 8323 | 1784 | 4 | 32 (32/0) | 0.194 | host/stock-header/board pass; 703,830 of 729,000 first-layer calls reuse ptr1; +1.365097% vs row 8 | superseded by 13 |
+| 13 | In the guarded 1..4096-byte block, call the preparation adapter once instead of retaining a redundant chunk loop | **1,331,854,129.4** | **−67.96%** | **−26.83%** | 8323 | 1784 | 4 | 32 (32/0) | 0.194 | host/stock-header/board pass; +0.754997% vs row 8 (within 1%); fresh RTL seed 20261007: 43,806,036 checks, 0 failures | KEPT: selected source configuration |
 
-Limits (Goal 6): LUT ≤ 20,000, FF ≤ 5,000, DSP ≤ 30, RAMB18 ≤ 270, RAMB36 ≤ 135, WNS ≥ 0. All are met. Kept configuration (row 8): 7,964 / 20,000 LUT, 1,780 / 5,000 FF, 4 / 30 DSP, 32 / 135 BRAM36-equivalent, WNS +0.171 ns.
+Limits (Goal 6): LUT ≤ 20,000, FF ≤ 5,000, DSP ≤ 30, RAMB18 ≤ 270, RAMB36 ≤ 135, WNS ≥ 0. The implemented hardware used by rows 9–13 meets these limits: 8,323 LUT, 1,784 FF, 4 DSP, 32 RAMB36, 0 RAMB18, WNS +0.194 ns. These rows reprogrammed the same hash-verified existing bitstream and reused its reports; **they are not the final-commit `all_clean` → `prog` verification**. Rows 0–8 below describe historical implementations, not current real-C-routing acceptance.
 
 ## Where the time went (Goal 5 baseline)
 
@@ -506,3 +511,136 @@ Reproduce one attempt (build, program, board GATE, summary):
 `results/lab2_opt/run_attempt.sh <outdir>`. RTL:
 `bash hw/sim/run_lab2_stream_tests.sh <dir>` and
 `python3 hw/sim/check_fcache_mutations.py <dir>`.
+
+## Attempts 9–11: recover performance without bypassing the real C MAC
+
+Evidence: `results/lab2_opt/att9/`, `att10/`, and `att11/` contain new UART,
+controller events, capture checks, source hashes/patches, program logs, and
+explicit report/image provenance. Ignored `project.mk` is saved separately;
+these source subsets are not a replacement for the Lab 2 download. The
+latency table as it existed at verification time is also preserved.
+
+All three normal-firmware runs passed set **3/3**, random **100/100** before
+and after inference, the three basic convolutions, and all **60** source
+golden output words. Each capture checker exits **1 solely for the requested
+1% latency tolerance**. No final GATE, fresh synthesis, publication, or Goals
+8–9 acceptance is implied.
+
+- **9:** `sw_clean` followed by a normal build with `APP_DEFINES=`. Mean
+  **1,416,791,860.4**; **2.934274768×** the Goal 5 baseline. Each label added
+  roughly 94.9 million cycles relative to row 8.
+- **10:** changed only the private preparation representation. Bit 9
+  distinguishes prepared-zero/unclean from idle; bit 31 encodes precleaned;
+  SET9 ignores metadata and consumes only offset bits 8:0. The command is
+  entirely cleared before work or any empty return. Host state regression
+  passed **265,217 checks**; removing the prepared bit was detected with
+  **160 failures**. Mean **1,401,231,310.6**, saving **15,560,549.8** cycles
+  versus row 9; **2.966859630×** baseline.
+- **11:** the preparation adapter has no CFU instructions and tail-jumps to
+  `hw_simd_mac`. `noinline,noclone` prevents a bypass through inlining or a
+  specialized clone. RV32 stock-header compilation/linking verifies one C
+  MAC, the kernel→adapter→MAC edges, and no direct CUSTOM-0 in the kernel or
+  adapter. A forced-inline negative control retained one exported C MAC but
+  lost the real-entry call edge and emitted **4 direct CUSTOM-0 instructions**
+  in the adapter; the route guards rejected it (`att11/inline_bypass_control.log`).
+  The mutant was never uploaded. State regression passed **269,313 checks**, including the new
+  fused entry, stale-preparation override, following legacy call, and N=0.
+  Mean **1,382,495,604.8**, saving another **18,735,705.8** cycles;
+  **3.007066781×** baseline.
+
+Rows 10 and 11 both pass **26 routing cases**, **9,256 real MAC entries/exits**,
+zero non-idle exits, and **2,582 broad host cases / 1,187,329 output comparisons /
+zero mismatches**. Their ELFs keep all four command bytes inside crt0's
+zeroed `.bss` interval. The legacy API signature, cache cleaning, unaligned
+operands, 9-bit offsets, split lengths, and scope cleanup remain intact.
+
+### Boot-control caveat
+
+The first row-10 upload reused an already-running FPGA and produced garbled
+UART after upload/Jump, with no menu or valid latency. JTAG readback matched
+the first 16 KiB of its image, not necessarily the entire image or CPU caches.
+Reprogramming the **identical bitstream** and uploading the **identical BIN/ELF**
+restored a successful run. Retained boot/cache state is a hypothesis, not a
+proven root cause. The failed control remains in the parent repository's
+`scratch/lab2_finalization/packed_command/`.
+
+Reprogram before changing firmware for subsequent measurements. Verify
+FTDI/UART/live JTAG first. Ask for CPU RESET only after the actual listener
+appears **and only if SYNC has not already arrived**; these runs often received
+SYNC immediately. Never reset an upload or test already in progress.
+
+## Attempts 12–13: bounded channel blocking and single-command dispatch
+
+Canonical evidence is in `results/lab2_opt/att12/` and `att13/`. Each archive
+reconstructs all nine measured production input hashes and preserves the
+latency table used by its capture checker. Hardware/report provenance remains
+the same explicitly reused implementation as rows 9–11.
+
+**12:** For output-disjoint, unpadded, non-grouped multirow windows, process a
+filter row across a bounded block of 32 output channels before advancing the
+row. The first pixel retains the original traversal to populate the contiguous
+filter cache using actual products. The 32 stack values are temporary NPU
+partial sums, not staged operands or cached outputs. Output stores retain
+reference order. Border, alias, grouped, width-dilated, oversized-row and int16
+paths stay unchanged. Node 8 retains **729,000 N=3 calls** and the same product
+count, but gains **703,830 ptr1 reuse hits**. The measured saving is
+**42,576,713.0 cycles** versus row 11; mean **1,339,918,891.8**, still +1.365097%
+against row 8. A missing-row mutant produces 297 product-count failures and
+197,105 output mismatches.
+
+**13:** RV32 disassembly showed a chunk/minimum loop still present inside that
+already bounded block. Call the preparation adapter directly there, retaining
+the sole real C MAC and the same pointer/offset/N values. Keep the generic
+chunk helper for every other path. Extra offset assertions are outside the
+channel loop. Mean **1,331,854,129.4**, saving another **8,064,762.4 cycles**,
+**3.121405352×** baseline and **+0.754997%** versus row 8: the diagnostic
+capture's 1% check now passes.
+
+- Expanded ASan/UBSan routing: **36 cases, 74,822 real entries/exits, 0 failures**.
+  Includes block boundaries 31/32/33/65, two batches, oversized output shapes,
+  aliased/grouped fallbacks and rows of **4096** versus **4100** bytes.
+- Broad host: **2,582/2,582 cases, 1,187,329 outputs, zero mismatches**, zero
+  skipped/duplicated products, stale hits, armed returns or changed-input
+  rerun failures. Wrong-offset mutant exits 1. Removing the 4096-byte guard
+  is independently rejected by the routing call-count checks (4 failures).
+- Stock-header int8/int16 RV32 compile/link passes; no direct CUSTOM-0 in
+  kernel/adapter; the sole C MAC is not inlined or cloned. Startup `.bss`
+  initialization passes for the actual ELF.
+- Normal board UART: set **3/3**, random **100/100** before and after inference,
+  basic conv **3/3**, and all **60/60** golden words pass.
+- Row 13 BIN: `47c8f3343157e5562968ea6b198a77195c97eb0d22ab8fd3e8564b9d70a1e145`;
+  ELF: `6ff54ccdea91cac8d25f1b52c19dd1eb94716148b59c85d113b0b49b103de60a`.
+
+The frozen row-13 source configuration is selected. Fresh RTL seed 20261007
+passes **43,806,036 checks / 57,255 COMPUTEs / zero failures**; lint has no
+errors, and the module/port-header diff against original Lab 2 setup is empty.
+The remaining seeds/legacy regressions continue separately. Updated routing
+and offset mutation scripts reject **5/5 controls each** against the packed
+state/adapter implementation; the offset host suite also passes **1,280 convs,
+196,608 bytes, zero mismatches**. See `att13/selection_gate/`.
+
+These selection artifacts do **not** claim the required committed
+`all_clean` → `prog` acceptance or Goals 8–9. Those must be recorded separately
+against the selected commit and exact submitted-file hashes; a successful
+capture checker alone is insufficient.
+
+## Selected final configuration summary
+
+The final configuration is row 13, preserving the real C-MAC entry, full
+9-bit prepared offsets, startup-zeroed one-shot state, immutable-interval
+cache correctness, and unaligned-pointer support. The average below is its
+normal-firmware **reference capture**, not a relabelled fresh hardware build.
+Resource/timing figures describe the identical implemented RTL used for that
+capture. Committed clean-build verification must independently meet the GATE
+and 1% bound; its UART/reports are additional acceptance evidence.
+
+| Metric | Value |
+|---|---:|
+| Goal 5 baseline average, all five labels | 4,157,256,607.6 cycles |
+| Final configuration average, all five labels (row 13) | **1,331,854,129.4 cycles** |
+| Baseline / final speedup | **3.121405352×** |
+| Reduction from baseline | **67.963148%** |
+| Difference from historical best row 8 | **+0.754997%** |
+| NPU LUT / FF / DSP48E1 | **8,323 / 1,784 / 4** |
+| NPU RAMB36E1 / RAMB18E1 | **32 / 0** |
+| Overall setup WNS / TNS | **+0.194 ns / 0 ns** |

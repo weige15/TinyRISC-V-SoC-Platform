@@ -1,0 +1,9 @@
+hw/srcs/NPU.v: OK
+hw/srcs/npu_burst_dot_product.v: OK
+hw/sim/npu_lab2_counters_tb.sv: OK
+hw/sim/check_lab2_length_mutations.py: OK
+hw/sim/run_lab2_length_tests.sh: OK
+sw/tests/lab2_length_host_test.cc: OK
+sw/project/lab2_api.cc: OK
+sw/project/lab2_api.h: OK
+sw/app/cfu.h: OK

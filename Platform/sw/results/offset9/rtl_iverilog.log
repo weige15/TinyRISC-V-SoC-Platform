@@ -1,0 +1,10 @@
+[INFO] seed=20261014
+OFFSET9_COVERAGE: N=1 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=3 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=4 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=255 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=256 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=300 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+RESULT: PASS=5176393 FAIL=0 cases=10848
+hw/sim/npu_lab2_tb.sv:1261: $finish called at 15477036000 (1ps)

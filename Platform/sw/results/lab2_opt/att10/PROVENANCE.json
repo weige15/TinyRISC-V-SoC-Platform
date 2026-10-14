@@ -1,0 +1,15 @@
+{
+  "source_base_commit": "6e4f4f6552070da5a54c4a927fa48e527649a0f0",
+  "scope": "Diagnostic normal-firmware board run. Existing bitstream was reprogrammed, not freshly synthesized. Not final-commit GATE or Goal 8.",
+  "source_patch_scope": "Tracked production inputs in source_sha256.json; ignored/download inputs are snapshots, not git patches. Requires original Lab 2 download and base dependencies. Not a self-contained checkout recipe or submission file list.",
+  "untracked_input_snapshots": [
+    "Platform/sw/project.mk"
+  ],
+  "original_capture_directory": "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/packed_command_cold",
+  "image_sha256": "440a9487362801022b649fe411a88023fe4ac86d827c4d6c547a8260e36ef0b4",
+  "elf_sha256": "e637b0ebc4c81e18c1e09cf43469add14fcca006fa0a3206be66633e854da5ac",
+  "resources_provenance": "Unchanged implemented RTL/bitstream; reused routed reports.",
+  "host_evidence_location": "scratch/lab2_finalization/packed_command",
+  "final_goal_verified": false,
+  "failed_warm_control": "scratch/lab2_finalization/packed_command (same BIN/ELF, no valid menu or latency)"
+}

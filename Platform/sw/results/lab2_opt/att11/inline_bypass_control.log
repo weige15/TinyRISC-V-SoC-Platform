@@ -1,0 +1,2 @@
+NEGATIVE CONTROL DETECTED: one exported C MAC still exists, but adapter loses its real-MAC call edge and contains 4 direct CUSTOM-0 instructions.
+The same edge/direct-CFU guards used by check_stock_header.sh reject it. This mutant was never built into firmware or uploaded.

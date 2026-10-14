@@ -1,0 +1,125 @@
+
+/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/offset9/lab2_api.o:
+                 U __asan_init
+                 U __asan_register_globals
+                 U __asan_unregister_globals
+                 U __asan_version_mismatch_check_v8
+00000000000000b0 T hw_simd_mac
+0000000000000000 T hw_simd_mac_assume_clean_begin
+0000000000000010 T hw_simd_mac_assume_clean_end
+0000000000000000 B hw_simd_mac_cnt
+0000000000000020 T hw_simd_mac_reuse_arm
+0000000000000040 T hw_simd_mac_reuse_disarm
+0000000000000040 B __odr_asan.hw_simd_mac_cnt
+0000000000000000 t _sub_D_00099_0
+0000000000000000 t _sub_I_00099_1
+0000000000000060 T hw_simd_mac_conv(signed char*, signed char*, int, unsigned int, bool)
+                 U software_cfu_raw(unsigned int, unsigned int, unsigned long, unsigned long)
+
+/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/offset9/offset9_model.o:
+                 U __asan_after_dynamic_init
+                 U __asan_before_dynamic_init
+                 U __asan_handle_no_return
+                 U __asan_init
+                 U __asan_option_detect_stack_use_after_return
+                 U __asan_register_globals
+                 U __asan_report_load1
+                 U __asan_report_load16
+                 U __asan_report_load2
+                 U __asan_report_load4
+                 U __asan_report_load8
+                 U __asan_report_store1
+                 U __asan_report_store16
+                 U __asan_report_store2
+                 U __asan_report_store4
+                 U __asan_report_store8
+                 U __asan_stack_malloc_2
+                 U __asan_stack_malloc_3
+                 U __asan_stack_malloc_4
+                 U __asan_unregister_globals
+                 U __asan_version_mismatch_check_v8
+                 U __cxa_atexit
+                 U __dso_handle
+0000000000000000 t _GLOBAL__sub_I_hw_simd_mac_bytes
+0000000000000480 B hw_simd_mac_bytes
+                 U hw_simd_mac_cnt
+0000000000000420 B hw_simd_mac_n_hist
+0000000000000000 r .LC0
+0000000000000000 r .LC1
+0000000000000000 r .LC16
+0000000000000000 r .LC4
+0000000000000000 r .LC5
+0000000000000000 r .LC6
+0000000000000000 r .LC7
+0000000000000000 r .LC8
+                 U memcmp
+                 U memcpy
+                 U memmove
+                 U memset
+00000000000004c5 B __odr_asan.hw_simd_mac_bytes
+00000000000004c4 B __odr_asan.hw_simd_mac_n_hist
+00000000000004c3 B __odr_asan.reuse_armed
+00000000000004c2 B __odr_asan.reuse_hits
+00000000000004c1 B __odr_asan.reuse_stale
+00000000000004c0 B __odr_asan._ZN13offset9_model5statsE
+                 U __printf_chk
+00000000000003e0 B reuse_armed
+00000000000003a0 B reuse_hits
+0000000000000360 B reuse_stale
+                 U __stack_chk_fail
+0000000000000000 t _sub_D_00099_0
+0000000000000180 t _sub_I_00099_1
+                 U __ubsan_handle_add_overflow_abort
+                 U __ubsan_handle_builtin_unreachable
+                 U __ubsan_handle_load_invalid_value_abort
+                 U __ubsan_handle_nonnull_arg_abort
+                 U __ubsan_handle_pointer_overflow_abort
+                 U __ubsan_handle_type_mismatch_v1_abort
+0000000000000000 T software_cfu_raw(unsigned int, unsigned int, unsigned long, unsigned long)
+0000000000000000 t software_cfu_raw(unsigned int, unsigned int, unsigned long, unsigned long) [clone .cold]
+                 U operator delete(void*, unsigned long)
+0000000000000240 b (anonymous namespace)::configured
+00000000000001c0 b (anonymous namespace)::fc_enabled
+0000000000000040 b (anonymous namespace)::input_words
+0000000000000200 b (anonymous namespace)::reuse_valid
+0000000000000000 b (anonymous namespace)::filter_words
+0000000000000080 b (anonymous namespace)::reuse_length
+0000000000000140 b (anonymous namespace)::reuse_address
+00000000000000c0 b (anonymous namespace)::fc_hi
+0000000000000100 b (anonymous namespace)::fc_lo
+0000000000000180 b (anonymous namespace)::fc_valid
+0000000000000280 b (anonymous namespace)::length_r
+0000000000000000 W offset9_model::Stats::Stats()
+0000000000000000 W offset9_model::Stats::Stats()
+0000000000000000 n offset9_model::Stats::Stats()
+0000000000000000 W offset9_model::Stats::~Stats()
+0000000000000000 W offset9_model::Stats::~Stats()
+0000000000000000 n offset9_model::Stats::~Stats()
+00000000000002c0 B offset9_model::stats
+0000000000000000 W std::_Vector_base<unsigned char, std::allocator<unsigned char> >::_Vector_impl_data::_Vector_impl_data()
+0000000000000000 W std::_Vector_base<unsigned char, std::allocator<unsigned char> >::_Vector_impl_data::_Vector_impl_data()
+0000000000000000 n std::_Vector_base<unsigned char, std::allocator<unsigned char> >::_Vector_impl_data::_Vector_impl_data()
+0000000000000000 W std::map<int, unsigned long, std::less<int>, std::allocator<std::pair<int const, unsigned long> > >::operator[](int const&)
+0000000000000000 W std::map<unsigned int, unsigned long, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::~map()
+0000000000000000 W std::map<unsigned int, unsigned long, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::~map()
+0000000000000000 n std::map<unsigned int, unsigned long, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::~map()
+0000000000000000 W std::map<unsigned int, unsigned long, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::operator[](unsigned int const&)
+0000000000000000 W std::vector<unsigned char, std::allocator<unsigned char> >::_M_default_append(unsigned long)
+0000000000000000 W std::vector<unsigned char, std::allocator<unsigned char> >::~vector()
+0000000000000000 W std::vector<unsigned char, std::allocator<unsigned char> >::~vector()
+0000000000000000 n std::vector<unsigned char, std::allocator<unsigned char> >::~vector()
+0000000000000000 W std::_Rb_tree_iterator<std::pair<int const, unsigned long> > std::_Rb_tree<int, std::pair<int const, unsigned long>, std::_Select1st<std::pair<int const, unsigned long> >, std::less<int>, std::allocator<std::pair<int const, unsigned long> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, unsigned long> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&)
+0000000000000000 W std::_Rb_tree<int, std::pair<int const, unsigned long>, std::_Select1st<std::pair<int const, unsigned long> >, std::less<int>, std::allocator<std::pair<int const, unsigned long> > >::_M_get_insert_unique_pos(int const&)
+0000000000000000 W std::_Rb_tree<int, std::pair<int const, unsigned long>, std::_Select1st<std::pair<int const, unsigned long> >, std::less<int>, std::allocator<std::pair<int const, unsigned long> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, unsigned long> >, int const&)
+0000000000000000 W std::_Rb_tree<int, std::pair<int const, unsigned long>, std::_Select1st<std::pair<int const, unsigned long> >, std::less<int>, std::allocator<std::pair<int const, unsigned long> > >::_M_erase(std::_Rb_tree_node<std::pair<int const, unsigned long> >*)
+0000000000000000 W std::_Rb_tree_iterator<std::pair<unsigned int const, unsigned long> > std::_Rb_tree<unsigned int, std::pair<unsigned int const, unsigned long>, std::_Select1st<std::pair<unsigned int const, unsigned long> >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<unsigned int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<unsigned int const, unsigned long> >, std::piecewise_construct_t const&, std::tuple<unsigned int const&>&&, std::tuple<>&&)
+0000000000000000 W std::_Rb_tree<unsigned int, std::pair<unsigned int const, unsigned long>, std::_Select1st<std::pair<unsigned int const, unsigned long> >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::_M_get_insert_unique_pos(unsigned int const&)
+0000000000000000 W std::_Rb_tree<unsigned int, std::pair<unsigned int const, unsigned long>, std::_Select1st<std::pair<unsigned int const, unsigned long> >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<unsigned int const, unsigned long> >, unsigned int const&)
+0000000000000000 W std::_Rb_tree<unsigned int, std::pair<unsigned int const, unsigned long>, std::_Select1st<std::pair<unsigned int const, unsigned long> >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, unsigned long> > >::_M_erase(std::_Rb_tree_node<std::pair<unsigned int const, unsigned long> >*)
+                 U operator new(unsigned long)
+                 U std::__throw_bad_alloc()
+                 U std::_Rb_tree_decrement(std::_Rb_tree_node_base*)
+                 U std::_Rb_tree_increment(std::_Rb_tree_node_base*)
+0000000000000000 u std::piecewise_construct
+                 U std::__throw_length_error(char const*)
+                 U std::_Rb_tree_insert_and_rebalance(bool, std::_Rb_tree_node_base*, std::_Rb_tree_node_base*, std::_Rb_tree_node_base&)

@@ -1,0 +1,15 @@
+Current RISC-V API object: compile from source, no software CFU define
+000000b8 T hw_simd_mac
+    42: 000000b8   132 FUNC    GLOBAL DEFAULT    1 hw_simd_mac
+
+Legacy C function type probe
+C_ABI_SIGNATURE_RESULT: checks=1 failures=0
+
+Existing V6 main.elf (not rebuilt in this audit)
+6e2ac65f9551a4cefe75b6fe972d2587855cdcf0fc89daf504e4660d1b529096  TinyRISC-V-SoC-Platform/Platform/build/sw/main.elf
+600030e0 T hw_simd_mac
+   409: 600030e0   140 FUNC    GLOBAL DEFAULT    1 hw_simd_mac
+ELF: TinyRISC-V-SoC-Platform/Platform/build/sw/main.elf
+crt0 zeroes [0x60132000, 0x60323b24)
+g_conv_command: [0x6031ce40, 0x6031ce48), size=8
+PASS: all MAC command fields receive startup BSS initialization

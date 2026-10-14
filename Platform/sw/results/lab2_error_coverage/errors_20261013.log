@@ -1,0 +1,125 @@
+[INFO] seed=20261013
+RECOVERY ptr1/slverr-first/B16/accepted-other PASS exact=-3543 fresh_bytes=256
+ERROR_CASE ptr1/slverr-first/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=14
+RECOVERY ptr1/slverr-middle/B16/accepted-other PASS exact=53489 fresh_bytes=256
+ERROR_CASE ptr1/slverr-middle/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=12
+RECOVERY ptr1/slverr-last/B16/accepted-other PASS exact=75720 fresh_bytes=256
+ERROR_CASE ptr1/slverr-last/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=38
+RECOVERY ptr1/decerr-middle/B16/accepted-other PASS exact=-35107 fresh_bytes=256
+ERROR_CASE ptr1/decerr-middle/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=12
+RECOVERY ptr1/early-rlast/B16/accepted-other PASS exact=-91408 fresh_bytes=256
+ERROR_CASE ptr1/early-rlast/B16/accepted-other PASS accepted_beats=8 ARs=2 other=1 discarded=0 random_stalls=14
+ERROR_CASE ptr1/correct-rlast/B16/accepted-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=11
+RECOVERY ptr1/rlast-late-1/B16/accepted-other PASS exact=24408 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-1/B16/accepted-other PASS accepted_beats=17 ARs=2 other=1 discarded=1 random_stalls=52
+RECOVERY ptr1/rlast-late-5/B16/accepted-other PASS exact=22047 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-5/B16/accepted-other PASS accepted_beats=21 ARs=2 other=1 discarded=5 random_stalls=23
+RECOVERY ptr1/slverr-first/B16/held-other PASS exact=94918 fresh_bytes=256
+ERROR_CASE ptr1/slverr-first/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=17
+RECOVERY ptr1/slverr-middle/B16/held-other PASS exact=94044 fresh_bytes=256
+ERROR_CASE ptr1/slverr-middle/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=19
+RECOVERY ptr1/slverr-last/B16/held-other PASS exact=-34824 fresh_bytes=256
+ERROR_CASE ptr1/slverr-last/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=12
+RECOVERY ptr1/decerr-middle/B16/held-other PASS exact=-2252 fresh_bytes=256
+ERROR_CASE ptr1/decerr-middle/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=6
+RECOVERY ptr1/early-rlast/B16/held-other PASS exact=72022 fresh_bytes=256
+ERROR_CASE ptr1/early-rlast/B16/held-other PASS accepted_beats=8 ARs=2 other=1 discarded=0 random_stalls=8
+ERROR_CASE ptr1/correct-rlast/B16/held-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=83
+RECOVERY ptr1/rlast-late-1/B16/held-other PASS exact=49853 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-1/B16/held-other PASS accepted_beats=17 ARs=2 other=1 discarded=1 random_stalls=26
+RECOVERY ptr1/rlast-late-5/B16/held-other PASS exact=-19477 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-5/B16/held-other PASS accepted_beats=21 ARs=2 other=1 discarded=5 random_stalls=24
+RECOVERY ptr2/slverr-first/B16/accepted-other PASS exact=74633 fresh_bytes=256
+ERROR_CASE ptr2/slverr-first/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=24
+RECOVERY ptr2/slverr-middle/B16/accepted-other PASS exact=-17281 fresh_bytes=256
+ERROR_CASE ptr2/slverr-middle/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=18
+RECOVERY ptr2/slverr-last/B16/accepted-other PASS exact=-7565 fresh_bytes=256
+ERROR_CASE ptr2/slverr-last/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=12
+RECOVERY ptr2/decerr-middle/B16/accepted-other PASS exact=-127388 fresh_bytes=256
+ERROR_CASE ptr2/decerr-middle/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=12
+RECOVERY ptr2/early-rlast/B16/accepted-other PASS exact=-46253 fresh_bytes=256
+ERROR_CASE ptr2/early-rlast/B16/accepted-other PASS accepted_beats=8 ARs=3 other=1 discarded=0 random_stalls=16
+ERROR_CASE ptr2/correct-rlast/B16/accepted-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=8
+RECOVERY ptr2/rlast-late-1/B16/accepted-other PASS exact=58821 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-1/B16/accepted-other PASS accepted_beats=17 ARs=3 other=1 discarded=1 random_stalls=52
+RECOVERY ptr2/rlast-late-5/B16/accepted-other PASS exact=14774 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-5/B16/accepted-other PASS accepted_beats=21 ARs=3 other=1 discarded=5 random_stalls=23
+RECOVERY ptr2/slverr-first/B16/held-other PASS exact=-71152 fresh_bytes=256
+ERROR_CASE ptr2/slverr-first/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=40
+RECOVERY ptr2/slverr-middle/B16/held-other PASS exact=-28719 fresh_bytes=256
+ERROR_CASE ptr2/slverr-middle/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=8
+RECOVERY ptr2/slverr-last/B16/held-other PASS exact=-66419 fresh_bytes=256
+ERROR_CASE ptr2/slverr-last/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=9
+RECOVERY ptr2/decerr-middle/B16/held-other PASS exact=-25940 fresh_bytes=256
+ERROR_CASE ptr2/decerr-middle/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=40
+RECOVERY ptr2/early-rlast/B16/held-other PASS exact=-117944 fresh_bytes=256
+ERROR_CASE ptr2/early-rlast/B16/held-other PASS accepted_beats=8 ARs=3 other=1 discarded=0 random_stalls=7
+ERROR_CASE ptr2/correct-rlast/B16/held-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=28
+RECOVERY ptr2/rlast-late-1/B16/held-other PASS exact=32228 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-1/B16/held-other PASS accepted_beats=17 ARs=3 other=1 discarded=1 random_stalls=30
+RECOVERY ptr2/rlast-late-5/B16/held-other PASS exact=-55665 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-5/B16/held-other PASS accepted_beats=21 ARs=3 other=1 discarded=5 random_stalls=37
+RECOVERY ptr1/slverr-first/B256/accepted-other PASS exact=82466 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-first/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=435
+RECOVERY ptr1/slverr-middle/B256/accepted-other PASS exact=-274704 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-middle/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=704
+RECOVERY ptr1/slverr-last/B256/accepted-other PASS exact=-61573 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-last/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=200
+RECOVERY ptr1/decerr-middle/B256/accepted-other PASS exact=-18199 fresh_bytes=2176
+ERROR_CASE ptr1/decerr-middle/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=166
+RECOVERY ptr1/early-rlast/B256/accepted-other PASS exact=98927 fresh_bytes=2176
+ERROR_CASE ptr1/early-rlast/B256/accepted-other PASS accepted_beats=128 ARs=2 other=1 discarded=0 random_stalls=189
+ERROR_CASE ptr1/correct-rlast/B256/accepted-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=195
+RECOVERY ptr1/rlast-late-1/B256/accepted-other PASS exact=293072 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-1/B256/accepted-other PASS accepted_beats=257 ARs=2 other=1 discarded=1 random_stalls=237
+RECOVERY ptr1/rlast-late-5/B256/accepted-other PASS exact=-207702 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-5/B256/accepted-other PASS accepted_beats=261 ARs=2 other=1 discarded=5 random_stalls=160
+RECOVERY ptr1/slverr-first/B256/held-other PASS exact=91080 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-first/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=202
+RECOVERY ptr1/slverr-middle/B256/held-other PASS exact=-195942 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-middle/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=310
+RECOVERY ptr1/slverr-last/B256/held-other PASS exact=207607 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-last/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=353
+RECOVERY ptr1/decerr-middle/B256/held-other PASS exact=-69534 fresh_bytes=2176
+ERROR_CASE ptr1/decerr-middle/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=364
+RECOVERY ptr1/early-rlast/B256/held-other PASS exact=-43192 fresh_bytes=2176
+ERROR_CASE ptr1/early-rlast/B256/held-other PASS accepted_beats=128 ARs=2 other=1 discarded=0 random_stalls=91
+ERROR_CASE ptr1/correct-rlast/B256/held-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=545
+RECOVERY ptr1/rlast-late-1/B256/held-other PASS exact=445355 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-1/B256/held-other PASS accepted_beats=257 ARs=2 other=1 discarded=1 random_stalls=619
+RECOVERY ptr1/rlast-late-5/B256/held-other PASS exact=31340 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-5/B256/held-other PASS accepted_beats=261 ARs=2 other=1 discarded=5 random_stalls=536
+RECOVERY ptr2/slverr-first/B256/accepted-other PASS exact=16021 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-first/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=814
+RECOVERY ptr2/slverr-middle/B256/accepted-other PASS exact=90313 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-middle/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=439
+RECOVERY ptr2/slverr-last/B256/accepted-other PASS exact=232785 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-last/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=806
+RECOVERY ptr2/decerr-middle/B256/accepted-other PASS exact=101793 fresh_bytes=2176
+ERROR_CASE ptr2/decerr-middle/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=635
+RECOVERY ptr2/early-rlast/B256/accepted-other PASS exact=-194713 fresh_bytes=2176
+ERROR_CASE ptr2/early-rlast/B256/accepted-other PASS accepted_beats=128 ARs=3 other=1 discarded=0 random_stalls=316
+ERROR_CASE ptr2/correct-rlast/B256/accepted-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=139
+RECOVERY ptr2/rlast-late-1/B256/accepted-other PASS exact=-53680 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-1/B256/accepted-other PASS accepted_beats=257 ARs=3 other=1 discarded=1 random_stalls=423
+RECOVERY ptr2/rlast-late-5/B256/accepted-other PASS exact=186618 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-5/B256/accepted-other PASS accepted_beats=261 ARs=3 other=1 discarded=5 random_stalls=170
+RECOVERY ptr2/slverr-first/B256/held-other PASS exact=52321 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-first/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=312
+RECOVERY ptr2/slverr-middle/B256/held-other PASS exact=278837 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-middle/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=192
+RECOVERY ptr2/slverr-last/B256/held-other PASS exact=115305 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-last/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=202
+RECOVERY ptr2/decerr-middle/B256/held-other PASS exact=-130242 fresh_bytes=2176
+ERROR_CASE ptr2/decerr-middle/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=625
+RECOVERY ptr2/early-rlast/B256/held-other PASS exact=153392 fresh_bytes=2176
+ERROR_CASE ptr2/early-rlast/B256/held-other PASS accepted_beats=128 ARs=3 other=1 discarded=0 random_stalls=77
+ERROR_CASE ptr2/correct-rlast/B256/held-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=344
+RECOVERY ptr2/rlast-late-1/B256/held-other PASS exact=154285 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-1/B256/held-other PASS accepted_beats=257 ARs=3 other=1 discarded=1 random_stalls=168
+RECOVERY ptr2/rlast-late-5/B256/held-other PASS exact=69915 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-5/B256/held-other PASS accepted_beats=261 ARs=3 other=1 discarded=5 random_stalls=364
+ERROR_COVERAGE: cases=64/64 recoveries=56/56 masks=ff,ff,ff,ff,ff,ff,ff,ff
+ERROR_RESULT: cases=64 recoveries=56 failures=0
+RESULT: PASS=4236899 FAIL=0 cases=120
+sim/npu_lab2_tb.sv:1145: $finish called at 914666000 (1ps)

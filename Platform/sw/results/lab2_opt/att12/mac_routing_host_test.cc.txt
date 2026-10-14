@@ -1,0 +1,301 @@
+// Links the REAL API with GCC entry/exit instrumentation, not a replacement,
+// linker wrap, overload or macro for the MAC. The model observes only CFU ops.
+#include "lab2_api.h"
+#include "offset9_model.h"
+#define reference_integer_ops routing_patched
+#ifdef MAC_ROUTING_CONV
+#include MAC_ROUTING_CONV
+#else
+#include "../tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h"
+#endif
+#undef reference_integer_ops
+#include <array>
+#include <cstdio>
+#include <random>
+#include <type_traits>
+#include <vector>
+
+void offset9_ref(const tflite::ConvParams&, const int32_t*, const int32_t*,
+                 const tflite::RuntimeShape&, const int8_t*, const tflite::RuntimeShape&,
+                 const int8_t*, const tflite::RuntimeShape&, const int32_t*,
+                 const tflite::RuntimeShape&, int8_t*);
+void routing_ref16_32(const tflite::ConvParams&, const int32_t*, const int32_t*,
+                     const tflite::RuntimeShape&, const int16_t*, const tflite::RuntimeShape&,
+                     const int8_t*, const tflite::RuntimeShape&, const int32_t*,
+                     const tflite::RuntimeShape&, int16_t*);
+void routing_ref16_64(const tflite::ConvParams&, const int32_t*, const int32_t*,
+                     const tflite::RuntimeShape&, const int16_t*, const tflite::RuntimeShape&,
+                     const int8_t*, const tflite::RuntimeShape&, const int64_t*,
+                     const tflite::RuntimeShape&, int16_t*);
+
+namespace {
+using namespace tflite;
+using offset9_model::stats;
+uint64_t entries = 0, exits = 0, nonidle_mac_exits = 0, failures = 0, cases = 0;
+std::mt19937 rng(20261015);
+const char* tag = "initialization";
+void check(bool ok, const char* message) {
+  if (!ok) {
+    ++failures;
+    if (failures <= 30) std::printf("ROUTING FAIL [%s]: %s\n", tag, message);
+  }
+}
+struct Before {
+  uint64_t entry = entries, exit = exits, computes = stats.computes;
+  uint64_t products = hw_simd_mac_bytes, disarms = stats.disarms;
+};
+void seed_stale_state() {
+  lab2_reuse_arm();
+  lab2_prepare_mac(77, true);
+  check(reuse_armed && !lab2_mac_is_idle(), "test did not seed armed state");
+}
+void idle_probe() {
+  check(lab2_mac_is_idle(), "software preparation fields not all zero");
+  check(!reuse_armed, "hardware reuse left armed");
+  alignas(4) int8_t a[4] = {3, 0, 0, 0}, b[4] = {-2, 0, 0, 0};
+  const auto set8 = stats.set8, set9 = stats.set9;
+  check(hw_simd_mac(a, b, -128, 1) == 250, "ordinary call inherited convolution state");
+  check(stats.set8 == set8 + 1 && stats.set9 == set9,
+        "ordinary call did not use its own legacy offset");
+  check(lab2_mac_is_idle() && !reuse_armed, "ordinary probe left state armed");
+}
+void finish(const Before& before, uint64_t calls, uint64_t products) {
+  check(entries - before.entry == calls && exits - before.exit == calls,
+        "MAC definition not entered/exited once per expected command");
+  check(stats.computes - before.computes == calls, "unexpected COMPUTE count");
+  check(hw_simd_mac_bytes - before.products == products, "channel products skipped/duplicated");
+  check(stats.disarms - before.disarms == 2, "missing scope entry/exit reset");
+  check(lab2_mac_is_idle() && !reuse_armed, "convolution return not idle");
+  std::printf("ROUTING CASE: %s entries=%llu computes=%llu products=%llu software_idle=%d reuse_armed=%d\n",
+              tag, (unsigned long long)(entries - before.entry),
+              (unsigned long long)(stats.computes - before.computes),
+              (unsigned long long)(hw_simd_mac_bytes - before.products),
+              lab2_mac_is_idle(), reuse_armed);
+  idle_probe();
+  ++cases;
+}
+struct Case8 {
+  const char* name;
+  int fd, groups, fh, dilation, stride, alias;
+  bool empty, all_padding;
+  bool no_padding = false;
+  int channels_per_group = 2;
+};
+void conv8(const Case8& c) {
+  tag = c.name;
+  const int batch = 2, ih = 4, iw = 5, oc = c.channels_per_group * c.groups;
+  const int oh = c.empty ? 0 : (ih + c.stride - 1) / c.stride;
+  const int ow = (iw + c.stride - 1) / c.stride;
+  const int pad = c.all_padding ? 20 : (c.no_padding || c.fh == 1) ? 0 : c.dilation;
+  const int32_t id[] = {batch, ih, iw, c.fd * c.groups};
+  const int32_t fd[] = {oc, c.fh, c.fh, c.fd}, od[] = {batch, oh, ow, oc}, bd[] = {oc};
+  RuntimeShape is(4, id), fs(4, fd), os(4, od), bs(1, bd);
+  std::vector<int8_t> a(std::max(is.FlatSize(), os.FlatSize()) + 16, 42);
+  std::vector<int8_t> b(std::max(fs.FlatSize(), os.FlatSize()) + 16, 37);
+  for (int i = 0; i < is.FlatSize(); ++i) a[5+i] = static_cast<int8_t>(int(rng()%256)-128);
+  for (int i = 0; i < fs.FlatSize(); ++i) b[6+i] = static_cast<int8_t>(int(rng()%7)-3);
+  auto ra = a, rb = b;
+  std::vector<int8_t> actual(os.FlatSize() + 16, 91), expected = actual;
+  int8_t* out = c.alias == 1 ? a.data()+5 : c.alias == 2 ? b.data()+6 : actual.data()+4;
+  int8_t* ref = c.alias == 1 ? ra.data()+5 : c.alias == 2 ? rb.data()+6 : expected.data()+4;
+  std::vector<int32_t> bias(oc, 31), mul(oc, 0x50000000), shift(oc, -10);
+  ConvParams p{};
+  p.input_offset = 128; p.output_offset = -5;
+  p.stride_height = p.stride_width = c.stride;
+  p.dilation_height_factor = p.dilation_width_factor = c.dilation;
+  p.padding_values.height = p.padding_values.width = pad;
+  p.quantized_activation_min = -128; p.quantized_activation_max = 127;
+  offset9_ref(p, mul.data(), shift.data(), is, ra.data()+5, fs, rb.data()+6,
+              bs, bias.data(), os, ref);
+  uint64_t calls = 0, products = 0;
+  for (int y = 0; y < oh; ++y) for (int x = 0; x < ow; ++x) {
+    const int iy = y*c.stride-pad, ix = x*c.stride-pad;
+    const bool merge = c.groups == 1 && c.dilation == 1 && iy >= 0 && ix >= 0 &&
+                       iy+c.fh <= ih && ix+c.fh <= iw;
+    for (int fy = 0; fy < c.fh; ++fy) for (int fx = 0; fx < c.fh; ++fx) {
+      const int py = iy+fy*c.dilation, px = ix+fx*c.dilation;
+      if (py >= 0 && py < ih && px >= 0 && px < iw) {
+        products += uint64_t(batch)*oc*c.fd;
+        if (!merge) calls += uint64_t(batch)*oc*((c.fd+4095)/4096);
+      }
+    }
+    if (merge) calls += uint64_t(batch)*oc*c.fh*((c.fh*c.fd+4095)/4096);
+  }
+  seed_stale_state();
+  const Before before;
+  routing_patched::ConvPerChannel(p, mul.data(), shift.data(), is, a.data()+5,
+                                  fs, b.data()+6, bs, bias.data(), os, out);
+  check(a == ra && b == rb && actual == expected, "reference bytes/redzones/aliased operands differ");
+  finish(before, calls, products);
+}
+
+void split_visitation() {
+  tag = "split-exact-visitation";
+  unsigned tuples = 0;
+  for (unsigned n : {0u, 1u, 4095u, 4096u, 4097u, 8193u})
+    for (int off : {-256, -128, -1, 0, 127, 128, 255}) {
+      std::vector<int8_t> a(n+16), b(n+16);
+      uint32_t expected = 0;
+      for (unsigned i = 0; i < n; ++i) {
+        a[5+i] = static_cast<int8_t>(int(rng()%256)-128);
+        b[6+i] = static_cast<int8_t>(int(rng()%256)-128);
+        expected += static_cast<uint32_t>((int(a[5+i])+off)*int(b[6+i]));
+      }
+      offset9_model::commands.clear();
+      offset9_model::capture_commands = true;
+      seed_stale_state();
+      const Before before;
+      uint32_t result;
+      {
+        const routing_patched::ConvMacScope scope;
+        result = static_cast<uint32_t>(routing_patched::ConvDotProduct(a.data()+5, b.data()+6, off, n));
+      }
+      offset9_model::capture_commands = false;
+      check(result == expected, "split sum differs from unsplit wide oracle");
+      unsigned done = 0;
+      for (const auto& cmd : offset9_model::commands) {
+        const auto count = std::min(4096u, n-done);
+        check(cmd.a == reinterpret_cast<uintptr_t>(a.data()+5+done) &&
+              cmd.b == reinterpret_cast<uintptr_t>(b.data()+6+done) &&
+              cmd.n == count && cmd.offset == off, "split pointer/N/offset progression");
+        done += cmd.n;
+        if (done > n) break;
+      }
+      check(done == n && offset9_model::commands.size() == (n+4095)/4096,
+            "split did not visit every term exactly once");
+      check(entries-before.entry == (n+4095)/4096 && stats.computes-before.computes == (n+4095)/4096,
+            "split bypassed real function entry");
+      check(hw_simd_mac_bytes-before.products == n, "split product count");
+      idle_probe();
+      ++tuples;
+    }
+  std::printf("ROUTING SPLIT: tuples=%u N=0,1,4095,4096,4097,8193 offsets=7 exact_visitation=1\n", tuples);
+}
+
+template <typename AccumScalar>
+void conv16(int fd, int groups, int fh, bool empty) {
+  tag = sizeof(AccumScalar) == 4 ? "int16-acc32" : "int16-acc64";
+  const int ih = 3, iw = 4, oc = groups*2, oh = empty ? 0 : ih;
+  const int32_t id[] = {1, ih, iw, fd*groups}, fdim[] = {oc, fh, fh, fd};
+  const int32_t od[] = {1, oh, iw, oc}, bd[] = {oc};
+  RuntimeShape is(4, id), fs(4, fdim), os(4, od), bs(1, bd);
+  std::vector<int16_t> a(is.FlatSize()+8), actual(os.FlatSize()+8, 251), expected = actual;
+  std::vector<int8_t> b(fs.FlatSize()+8);
+  for (auto& v : a) v = static_cast<int16_t>(int(rng()%65536)-32768);
+  for (auto& v : b) v = static_cast<int8_t>(int(rng()%7)-3);
+  std::vector<AccumScalar> bias(oc, 71);
+  std::vector<int32_t> mul(oc, 0x50000000), shift(oc, -7);
+  ConvParams p{};
+  p.stride_height = p.stride_width = 1;
+  p.dilation_height_factor = p.dilation_width_factor = 1;
+  p.padding_values.height = p.padding_values.width = fh/2;
+  p.quantized_activation_min = -32768; p.quantized_activation_max = 32767;
+  if constexpr (std::is_same<AccumScalar, int32_t>::value)
+    routing_ref16_32(p, mul.data(), shift.data(), is, a.data(), fs, b.data(), bs, bias.data(), os, expected.data());
+  else
+    routing_ref16_64(p, mul.data(), shift.data(), is, a.data(), fs, b.data(), bs, bias.data(), os, expected.data());
+  uint64_t taps = 0;
+  for (int y = 0; y < oh; ++y) for (int x = 0; x < iw; ++x)
+    for (int fy = 0; fy < fh; ++fy) for (int fx = 0; fx < fh; ++fx) {
+      const int py = y+fy-fh/2, px = x+fx-fh/2;
+      if (py >= 0 && py < ih && px >= 0 && px < iw) taps += oc;
+    }
+  seed_stale_state();
+  const Before before;
+  routing_patched::ConvPerChannel(p, mul.data(), shift.data(), is, a.data(),
+                                  fs, b.data(), bs, bias.data(), os, actual.data());
+  check(actual == expected, "int16 reference bytes/redzone mismatch");
+  finish(before, taps*2*((fd+255)/256), taps*2*fd);
+}
+void exhaustive16() {
+  tag = "all-65536-int16-values";
+  std::vector<int16_t> a(65536);
+  std::vector<int8_t> b(65540);
+  int64_t expected = 0;
+  for (unsigned i = 0; i < a.size(); ++i) {
+    a[i] = static_cast<int16_t>(int(i)-32768);
+    b[i] = static_cast<int8_t>(int(rng()%256)-128);
+    expected += int64_t(a[i])*b[i];
+  }
+  seed_stale_state();
+  const Before before;
+  int64_t actual;
+  {
+    const routing_patched::ConvMacScope scope;
+    actual = routing_patched::ConvDotProduct16(a.data(), b.data(), a.size());
+  }
+  check(actual == expected, "byte-plane decomposition differs from 64-bit scalar oracle");
+  finish(before, 512, 2*a.size());
+}
+void empty_preparation() {
+  tag = "prepared-N-zero";
+  lab2_conv_reset();
+  for (bool clean : {false, true}) {
+    lab2_prepare_mac(128, clean);
+    const Before before;
+    check(hw_simd_mac(nullptr, nullptr, 0, 0) == 0, "empty MAC result");
+    check(entries == before.entry+1 && exits == before.exit+1 && stats.computes == before.computes,
+          "empty MAC did not enter real definition or issued a COMPUTE");
+    idle_probe();
+  }
+  std::puts("ROUTING EMPTY: prepared_N_zero=2 preparation_consumed=1 computes=0");
+}
+}  // namespace
+
+// Only lab2_api.cc is compiled with -finstrument-functions. These callbacks
+// observe its real address, including N=0, independently of model counters.
+extern "C" __attribute__((no_instrument_function))
+void __cyg_profile_func_enter(void* function, void*) {
+  if (function == reinterpret_cast<void*>(&hw_simd_mac)) ++entries;
+}
+extern "C" __attribute__((no_instrument_function))
+void __cyg_profile_func_exit(void* function, void*) {
+  if (function == reinterpret_cast<void*>(&hw_simd_mac)) {
+    ++exits;
+    if (!lab2_mac_is_idle()) ++nonidle_mac_exits;
+  }
+}
+int main() {
+  const Case8 matrix[] = {
+      {"fast", 300, 1, 1, 1, 1, 0, false, false},
+      {"fast-split", 8193, 1, 1, 1, 1, 0, false, false},
+      {"merged-and-border", 300, 1, 3, 1, 1, 0, false, false},
+      {"merged-split", 1500, 1, 3, 1, 1, 0, false, false},
+      {"border-and-grouped-split", 4097, 2, 3, 1, 1, 0, false, false},
+      {"stride-and-dilation-split", 4097, 1, 3, 2, 2, 0, false, false},
+      {"alias-input", 8, 1, 1, 1, 1, 1, false, false},
+      {"alias-filter", 8, 1, 1, 1, 1, 2, false, false},
+      {"alias-input-general", 8, 1, 3, 1, 1, 1, false, false},
+      {"alias-filter-general", 8, 1, 3, 1, 1, 2, false, false},
+      {"empty-fast", 8, 1, 1, 1, 1, 0, true, false},
+      {"empty-general", 8, 1, 3, 1, 1, 0, true, false},
+      {"all-padding", 8, 1, 1, 1, 1, 0, false, true},
+      // Unpadded multirow windows, block boundaries/tail, two batches and
+      // deliberately oversized output shapes (remaining pixels are borders).
+      {"valid-31", 3, 1, 3, 1, 1, 0, false, false, true, 31},
+      {"valid-32", 3, 1, 3, 1, 1, 0, false, false, true, 32},
+      {"valid-33", 3, 1, 3, 1, 1, 0, false, false, true, 33},
+      {"valid-65", 3, 1, 3, 1, 1, 0, false, false, true, 65},
+      {"valid-alias-input", 8, 1, 3, 1, 1, 1, false, false, true, 33},
+      {"valid-alias-filter", 8, 1, 3, 1, 1, 2, false, false, true, 33},
+      {"valid-grouped", 8, 2, 3, 1, 1, 0, false, false, true, 33},
+      {"valid-wide-row", 1500, 1, 3, 1, 1, 0, false, false, true, 33},
+  };
+  for (const auto& c : matrix) conv8(c);
+  split_visitation();
+  for (int fd : {1, 255, 256, 257, 300}) {
+    conv16<int32_t>(fd, 1, 1, false);
+    conv16<int64_t>(fd, 2, 3, false);
+  }
+  conv16<int32_t>(300, 1, 1, true);
+  conv16<int64_t>(300, 2, 3, true);
+  exhaustive16();
+  empty_preparation();
+  check(entries == exits && nonidle_mac_exits == 0, "unbalanced/nonidle real API returns");
+  check(stats.failures == 0 && reuse_stale == 0, "instruction model failure/stale cache");
+  std::printf("ROUTING RESULT: conv_or_dot_cases=%llu real_entries=%llu real_exits=%llu nonidle_mac_exits=%llu model_failures=%llu failures=%llu\n",
+              (unsigned long long)cases, (unsigned long long)entries,
+              (unsigned long long)exits, (unsigned long long)nonidle_mac_exits,
+              (unsigned long long)stats.failures, (unsigned long long)failures);
+  return failures ? 1 : 0;
+}

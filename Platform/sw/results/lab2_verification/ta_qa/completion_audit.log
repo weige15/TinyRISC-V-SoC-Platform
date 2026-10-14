@@ -1,0 +1,103 @@
+CHECKLIST 1.1.1: original text exact; V1, V6; PASS; evidence column present
+CHECKLIST 1.1.2: original text exact; V1; PASS; evidence column present
+CHECKLIST 1.1.3: original text exact; V1; PASS; evidence column present
+CHECKLIST 1.2.1: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.2.2: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.2.3: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.3.1: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.3.2: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.3.3: original text exact; V2; PASS; evidence column present
+CHECKLIST 1.4.1: original text exact; V5; PASS; evidence column present
+CHECKLIST 1.4.2: original text exact; V4, V5; PASS; evidence column present
+CHECKLIST 1.4.3: original text exact; V5; PASS; evidence column present
+CHECKLIST 2.1.1: original text exact; V1, V4; PASS; evidence column present
+CHECKLIST 2.1.2: original text exact; V1, V4; PASS; evidence column present
+CHECKLIST 2.1.3: original text exact; V1, V3, V4; PASS; evidence column present
+CHECKLIST 2.2.1: original text exact; V3; PASS; evidence column present
+CHECKLIST 2.2.2: original text exact; V3, V4; PASS; evidence column present
+CHECKLIST 2.2.3: original text exact; V3; PASS; evidence column present
+CHECKLIST 2.3.1: original text exact; V4; PASS; evidence column present
+CHECKLIST 2.3.2: original text exact; V4; PASS; evidence column present
+CHECKLIST 2.3.3: original text exact; V3, V4, V5, V6; PASS; evidence column present
+CHECKLIST 3.1: original text exact; V7, V6; PASS; evidence column present
+CHECKLIST 3.2: original text exact; V1–V7; PASS; evidence column present
+REPORT_CHECK: original sections=8 checklist=23 PASS=23 FAIL_rows=0; hidden N=OPEN
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/inputs.sha256: 9/9 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/inputs.sha256: 14/14 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v3_v5/inputs.sha256: 17/17 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/inputs.sha256: 12/12 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/offset_inputs.sha256: 10/10 match
+SAVED_DEMO_SOURCE_CHECK: 22/22 match; manifest not regenerated
+AUDIT PASS: /home/kuotzuwei15/NNchip/demo/out/rtl.log: 64 named cases, 56 fresh-data recoveries, 0 failures
+AUDIT PASS: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/unmodified-control.log: 64 named cases, 56 fresh-data recoveries, 0 failures
+AUDIT PASS: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/dont-care-error-result.log: 64 named cases, 56 fresh-data recoveries, 0 failures
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/errors_mutations.log: ERROR MUTATION RESULT: controls=2 rejected=14 survived=0
+TRACE_REPLAY: R_beats=194516 MAC_bytes=856256 calls=384 violations=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/reuse_rtl.log: REUSE_SAFETY: armed_same=64 arena_new_layer=32 rearm=64 unarmed_changed=64 changed_N=64 changed_ptr1=32 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/trace_controls.log: TRACE VERIFIER CONTROLS: valid=1 rejected=10 survived=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST RESULT: cases=833 computes=11360 per_element_audits=5149760 mismatches=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST COVERAGE: N=257 alignments=16 offsets=5 patterns=2 cases=160
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST COVERAGE: N=300 alignments=16 offsets=5 patterns=2 cases=160
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST COVERAGE: N=511 alignments=16 offsets=5 patterns=2 cases=160
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST COVERAGE: N=512 alignments=16 offsets=5 patterns=2 cases=160
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/host.log: HOST COVERAGE: N=513 alignments=16 offsets=5 patterns=2 cases=160
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/counters.log: COUNTER RESULT: widths=54 snapshots=80 checks=8006 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/host.log: ROUTING RESULT: conv_or_dot_cases=26 real_entries=9256 real_exits=9256 nonidle_mac_exits=0 model_failures=0 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/host.log: ROUTING SPLIT: tuples=42 N=0,1,4095,4096,4097,8193 offsets=7 exact_visitation=1
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/host.log: ROUTING EMPTY: prepared_N_zero=2 preparation_consumed=1 computes=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/abi_and_boot.log: C_ABI_SIGNATURE_RESULT: checks=1 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/source_audit.log: PREPROCESS_CHECK: api_declaration=1 api_definition=1 conv_declaration=1 conv_direct_call=1 name_macro=0 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/mutations.log: ROUTING MUTATION RESULT: detected=5 escaped=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v3_v5/offset9_host.log: HOST RESULT: conv_cases=1280 bytes=196608 unsaturated=196601 byte_mismatches=0 model_failures=0 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v3_v5/offset9_mutations.log: MUTATION RESULT: detected=5 escaped=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v3_v5/arena_host.log: ARENA_RESULT: pairs=64 layers=128 shared_address_pairs=64 changed_outputs=256 mismatches=0 stale_hits=0 model_failures=0 failures=0
+EVIDENCE TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/ta_qa/all_offsets_host.log: ALL_OFFSETS_RESULT: offsets=257 range=-128..128 conv_cases=257 bytes=12336 plain_calls=257 byte_mismatches=0 model_failures=0 failures=0
+V6 SAVED evidence: 14 copies/hash checks PASS; set 2x3/3, random 3x100/100, boundary 640/640, conv 3/3, labels 5/5
+Saved route reports: post_route_utilization_npu.rpt + post_route_timing_summary.rpt
+COVERAGE: lengths=304 (1..300,511,512,513,1024) alignments=16 offsets=5 matrix=24320 window_end=12160 signed_wrap=2
+ERROR_COVERAGE: cases=64/64 recoveries=56/56 masks=ff,ff,ff,ff,ff,ff,ff,ff
+REUSE_SAFETY: armed_same=64 arena_new_layer=32 rearm=64 unarmed_changed=64 changed_N=64 changed_ptr1=32 failures=0
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+AXI_SCOREBOARD: R_beats=5824786 MAC_bytes=26438836 stream_bytes=25311838 fast_bytes=1126998 violations=0
+V1/V2/V5 full RTL: PASS=43806036 FAIL=0 cases=57255
+  ds_cnn conv in=49x20x1 f=300x3x3x1 d=2,1 off=-102: 243000 outputs, 119 distinct values
+  ds_cnn CONV_2D layer 0: O1 2187000 calls; new 729000 calls, N values: N=3 x729000 (ptr1 reuse hits 0)
+  border_path calls: N=1 x88, N=3 x27
+  ds_cnn conv in=43x16x300 f=300x1x1x300 d=1,1 off=128: 206400 outputs, 125 distinct values
+  ds_cnn CONV_2D layer 1: O1 412800 calls; new 206400 calls, N values: N=300 x206400 (ptr1 reuse hits 205712)
+  ds_cnn conv in=39x12x300 f=300x1x1x300 d=1,1 off=128: 140400 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 2: O1 280800 calls; new 140400 calls, N values: N=300 x140400 (ptr1 reuse hits 139932)
+  ds_cnn conv in=30x10x300 f=300x1x1x300 d=1,1 off=128: 90000 outputs, 113 distinct values
+  ds_cnn CONV_2D layer 3: O1 180000 calls; new 90000 calls, N values: N=300 x90000 (ptr1 reuse hits 89700)
+  ds_cnn conv in=22x6x300 f=300x1x1x300 d=1,1 off=128: 39600 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 4: O1 79200 calls; new 39600 calls, N values: N=300 x39600 (ptr1 reuse hits 39468)
+  ds_cnn conv in=13x4x300 f=300x1x1x300 d=1,1 off=128: 15600 outputs, 124 distinct values
+  ds_cnn CONV_2D layer 5: O1 31200 calls; new 15600 calls, N values: N=300 x15600 (ptr1 reuse hits 15548)
+  ds_cnn         6 cases
+  border_path    1 cases
+  offset_sweep   257 cases
+  depth_sweep    300 cases
+  depth_sweep_grp 299 cases
+  grid           422 cases
+  grouped        239 cases
+  grouped_large  57 cases
+  random         1001 cases
+  (673 randomly drawn VALID shapes with no output were skipped)
+NPU product-count check failures: 0
+call-pattern failures (conv 0 >729000 or border taps merged): 0
+ptr1 reuse: 1037602 hits, 0 stale hits, 0 returns while armed, 0 changed-input rerun mismatches
+ALL PASS: 2582/2582 cases pass, 1187329 outputs compared, 0 mismatches
+Conv host: PASS=2582 FAIL=0
+Wave aligned: PASS=267 FAIL=0; VCD AR=2 R=32 discarded_tail=0 status=0; demo/out/waves/aligned.vcd (57177 bytes)
+Wave unaligned: PASS=578 FAIL=0; VCD AR=2 R=33 discarded_tail=0 status=0; demo/out/waves/unaligned.vcd (99152 bytes)
+Wave split_4k: PASS=292 FAIL=0; VCD AR=4 R=34 discarded_tail=0 status=0; demo/out/waves/split_4k.vcd (58636 bytes)
+Wave slverr: PASS=1364 FAIL=0; VCD AR=3 R=48 discarded_tail=0 status=4; demo/out/waves/slverr.vcd (112738 bytes)
+Wave missing_rlast: PASS=314585 FAIL=0; VCD AR=3 R=51 discarded_tail=3 status=2; demo/out/waves/missing_rlast.vcd (115990 bytes)
+BITSTREAM_CHECK: TinyRISC-V-SoC-Platform/Platform/build/out.bit matches saved SHA-256 9be42f9d2954fc68016490fb93d1c76b014b09a59555c52bc635d59183c6b5f6; no new programming claimed
+ELF_CHECK: matches saved V6 acceptance ELF; no new board run claimed
+UART_CITATION_CHECK: 14/14 result lines match; 60/60 golden words checked by archive verifier
+LAPTOP_CHECK: script syntax/executable, required tools, source inputs, bitstream and five parsed VCDs present
+MANUAL_SCOPE: see report for inspected assertions, RAM-write decode, ABI/call path, ownership contract and equivalent completion branch
+BOUNDARY: local trace checker only; private grader not supplied; historical UART distinct from current host/RTL; hidden N remains OPEN
+REPORT_SHA256: 6131ec89c8aa4981d74b08efcecab7b7d28e69a0323466b7456e03f3f1231639
+OBJECTIVE_GATE: PASS — 23 original items mapped, 0 FAIL rows; print the complete report before marking the goal complete

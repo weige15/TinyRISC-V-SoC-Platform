@@ -1,0 +1,26 @@
+[FAIL] wrong split pointer progression or out-of-range request
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+[FAIL] element input_offset not applied exactly once
+[FAIL] element skipped or visited more than once
+HOST COVERAGE: N=257 alignments=16 offsets=5 patterns=2 cases=160
+HOST COVERAGE: N=300 alignments=16 offsets=5 patterns=2 cases=160
+HOST COVERAGE: N=511 alignments=16 offsets=5 patterns=2 cases=160
+HOST COVERAGE: N=512 alignments=16 offsets=5 patterns=2 cases=160
+HOST COVERAGE: N=513 alignments=16 offsets=5 patterns=2 cases=160
+HOST RESULT: cases=833 computes=11360 per_element_audits=5149760 mismatches=10178432

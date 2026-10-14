@@ -1,0 +1,69 @@
+113:    localparam [2:0]  FUNCT3_SIMD_MAC                 = 3'b011;
+114:    localparam [31:0] FUNCT7_SIMD_MAC_RESET           = 32'd1;
+115:    localparam [31:0] FUNCT7_SIMD_MAC_ACCUMULATE      = 32'd0;
+148:    localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
+149:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
+150:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
+151:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
+152:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE      = 32'd3;
+153:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE_FC   = 32'd4;
+154:    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET9       = 32'd5;
+166:    wire reuse_clear = (state_r == STATE_IDLE) && NPU_start &&
+167:        (((funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) &&
+168:          ((funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE) ||
+169:           (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE_FC))) ||
+170:         (funct3_i[2:0] == 3'b010));
+179:        (funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) &&
+180:        (funct7_i == FUNCT7_BURST_DOT_PRODUCT_COMPUTE);
+199:        .reuse_clear    (reuse_clear),
+263:            simd_mac_accumulator_r <= 32'd0;
+271:            M_AXI_WDATA   <= 32'd0;
+288:                        if (funct3_i[2:0] == 3'b000) begin
+290:                        end else if (funct3_i[2:0] == 3'b001) begin
+296:                        end else if (funct3_i[2:0] == 3'b010) begin
+299:                            M_AXI_WDATA   <= rs2_i << {rs1_i[1:0], 3'b000};
+309:                        end else if (funct3_i[2:0] == FUNCT3_SIMD_MAC) begin
+311:                        end else if (funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) begin
+312:                            if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH) begin
+317:                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET9) begin
+322:                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_COMPUTE) begin
+324:                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_STATUS) begin
+327:                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE) begin
+332:                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_REUSE_FC) begin
+352:                    if (funct7_i == FUNCT7_SIMD_MAC_RESET) begin
+353:                        simd_mac_accumulator_r <= simd_dot_product;
+355:                    end else if (funct7_i == FUNCT7_SIMD_MAC_ACCUMULATE) begin
+356:                        simd_mac_accumulator_r <= simd_mac_accumulator_r +
+421:                            M_AXI_WDATA   <= write_second_data_r;
+73:    wire reuse_hit = reuse_enable && reuse_valid &&
+180:    wire emit_valid = r_fire && !discard && !failed;
+197:            input_buffer[input_received[IB-1:0]] <= m_axi_rdata;
+202:    wire in_rep_we = emit_valid && !is_filter && (input_received < 1024);
+207:    wire fc_we = emit_valid && is_filter && fc_app;
+213:            if (in_rep_we && input_received[2:0] == bk) in_rep[input_received[9:3]] <= m_axi_rdata;
+219:            if (fc_we && fc_wrel[2:0] == bk) fc_mem[fc_wrel[14:3]] <= m_axi_rdata;
+294:            reuse_valid <= 0; reuse_address <= 0; reuse_length <= 0;
+310:            if (reuse_clear) begin reuse_valid <= 0; fc_valid <= 0; end
+348:                reuse_valid <= 0;
+415:                    reuse_valid <= reuse_enable && !reuse_clear && (status == 0) &&
+sw/project/lab2_api.cc:69:extern "C" void lab2_reuse_arm(void) {
+sw/project/lab2_api.cc:70:    cfu_raw_op(4, 4, 1, 0);
+sw/project/lab2_api.cc:73:extern "C" void lab2_conv_reset(void) {
+sw/project/lab2_api.cc:75:    cfu_raw_op(4, 3, 0, 0);
+sw/project/lab2_api.cc:103:        cfu_raw_op(4, 5, N, command.offset);  // SET9, without narrowing +128
+sw/project/lab2_api.cc:105:        cfu_raw_op(4, 0, N, input_offset);    // legacy SET8, all int8 values
+sw/project/lab2_api.cc:107:    return static_cast<int32_t>(cfu_raw_op(4, 1, ptr1, ptr2));
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:31:class ConvMacScope {
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:33:  ConvMacScope() { lab2_conv_reset(); }
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:34:  ~ConvMacScope() { lab2_conv_reset(); }
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:35:  ConvMacScope(const ConvMacScope&) = delete;
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:36:  ConvMacScope& operator=(const ConvMacScope&) = delete;
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:108:  const ConvMacScope mac_scope;
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:173:  const bool output_disjoint =
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:176:  if (output_disjoint) {
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:187:  if (output_disjoint) {
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:188:    lab2_reuse_arm();
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:194:  if (pointwise_fast_path && output_disjoint) {
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:267:                                    filter_row, input_offset, n, output_disjoint);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:289:                acc += ConvDotProduct(in, flt, input_offset, n, output_disjoint);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:335:  const ConvMacScope mac_scope;

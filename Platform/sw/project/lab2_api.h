@@ -1,7 +1,8 @@
 #ifndef LAB2_API_H
 #define LAB2_API_H
 
-#include<stdint.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,31 +15,27 @@ int32_t hw_simd_mac(
     int8_t input_offset, uint32_t N
 );
 
-// ptr1 operand reuse window (see lab2_api.cc). Reserved for conv.h's
-// ConvPerChannel: arm after cleaning the input tensor, disarm before return.
-void hw_simd_mac_reuse_arm(void);
-void hw_simd_mac_reuse_disarm(void);
+// Optional one-shot convolution command for the NEXT call to the function
+// above. The signed 9-bit offset is kept wide (including +128); its legacy
+// int8 argument is ignored for that one prepared call. Preparation is consumed
+// and zeroed on entry, even for N=0. Unprepared calls retain SET8 semantics.
+// precleaned requires both ranges cleaned/fenced and unchanged until completion.
+// Single-owner NPU: no intervening/reentrant MAC is allowed after preparation.
+void lab2_prepare_mac(int32_t input_offset, bool precleaned);
+
+// Stateless bulk clean; no address ranges are retained.
+void lab2_clean_operands(const void* a, uint32_t a_bytes,
+                         const void* b, uint32_t b_bytes);
+// Arm only after cleaning disjoint operands. Reset cancels any preparation
+// AND disarms/invalidates both hardware operand caches. Conv scopes reset at
+// entry and exit, including aliased tensors, empty outputs and early returns.
+void lab2_reuse_arm(void);
+void lab2_conv_reset(void);
+// Diagnostic: all SOFTWARE preparation fields are zero (not a hardware read).
+bool lab2_mac_is_idle(void);
 
 #ifdef __cplusplus
 }
 #endif
-
-// Only for callers that have cleaned BOTH complete ranges and fenced, and
-// guarantee no intervening writes. Ordinary/test callers MUST use hw_simd_mac.
-#if defined(__riscv)
-#include "../app/cfu.h"
-#endif
-static inline __attribute__((always_inline)) int32_t hw_simd_mac_precleaned(
-    int8_t* ptr1, int8_t* ptr2, int8_t input_offset, uint32_t N) {
-#if defined(__riscv)
-    if (N == 0) return 0;
-    // CUSTOM-0 funct3=4: SET(N, offset), COMPUTE(ptr1, ptr2) -> result.
-    // NPU.v latches only rs2[7:0]; no CPU mask/sign-extension is required.
-    cfu_raw_op(4, 0, N, input_offset);
-    return (int32_t)cfu_raw_op(4, 1, ptr1, ptr2);
-#else
-    return hw_simd_mac(ptr1, ptr2, input_offset, N);
-#endif
-}
 
 #endif

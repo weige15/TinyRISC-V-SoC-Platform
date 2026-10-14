@@ -1,0 +1,5 @@
+Wave aligned: PASS=267 FAIL=0; VCD AR=2 R=32 discarded_tail=0 status=0; demo/out/waves/aligned.vcd (57177 bytes)
+Wave unaligned: PASS=578 FAIL=0; VCD AR=2 R=33 discarded_tail=0 status=0; demo/out/waves/unaligned.vcd (99152 bytes)
+Wave split_4k: PASS=292 FAIL=0; VCD AR=4 R=34 discarded_tail=0 status=0; demo/out/waves/split_4k.vcd (58636 bytes)
+Wave slverr: PASS=1364 FAIL=0; VCD AR=3 R=48 discarded_tail=0 status=4; demo/out/waves/slverr.vcd (112738 bytes)
+Wave missing_rlast: PASS=314585 FAIL=0; VCD AR=3 R=51 discarded_tail=3 status=2; demo/out/waves/missing_rlast.vcd (115990 bytes)

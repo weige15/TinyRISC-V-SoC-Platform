@@ -1,0 +1,4 @@
+[INFO] seed=20261007
+[FAIL] t=395000 ptr1/slverr-first/B16/accepted-other: RREADY unusable before RLAST
+FATAL: /tmp/lab2-error-tests/mutations/ignore-rvalid/tb.sv:119: assertion failed: ptr1/slverr-first/B16/accepted-other: RREADY unusable before RLAST
+       Time: 395000  Scope: npu_lab2_tb.check

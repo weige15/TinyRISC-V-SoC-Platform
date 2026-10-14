@@ -1,0 +1,23 @@
+{"event": "START", "time": 1791957500.266316, "raw_offset": 0, "command": "source /home/kuotzuwei15/NNchip/env.sh >/dev/null && PYTHONUNBUFFERED=1 make -C Platform run MODEL_FILE=ds_cnn_stream_fe.tflite MODEL_PROFILE=ds_cnn_stream_fe APP_DEFINES=", "pid": 697203, "port": "/dev/ttyUSB1", "bitstream_sha256": "9be42f9d2954fc68016490fb93d1c76b014b09a59555c52bc635d59183c6b5f6", "image_sha256": "440a9487362801022b649fe411a88023fe4ac86d827c4d6c547a8260e36ef0b4", "elf_sha256": "e637b0ebc4c81e18c1e09cf43469add14fcca006fa0a3206be66633e854da5ac"}
+{"event": "IMAGE_VERIFIED", "time": 1791957509.2365608, "raw_offset": 38025, "actual_bin_sha256": "440a9487362801022b649fe411a88023fe4ac86d827c4d6c547a8260e36ef0b4", "actual_elf_sha256": "e637b0ebc4c81e18c1e09cf43469add14fcca006fa0a3206be66633e854da5ac"}
+{"event": "LISTENING", "time": 1791957509.2593405, "raw_offset": 38025, "message": "Listening on /dev/ttyUSB1 ..."}
+{"event": "SYNC_OBSERVED", "time": 1791957509.2595487, "raw_offset": 38029}
+{"event": "BOOT_MENU", "time": 1791957517.17302, "raw_offset": 158914}
+{"event": "SEND", "time": 1791957517.173089, "raw_offset": 158914, "stage": "enter_lab", "key": "l"}
+{"event": "RETURN", "time": 1791957517.203466, "raw_offset": 159071, "stage": "enter_lab", "start": 158914, "end": 159071}
+{"event": "SEND", "time": 1791957517.2035112, "raw_offset": 159071, "stage": "set", "key": "t"}
+{"event": "RETURN", "time": 1791957517.2844293, "raw_offset": 159859, "stage": "set", "start": 159071, "end": 159859}
+{"event": "SEND", "time": 1791957517.2844892, "raw_offset": 159859, "stage": "random", "key": "r"}
+{"event": "RETURN", "time": 1791957517.3449962, "raw_offset": 160061, "stage": "random", "start": 159859, "end": 160061}
+{"event": "SEND", "time": 1791957517.3450544, "raw_offset": 160061, "stage": "conv", "key": "c"}
+{"event": "RETURN", "time": 1791957517.4055245, "raw_offset": 160422, "stage": "conv", "start": 160061, "end": 160422}
+{"event": "SEND", "time": 1791957517.4055676, "raw_offset": 160422, "stage": "exit_lab", "key": "x"}
+{"event": "RETURN", "time": 1791957517.4358258, "raw_offset": 160601, "stage": "exit_lab", "start": 160422, "end": 160601}
+{"event": "SEND", "time": 1791957517.4358854, "raw_offset": 160601, "stage": "all_labels", "key": "t"}
+{"event": "RETURN", "time": 1791957658.5063994, "raw_offset": 167254, "stage": "all_labels", "start": 160601, "end": 167254}
+{"event": "SEND", "time": 1791957658.5065627, "raw_offset": 167254, "stage": "reenter_lab", "key": "l"}
+{"event": "RETURN", "time": 1791957658.5263922, "raw_offset": 167411, "stage": "reenter_lab", "start": 167254, "end": 167411}
+{"event": "SEND", "time": 1791957658.526502, "raw_offset": 167411, "stage": "random_after_model", "key": "r"}
+{"event": "RETURN", "time": 1791957658.5771098, "raw_offset": 167613, "stage": "random_after_model", "start": 167411, "end": 167613}
+{"event": "SEQUENCE_RETURNED", "time": 1791957658.5781102, "raw_offset": 167613}
+{"event": "CAPTURE_END", "time": 1791957658.5934894, "raw_offset": 167613, "process_status": 0}

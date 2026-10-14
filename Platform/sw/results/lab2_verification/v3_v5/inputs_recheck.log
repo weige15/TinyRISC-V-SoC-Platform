@@ -1,0 +1,17 @@
+hw/srcs/NPU.v: OK
+hw/srcs/npu_burst_dot_product.v: OK
+hw/sim/npu_lab2_tb.sv: OK
+hw/sim/npu_axi_trace_scoreboard.svh: OK
+hw/sim/run_offset9_tests.sh: OK
+hw/sim/check_offset9_mutations.py: OK
+hw/sim/run_reuse_provenance_tests.sh: OK
+sw/tests/offset9_host_test.cc: OK
+sw/tests/reuse_arena_host_test.cc: OK
+sw/tests/offset9_ref.cc: OK
+sw/tests/offset9_model.cc: OK
+sw/tests/offset9_model.h: OK
+sw/project/lab2_api.cc: OK
+sw/project/lab2_api.h: OK
+sw/app/cfu.h: OK
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK
+../tflite-micro/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK

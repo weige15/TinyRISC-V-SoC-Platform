@@ -1,0 +1,4 @@
+[INFO] seed=7
+[FAIL] t=1995000 AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+FATAL: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/sim/npu_lab2_tb.sv:124: assertion failed: AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+       Time: 1995000  Scope: npu_lab2_tb.check

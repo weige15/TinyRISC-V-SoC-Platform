@@ -1,0 +1,10 @@
+[PASS] offset=0 value=0x12345678 physical_writes=1
+[PASS] offset=1 value=0x12345678 physical_writes=2
+[PASS] offset=2 value=0x12345678 physical_writes=2
+[PASS] offset=3 value=0x12345678 physical_writes=2
+[PASS] offset=0 value=0xa5c37e19 physical_writes=1
+[PASS] offset=1 value=0xa5c37e19 physical_writes=2
+[PASS] offset=2 value=0xa5c37e19 physical_writes=2
+[PASS] offset=3 value=0xa5c37e19 physical_writes=2
+[PASS] All aligned/misaligned AXI write byte-placement and handshake checks
+hw/sim/npu_misaligned_axi_write_tb.sv:454: $finish called at 1896000 (1ps)

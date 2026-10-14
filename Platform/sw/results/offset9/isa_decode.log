@@ -1,0 +1,13 @@
+Disassembly of section .text.hw_simd_mac_reuse_arm:
+  0x08e7c78b: opcode=0x0b funct3=4 funct7=4 rs1=x15 rs2=x14
+Disassembly of section .text.hw_simd_mac_reuse_disarm:
+  0x06f7c78b: opcode=0x0b funct3=4 funct7=3 rs1=x15 rs2=x15
+Disassembly of section .text._Z16hw_simd_mac_convPaS_lmb:
+  0x0ac6c68b: opcode=0x0b funct3=4 funct7=5 rs1=x13 rs2=x12
+Disassembly of section .text._Z16hw_simd_mac_convPaS_lmb:
+  0x02b5450b: opcode=0x0b funct3=4 funct7=1 rs1=x10 rs2=x11
+Disassembly of section .text.hw_simd_mac:
+  0x00c6c68b: opcode=0x0b funct3=4 funct7=0 rs1=x13 rs2=x12
+Disassembly of section .text.hw_simd_mac:
+  0x02b5450b: opcode=0x0b funct3=4 funct7=1 rs1=x10 rs2=x11
+ISA RESULT: SET9 uses a3=N, a2=int32 offset unchanged; plain SET8 uses its a2; failures=0

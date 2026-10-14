@@ -1,0 +1,6 @@
+patching file Platform/hw/srcs/NPU.v
+patching file Platform/hw/srcs/npu_burst_dot_product.v
+patching file Platform/sw/project/lab2_api.cc
+patching file Platform/sw/project/lab2_api.h
+patching file Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h
+PASS: 9/9 measured production input hashes reconstructed.

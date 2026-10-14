@@ -47,7 +47,7 @@ with tempfile.TemporaryDirectory(prefix='lab2-mutations-') as tmp:
             sources[target] = sources[target].replace(old, new)
         for key, source in sources.items():
             (tmp / (key + '.v')).write_text(source)
-        subprocess.run(['iverilog', '-g2012', '-s', 'npu_lab2_tb', '-o', str(tmp/'run.vvp'),
+        subprocess.run(['iverilog', '-g2012', '-I', str(hw / 'sim'), '-s', 'npu_lab2_tb', '-o', str(tmp/'run.vvp'),
                         str(tmp/'tb.sv'), str(tmp/'top.v'), str(tmp/'engine.v')], check=True)
         result = subprocess.run(['vvp','-n',str(tmp/'run.vvp')], text=True,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=120)

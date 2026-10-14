@@ -1,0 +1,28 @@
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v1/inputs.sha256: 9/9 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v4/inputs.sha256: 14/14 match
+SOURCE_CHECK TinyRISC-V-SoC-Platform/Platform/sw/results/lab2_verification/v3_v5/inputs.sha256: 17/17 match
+SAVED_DEMO_SOURCE_CHECK: 22/22 match
+ARCHIVE_CHECK: 14/14 saved copies and 1 unchanged ZIP match
+V6_EXISTING_ELF_CHECK: recorded hash matches; no new hardware execution claimed
+SAVED_RTL_CHECK: 57255 COMPUTEs; 24320 length tuples; 12160 window-end cases; all 64 error names and 56 recovery names; offset/reuse/provenance summaries match
+UART_CITATION_CHECK: all 14 cited result lines match; 60/60 Actual/Golden words equal
+EVIDENCE_CHECK v1/host.log: HOST RESULT: cases=833 computes=11360 per_element_audits=5149760 mismatches=0
+EVIDENCE_CHECK v1/counters.log: COUNTER RESULT: widths=54 snapshots=80 checks=8006 failures=0
+EVIDENCE_CHECK v1/mutations.log: MUTATION RESULT: rejected=6 survived=0
+EVIDENCE_CHECK v4/host.log: ROUTING RESULT: conv_or_dot_cases=26 real_entries=9256 real_exits=9256 nonidle_mac_exits=0 model_failures=0 failures=0
+EVIDENCE_CHECK v4/mutations.log: ROUTING MUTATION RESULT: detected=5 escaped=0
+EVIDENCE_CHECK v3_v5/offset9_host.log: HOST RESULT: conv_cases=1280 bytes=196608 unsaturated=196601 byte_mismatches=0 model_failures=0 failures=0
+EVIDENCE_CHECK v3_v5/arena_host.log: ARENA_RESULT: pairs=64 layers=128 shared_address_pairs=64 changed_outputs=256 mismatches=0 stale_hits=0 model_failures=0 failures=0
+EVIDENCE_CHECK v3_v5/offset9_mutations.log: MUTATION RESULT: detected=5 escaped=0
+EVIDENCE_CHECK v3_v5/arena_mutation.log: HOST MUTATION: stale-across-layers REJECTED (actual output mismatches)
+BROAD_HOST_CHECK: 2582/2582 cases; 1187329 outputs; 0 mismatches
+WAVEFORM_RECHECK: reading saved VCD handshakes, not rerunning RTL
+Wave aligned: PASS=267 FAIL=0; VCD AR=2 R=32 discarded_tail=0 status=0; demo/out/waves/aligned.vcd (57177 bytes)
+Wave unaligned: PASS=578 FAIL=0; VCD AR=2 R=33 discarded_tail=0 status=0; demo/out/waves/unaligned.vcd (99152 bytes)
+Wave split_4k: PASS=292 FAIL=0; VCD AR=4 R=34 discarded_tail=0 status=0; demo/out/waves/split_4k.vcd (58636 bytes)
+Wave slverr: PASS=1364 FAIL=0; VCD AR=3 R=48 discarded_tail=0 status=4; demo/out/waves/slverr.vcd (112738 bytes)
+Wave missing_rlast: PASS=314585 FAIL=0; VCD AR=3 R=51 discarded_tail=3 status=2; demo/out/waves/missing_rlast.vcd (115990 bytes)
+REPORT_CHECK: file exists; 30 evidence PASS rows; 8 unresolved TA-source FAIL rows
+OPEN_QUESTION_CHECK: hidden-test N range remains OPEN; V1 covers N through 1024 with its documented matrix/sweep distinction
+COVERAGE_LIMIT: test evidence and hashes cannot enumerate or map the missing original TA checklist
+OBJECTIVE_GATE: BLOCKED — sections 1.1,1.2,1.3,1.4,2.1,2.2,2.3,3 lack original checklist text; no-FAIL gate not met

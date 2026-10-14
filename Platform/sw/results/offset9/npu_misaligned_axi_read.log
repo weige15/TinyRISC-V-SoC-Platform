@@ -1,0 +1,6 @@
+[PASS] Read reconstruction offset=0 value=0x44332211
+[PASS] Read reconstruction offset=1 value=0x55443322
+[PASS] Read reconstruction offset=2 value=0x66554433
+[PASS] Read reconstruction offset=3 value=0x77665544
+[PASS] All aligned/misaligned AXI read reconstruction checks
+hw/sim/npu_misaligned_axi_read_tb.sv:217: $finish called at 726000 (1ps)

@@ -1,0 +1,19 @@
+AUDIT PASS: /tmp/lab2-error-tests/mutations/unmodified-control/run.log: 64 named cases, 56 fresh-data recoveries, 0 failures
+CONTROL PASS: unmodified-control
+AUDIT PASS: /tmp/lab2-error-tests/mutations/dont-care-error-result/run.log: 64 named cases, 56 fresh-data recoveries, 0 failures
+CONTROL PASS: dont-care-error-result
+REJECTED drop-rready-on-error: [FAIL] t=345000 ptr1/slverr-first/B16/accepted-other: RREADY unusable before RLAST
+REJECTED ignore-rvalid: [FAIL] t=395000 ptr1/slverr-first/B16/accepted-other: RREADY unusable before RLAST
+REJECTED done-before-affected-rlast: [FAIL] t=345000 ptr1/slverr-first/B16/accepted-other: NPU_done before affected RLAST
+REJECTED done-before-other-rlast: [FAIL] t=635000 ptr1/slverr-first/B16/accepted-other: NPU_done before other requested bursts drained
+REJECTED sticky-error-done: [FAIL] t=965000 ptr1/slverr-first/B16/accepted-other: NPU_done repeated or wider than one cycle
+REJECTED delayed-second-done: [FAIL] t=1035000 ptr1/slverr-first/B16/accepted-other: NPU_done repeated or wider than one cycle
+REJECTED new-unaccepted-ar-after-error: [FAIL] t=675000 ptr1/slverr-first/B16/accepted-other: new AR offer after error ARREADY=0
+REJECTED ignore-decerr: [FAIL] t=9235000 ptr1/decerr-middle/B16/accepted-other: operand write enable after error/beat B
+REJECTED write-after-error: [FAIL] t=345000 ptr1/slverr-first/B16/accepted-other: operand write enable after error/beat B
+REJECTED input-write-past-b: [FAIL] t=18336000 physical input_buffer changed after beat B
+REJECTED replica-write-past-b: [FAIL] t=18336000 physical input replica changed after beat B
+REJECTED filter-write-past-b: [FAIL] t=68686000 physical filter cache changed after beat B
+REJECTED stale-operands-after-error: [FAIL] t=1345000 AR #0 got 60008fc0/ARLEN 15, expected 60000fc0/ARLEN 15
+REJECTED wrong-recovery-result: [FAIL] t=2576000 ptr1/slverr-first/B16/accepted-other/recovery p1=60000fc0 p2=60008fc0 off=-17 N=128: got -73517 expected -73518
+ERROR MUTATION RESULT: controls=2 rejected=14 survived=0

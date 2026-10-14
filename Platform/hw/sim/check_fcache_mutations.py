@@ -29,7 +29,7 @@ def run(name):
     d = os.path.join(out, name); os.makedirs(d, exist_ok=True)
     open(os.path.join(d, 'dut.v'), 'w').write(mutant)
     vvp = os.path.join(d, 'tb.vvp')
-    subprocess.run(['iverilog', '-g2012', '-s', 'npu_lab2_tb', '-o', vvp, os.path.join(hw, 'sim/npu_lab2_tb.sv'),
+    subprocess.run(['iverilog', '-g2012', '-I', os.path.join(hw, 'sim'), '-s', 'npu_lab2_tb', '-o', vvp, os.path.join(hw, 'sim/npu_lab2_tb.sv'),
                     os.path.join(hw, 'srcs/NPU.v'), os.path.join(d, 'dut.v')], check=True)
     r = subprocess.run(['vvp', '-n', vvp, '+seed=20261007'], capture_output=True, text=True)
     open(os.path.join(d, 'sim.log'), 'w').write(r.stdout + r.stderr)

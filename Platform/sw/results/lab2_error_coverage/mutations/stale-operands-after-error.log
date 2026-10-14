@@ -1,0 +1,4 @@
+[INFO] seed=20261007
+[FAIL] t=1345000 AR #0 got 60008fc0/ARLEN 15, expected 60000fc0/ARLEN 15
+FATAL: /tmp/lab2-error-tests/mutations/stale-operands-after-error/tb.sv:119: assertion failed: AR #0 got 60008fc0/ARLEN 15, expected 60000fc0/ARLEN 15
+       Time: 1345000  Scope: npu_lab2_tb.check

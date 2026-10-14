@@ -1,0 +1,28 @@
+Testing conv.h: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h
+  ds_cnn conv in=49x20x1 f=300x3x3x1 d=2,1 off=-102: 243000 outputs, 119 distinct values
+  ds_cnn CONV_2D layer 0: O1 2187000 calls; new 729000 calls, N values: N=3 x729000 (ptr1 reuse hits 703830)
+  border_path calls: N=1 x88, N=3 x27
+  ds_cnn conv in=43x16x300 f=300x1x1x300 d=1,1 off=128: 206400 outputs, 125 distinct values
+  ds_cnn CONV_2D layer 1: O1 412800 calls; new 206400 calls, N values: N=300 x206400 (ptr1 reuse hits 205712)
+  ds_cnn conv in=39x12x300 f=300x1x1x300 d=1,1 off=128: 140400 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 2: O1 280800 calls; new 140400 calls, N values: N=300 x140400 (ptr1 reuse hits 139932)
+  ds_cnn conv in=30x10x300 f=300x1x1x300 d=1,1 off=128: 90000 outputs, 113 distinct values
+  ds_cnn CONV_2D layer 3: O1 180000 calls; new 90000 calls, N values: N=300 x90000 (ptr1 reuse hits 89700)
+  ds_cnn conv in=22x6x300 f=300x1x1x300 d=1,1 off=128: 39600 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 4: O1 79200 calls; new 39600 calls, N values: N=300 x39600 (ptr1 reuse hits 39468)
+  ds_cnn conv in=13x4x300 f=300x1x1x300 d=1,1 off=128: 15600 outputs, 124 distinct values
+  ds_cnn CONV_2D layer 5: O1 31200 calls; new 15600 calls, N values: N=300 x15600 (ptr1 reuse hits 15548)
+  ds_cnn         6 cases
+  border_path    1 cases
+  offset_sweep   257 cases
+  depth_sweep    300 cases
+  depth_sweep_grp 299 cases
+  grid           422 cases
+  grouped        239 cases
+  grouped_large  57 cases
+  random         1001 cases
+  (673 randomly drawn VALID shapes with no output were skipped)
+NPU product-count check failures: 0
+call-pattern failures (conv 0 >729000 or border taps merged): 0
+ptr1 reuse: 2541256 hits, 0 stale hits, 0 returns while armed, 0 changed-input rerun mismatches
+ALL PASS: 2582/2582 cases pass, 1187329 outputs compared, 0 mismatches

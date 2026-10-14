@@ -1,0 +1,19 @@
+TinyRISC-V-SoC-Platform/Platform/sw/project/lab2_test.cc:155:    auto const ans = hw_simd_mac(
+TinyRISC-V-SoC-Platform/Platform/sw/project/lab2_api.cc:66:// including every standalone hw_simd_mac, fetches both operands.
+TinyRISC-V-SoC-Platform/Platform/sw/project/lab2_api.cc:92:extern "C" int32_t hw_simd_mac(int8_t* ptr1, int8_t* ptr2,
+TinyRISC-V-SoC-Platform/Platform/sw/tests/mac_routing_host_test.cc:57:  check(hw_simd_mac(a, b, -128, 1) == 250, "ordinary call inherited convolution state");
+TinyRISC-V-SoC-Platform/Platform/sw/tests/mac_routing_host_test.cc:234:    check(hw_simd_mac(nullptr, nullptr, 0, 0) == 0, "empty MAC result");
+TinyRISC-V-SoC-Platform/Platform/sw/tests/mac_routing_host_test.cc:247:  if (function == reinterpret_cast<void*>(&hw_simd_mac)) ++entries;
+TinyRISC-V-SoC-Platform/Platform/sw/tests/mac_routing_host_test.cc:251:  if (function == reinterpret_cast<void*>(&hw_simd_mac)) {
+TinyRISC-V-SoC-Platform/Platform/sw/tests/offset9_model.cc:2:// No ConvParams, wide-offset side channel, replacement hw_simd_mac, or CPU
+TinyRISC-V-SoC-Platform/Platform/sw/tests/lab2_length_host_test.cc:1:// Link the REAL project/lab2_api.cc, not a replacement hw_simd_mac.
+TinyRISC-V-SoC-Platform/Platform/sw/tests/lab2_length_host_test.cc:68:    sum += static_cast<uint32_t>(hw_simd_mac(a + done, b + done, offset, count));
+TinyRISC-V-SoC-Platform/Platform/sw/tests/lab2_length_host_test.cc:78:  const auto unsplit = static_cast<uint32_t>(hw_simd_mac(a, b, offset, n));
+TinyRISC-V-SoC-Platform/Platform/sw/tests/lab2_length_host_test.cc:180:  check(hw_simd_mac(nullptr, nullptr, -128, 0) == 0, "empty API result");
+TinyRISC-V-SoC-Platform/Platform/sw/tests/offset9_host_test.cc:35:  const auto result = static_cast<uint32_t>(hw_simd_mac(a, b, static_cast<int8_t>(off), n));
+TinyRISC-V-SoC-Platform/Platform/sw/tests/offset9_host_test.cc:135:            check(static_cast<uint32_t>(hw_simd_mac(a, b, 0, n)) == oracle(a, b, 128, n), "prepared command result");
+TinyRISC-V-SoC-Platform/Platform/sw/project/lab2_api.h:13:int32_t hw_simd_mac(
+TinyRISC-V-SoC-Platform/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:54:    acc += static_cast<uint32_t>(hw_simd_mac(
+TinyRISC-V-SoC-Platform/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:89:// computed by the NPU (hw_simd_mac); the CPU only does loop control, address
+TinyRISC-V-SoC-Platform/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:92:// One hw_simd_mac call covers up to 4096 channels of one filter tap. When
+TinyRISC-V-SoC-Platform/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:98:// lab2_prepare_mac -> hw_simd_mac -> CUSTOM-0 SET9 (funct3=4, funct7=5).

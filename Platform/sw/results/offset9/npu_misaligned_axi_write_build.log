@@ -1,0 +1,1 @@
+hw/srcs/npu_burst_dot_product.v:245: warning: @* is sensitive to all 32 words in array 'fprod'.

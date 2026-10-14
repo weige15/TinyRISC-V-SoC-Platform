@@ -1,0 +1,4 @@
+ELF: /home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_single/main.elf
+crt0 zeroes [0x60132000, 0x6031ec2c)
+g_conv_command: [0x6031ce40, 0x6031ce44), size=4
+PASS: all MAC command fields receive startup BSS initialization

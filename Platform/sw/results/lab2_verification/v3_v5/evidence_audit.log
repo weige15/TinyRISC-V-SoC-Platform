@@ -1,0 +1,3 @@
+V3 EVIDENCE: all 32 offset/shape rows, 6 command rows, 1280 conv cases and all 256 post-128 plain offsets; 0 failures.
+V5 EVIDENCE: all 64 alignment/length pairs x 2 layers; shared address, changed references, 128 layers, 0 failures.
+NEGATIVE CONTROLS: 5 offset-path mutants detected; stale-cache mutant caused 256 actual byte mismatches and 256 stale hits.

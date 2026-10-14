@@ -1,0 +1,601 @@
+--- a/Platform/hw/srcs/NPU.v
++++ b/Platform/hw/srcs/NPU.v
+@@ -136,22 +136,29 @@
+     //                         contiguous filter-cache window. A COMPUTE that
+     //                         hits ptr1 reuse, has ptr2 inside the window and
+     //                         equal ptr1/ptr2 byte alignment issues no AXI
+-    //                         request and runs a 16-lane MAC from local RAM.
++    //                         request and runs a 32-lane MAC from local RAM.
+     //                         Contract: memory under both operands of armed
+     //                         calls is unchanged until disarm.
++    //   funct7 = 5 (SET9)  : N = rs1, input_offset = signed(rs2[8:0]); rd = rs1.
++    //                         Explicit conv command for +128. Plain SET always
++    //                         overwrites ALL 9 bits with sign-extended int8.
++    // No instruction preloads operand RAM: rs1/rs2 are configuration or
++    // addresses for this service. The funct3=011 register-fed SIMD service
++    // has a separate accumulator and no write path to the burst engine RAMs.
+     localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
+     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
+     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
+     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
+     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE      = 32'd3;
+     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE_FC   = 32'd4;
++    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET9       = 32'd5;
+ 
+     reg [3:0] state_r;
+     // Single-word AXI read (funct3 = 001) address channel registers.
+     reg [31:0] axi_read_araddr_r;
+     reg axi_read_arvalid_r;
+     reg [31:0] burst_dot_product_length_r;
+-    reg [ 7:0] burst_dot_product_offset_r;
++    reg [ 8:0] burst_dot_product_offset_r;
+     wire [2:0] burst_dot_product_status;
+     reg reuse_armed_r;
+     reg fcache_armed_r;
+@@ -269,7 +276,7 @@
+             write_second_strb_r    <= 4'd0;
+             write_second_pending_r <= 1'b0;
+             burst_dot_product_length_r <= 32'd0;
+-            burst_dot_product_offset_r <= 8'd0;
++            burst_dot_product_offset_r <= 9'd0;
+             reuse_armed_r <= 1'b0;
+             fcache_armed_r <= 1'b0;
+         end else begin
+@@ -304,7 +311,12 @@
+                         end else if (funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) begin
+                             if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH) begin
+                                 burst_dot_product_length_r <= rs1_i;
+-                                burst_dot_product_offset_r <= rs2_i[7:0];
++                                burst_dot_product_offset_r <= {rs2_i[7], rs2_i[7:0]};
++                                NPU_out <= rs1_i;
++                                state_r <= STATE_DONE;
++                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET9) begin
++                                burst_dot_product_length_r <= rs1_i;
++                                burst_dot_product_offset_r <= rs2_i[8:0];
+                                 NPU_out <= rs1_i;
+                                 state_r <= STATE_DONE;
+                             end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_COMPUTE) begin
+--- a/Platform/hw/srcs/npu_burst_dot_product.v
++++ b/Platform/hw/srcs/npu_burst_dot_product.v
+@@ -33,7 +33,7 @@
+ ) (
+     input clk, input rst_n, input start,
+     input [31:0] input_address, filter_address, byte_length,
+-    input [7:0] input_offset,
++    input [8:0] input_offset,
+     input reuse_enable, input reuse_clear, input fcache_enable,
+     output reg done,
+     output reg [31:0] result,
+@@ -60,7 +60,7 @@
+     end
+     // synthesis translate_on
+     reg active;
+-    reg [7:0] offset_r;
++    reg [8:0] offset_r;
+     reg [1:0] input_low, filter_low;
+     reg [31:0] length_r;
+     reg [31:0] input_next, filter_next;
+@@ -257,12 +257,15 @@
+                                  (filter_position + lane < filter_limit);
+     end endgenerate
+     function [16:0] product;
+-        input [7:0] a, b, off;
++        input [7:0] a, b;
++        input [8:0] off;
+         input valid;
+-        reg signed [8:0] x;
++        // Full signed-9 offset plus signed-8 input needs 10 sum bits.
++        // Product range [-49152,49152] still fits signed 17 bits.
++        reg signed [9:0] x;
+         reg signed [16:0] p;
+         begin
+-            x = $signed({a[7],a}) + $signed({off[7],off});
++            x = $signed({{2{a[7]}},a}) + $signed({off[8],off});
+             p = x * $signed(b);
+             product = valid ? p : 17'd0;
+         end
+--- a/Platform/sw/project/lab2_api.cc
++++ b/Platform/sw/project/lab2_api.cc
+@@ -4,6 +4,16 @@
+ namespace {
+ 
+ constexpr uintptr_t kDCacheLineBytes = 32;
++
++// One-shot command, consumed and cleared by the real MAC entry point before
++// any work/early return. SET9 reads only bits [8:0]. Bit 9 distinguishes a
++// prepared zero offset from idle; bit 31 permits a cheap RV32 preclean test.
++constexpr uint32_t kOffsetMask = 0x1ffu;
++constexpr uint32_t kPrepared = 1u << 9;
++constexpr uint32_t kPrecleaned = 1u << 31;
++// crt0 clears .bss, but this platform linker leaves .sbss as an orphan.
++// Keep the entire command in the startup-zeroed range even with small data.
++uint32_t g_conv_command __attribute__((section(".bss"))) = 0;
+ 
+ // Exactly one clean per overlapping line, including unaligned endpoints.
+ // Buffers must be valid, non-wrapping address ranges. Empty ranges touch nothing.
+@@ -31,24 +41,22 @@
+ }  // namespace
+ 
+ // Retained for source compatibility. Production calls do not update a counter;
+-// host-test instrumentation supplies its own implementation and counter.
++// the host instruction-boundary model increments this diagnostic instead.
+ int hw_simd_mac_cnt = 0;
+ 
+-// Explicit bulk-clean API for convolution only. No hidden range/SET state.
+-// The caller must prove no writes to either range until its precleaned calls end.
+-extern "C" void hw_simd_mac_assume_clean_begin(const void* a, uint32_t a_bytes,
+-                                               const void* b, uint32_t b_bytes) {
++// Explicit bulk clean, with no retained range state. The caller must prove
++// no writes to either range until its precleaned calls end.
++extern "C" void lab2_clean_operands(const void* a, uint32_t a_bytes,
++                                    const void* b, uint32_t b_bytes) {
+     memory_fence();
+     clean_dcache_range(reinterpret_cast<uintptr_t>(a), a_bytes);
+     clean_dcache_range(reinterpret_cast<uintptr_t>(b), b_bytes);
+     memory_fence();
+ }
+ 
+-extern "C" void hw_simd_mac_assume_clean_end(void) {}
+-
+-// ptr1 operand reuse (NPU CUSTOM-0 funct3=4, funct7=3). Only conv.h's
+-// ConvPerChannel arms it, after hw_simd_mac_assume_clean_begin() wrote the
+-// input tensor back, and disarms it before returning. While armed, a COMPUTE
++// ptr1 operand reuse (NPU CUSTOM-0 funct3=4, funct7=3). ConvPerChannel
++// arms it after bulk cleaning, and its stack scope resets it before returning.
++// While armed, a COMPUTE
+ // with the same ptr1 and N as the previous successful one reuses the ptr1
+ // bytes that the NPU fetched over AXI for that call; ptr2 is always fetched.
+ // Arming and disarming both invalidate the NPU copy, so data fetched outside
+@@ -56,27 +64,47 @@
+ // including every standalone hw_simd_mac, fetches both operands.
+ // Arming uses funct7=4, which also enables the NPU filter cache: ptr2 words
+ // fetched over AXI by armed calls are kept, and a call that hits both the
+-// ptr1 copy and the cache issues no AXI request (16-lane local MAC). The
++// ptr1 copy and the cache issues no AXI request (32-lane local MAC). The
+ // kernel stores only to its output tensor (disjoint from input and filter)
+ // while armed, so both cached operands stay equal to memory.
+-extern "C" void hw_simd_mac_reuse_arm(void) {
++extern "C" void lab2_reuse_arm(void) {
+     cfu_raw_op(4, 4, 1, 0);
+ }
+ 
+-extern "C" void hw_simd_mac_reuse_disarm(void) {
++extern "C" void lab2_conv_reset(void) {
++    g_conv_command = 0;
+     cfu_raw_op(4, 3, 0, 0);
+ }
+ 
+-int32_t hw_simd_mac(int8_t* ptr1, int8_t* ptr2, int8_t input_offset, uint32_t N) {
++extern "C" void lab2_prepare_mac(int32_t input_offset, bool precleaned) {
++    g_conv_command = (static_cast<uint32_t>(input_offset) & kOffsetMask) |
++                     kPrepared | (precleaned ? kPrecleaned : 0u);
++}
++
++extern "C" bool lab2_mac_is_idle(void) {
++    return g_conv_command == 0;
++}
++
++// The sole MAC definition, with exactly the legacy C declaration's signature.
++// Both prepared convolution calls and ordinary calls enter this function.
++extern "C" int32_t hw_simd_mac(int8_t* ptr1, int8_t* ptr2,
++                               int8_t input_offset, uint32_t N) {
++    const uint32_t command = g_conv_command;
++    g_conv_command = 0;
+     if (N == 0) return 0;
+-    // Retain ordering on this decoupled EX/MEM core: a CMO can still be in
+-    // flight while non-memory instructions execute. Never skip test cleaning.
+-    memory_fence();
+-    clean_dcache_range(reinterpret_cast<uintptr_t>(ptr1), N);
+-    clean_dcache_range(reinterpret_cast<uintptr_t>(ptr2), N);
+-    memory_fence();
+-    // The RTL handles chunking and 4-KiB splits internally. No CPU chunk loop,
+-    // status read, SET cache, counter update, stack frame, or printf is needed.
+-    cfu_raw_op(4, 0, N, input_offset);
++    if ((command & kPrecleaned) == 0) {
++        // Retain ordering on the decoupled EX/MEM core; a CMO can otherwise
++        // still be in flight when COMPUTE starts reading external memory.
++        memory_fence();
++        clean_dcache_range(reinterpret_cast<uintptr_t>(ptr1), N);
++        clean_dcache_range(reinterpret_cast<uintptr_t>(ptr2), N);
++        memory_fence();
++    }
++    if (command != 0) {
++        // SET9 ignores the metadata above bit 8; +128 is not narrowed.
++        cfu_raw_op(4, 5, N, command);
++    } else {
++        cfu_raw_op(4, 0, N, input_offset);    // legacy SET8, all int8 values
++    }
+     return static_cast<int32_t>(cfu_raw_op(4, 1, ptr1, ptr2));
+ }
+--- a/Platform/sw/project/lab2_api.h
++++ b/Platform/sw/project/lab2_api.h
+@@ -1,7 +1,8 @@
+ #ifndef LAB2_API_H
+ #define LAB2_API_H
+ 
+-#include<stdint.h>
++#include <stdint.h>
++#include <stdbool.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -14,31 +15,27 @@
+     int8_t input_offset, uint32_t N
+ );
+ 
+-// ptr1 operand reuse window (see lab2_api.cc). Reserved for conv.h's
+-// ConvPerChannel: arm after cleaning the input tensor, disarm before return.
+-void hw_simd_mac_reuse_arm(void);
+-void hw_simd_mac_reuse_disarm(void);
++// Optional one-shot convolution command for the NEXT call to the function
++// above. The signed 9-bit offset is kept wide (including +128); its legacy
++// int8 argument is ignored for that one prepared call. Preparation is consumed
++// and zeroed on entry, even for N=0. Unprepared calls retain SET8 semantics.
++// precleaned requires both ranges cleaned/fenced and unchanged until completion.
++// Single-owner NPU: no intervening/reentrant MAC is allowed after preparation.
++void lab2_prepare_mac(int32_t input_offset, bool precleaned);
++
++// Stateless bulk clean; no address ranges are retained.
++void lab2_clean_operands(const void* a, uint32_t a_bytes,
++                         const void* b, uint32_t b_bytes);
++// Arm only after cleaning disjoint operands. Reset cancels any preparation
++// AND disarms/invalidates both hardware operand caches. Conv scopes reset at
++// entry and exit, including aliased tensors, empty outputs and early returns.
++void lab2_reuse_arm(void);
++void lab2_conv_reset(void);
++// Diagnostic: all SOFTWARE preparation fields are zero (not a hardware read).
++bool lab2_mac_is_idle(void);
+ 
+ #ifdef __cplusplus
+ }
+ #endif
+ 
+-// Only for callers that have cleaned BOTH complete ranges and fenced, and
+-// guarantee no intervening writes. Ordinary/test callers MUST use hw_simd_mac.
+-#if defined(__riscv)
+-#include "../app/cfu.h"
+ #endif
+-static inline __attribute__((always_inline)) int32_t hw_simd_mac_precleaned(
+-    int8_t* ptr1, int8_t* ptr2, int8_t input_offset, uint32_t N) {
+-#if defined(__riscv)
+-    if (N == 0) return 0;
+-    // CUSTOM-0 funct3=4: SET(N, offset), COMPUTE(ptr1, ptr2) -> result.
+-    // NPU.v latches only rs2[7:0]; no CPU mask/sign-extension is required.
+-    cfu_raw_op(4, 0, N, input_offset);
+-    return (int32_t)cfu_raw_op(4, 1, ptr1, ptr2);
+-#else
+-    return hw_simd_mac(ptr1, ptr2, input_offset, N);
+-#endif
+-}
+-
+-#endif
+--- a/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h
++++ b/Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h
+@@ -22,55 +22,77 @@
+ #include "tensorflow/lite/kernels/internal/common.h"
+ #include "tensorflow/lite/kernels/internal/portable_tensor_utils.h"
+ 
+-// Cache helpers of Platform/sw/project/lab2_api.cc: write the input and
+-// filter tensors back to DRAM once per convolution so the individual
+-// explicit precleaned calls can skip per-call cache clean and fences. Neither
+-// range is stored to while it is declared clean (only the output is written,
+-// and the kernel checks that it does not overlap them).
+-extern "C" void hw_simd_mac_assume_clean_begin(const void* a, uint32_t a_bytes,
+-                                               const void* b, uint32_t b_bytes);
+-extern "C" void hw_simd_mac_assume_clean_end(void);
+-// ptr1 operand reuse window of lab2_api.cc. Armed only below, after the bulk
+-// clean above, for the rest of one ConvPerChannel call; disarmed on return.
+-extern "C" void hw_simd_mac_reuse_arm(void);
+-extern "C" void hw_simd_mac_reuse_disarm(void);
++// These helpers are implemented in the submitted lab2_api.cc. Declare them
++// here so the two submitted software files work with the stock lab2_api.h;
++// all channel products still call its unchanged, sole C hw_simd_mac entry.
++extern "C" {
++void lab2_prepare_mac(int32_t input_offset, bool precleaned);
++void lab2_clean_operands(const void* a, uint32_t a_bytes,
++                         const void* b, uint32_t b_bytes);
++void lab2_reuse_arm(void);
++void lab2_conv_reset(void);
++}
+ 
+ namespace tflite {
+ namespace reference_integer_ops {
+ 
+-// sum_{i < n} (input[i] + input_offset) * filter[i] through the NPU, for any
+-// input_offset in [-256, 254]. Offsets outside int8 are split as
+-// input_offset = o1 + o2 with o1, o2 in int8, using
+-//   (x + o1 + o2) * w = (x + o1) * w + (x + o2) * w - x * w,
+-// so every product is still formed by the NPU and the CPU only adds the
+-// results (modulo 2^32, like the int32 reference accumulator). Used only when
+-// the filter tap sums below do not fit their buffer.
++// Stack-only ownership of the single NPU. Reset on entry also cancels stale
++// caller state; the destructor covers every return (including empty outputs,
++// the pointwise early return, aliased tensors, and the int16 overload).
++class ConvMacScope {
++ public:
++  ConvMacScope() { lab2_conv_reset(); }
++  ~ConvMacScope() { lab2_conv_reset(); }
++  ConvMacScope(const ConvMacScope&) = delete;
++  ConvMacScope& operator=(const ConvMacScope&) = delete;
++};
++
++// All input/filter channel products use the real C MAC entry point. The
++// separately named preparation call is NOT a MAC or an alias: it records a
++// one-shot wide offset/clean promise consumed inside the real definition.
++// Bound individual calls to 4096 bytes; split N advances BOTH operands and
++// adds partials modulo 2^32. No CPU channel multiplication is used.
+ inline int32_t ConvDotProduct(const int8_t* input, const int8_t* filter,
+                               int32_t input_offset, uint32_t n,
+                               bool precleaned = false) {
+-  int8_t* in = const_cast<int8_t*>(input);
+-  int8_t* flt = const_cast<int8_t*>(filter);
+-  const auto mac = [precleaned](int8_t* a, int8_t* b, int8_t offset,
+-                                uint32_t bytes) {
+-    return precleaned ? hw_simd_mac_precleaned(a, b, offset, bytes)
+-                      : hw_simd_mac(a, b, offset, bytes);
+-  };
+-  if (input_offset >= -128 && input_offset <= 127) {
+-    return mac(in, flt, static_cast<int8_t>(input_offset), n);
+-  }
+   TFLITE_DCHECK_GE(input_offset, -256);
+-  TFLITE_DCHECK_LE(input_offset, 254);
+-  const int32_t o1 = input_offset / 2;
+-  const int32_t o2 = input_offset - o1;
+-  const uint32_t a =
+-      static_cast<uint32_t>(mac(in, flt, static_cast<int8_t>(o1), n));
+-  // o1 == o2 for the common offset 128, so (x + 64) * w is formed once.
+-  const uint32_t b =
+-      o2 == o1 ? a
+-               : static_cast<uint32_t>(
+-                     mac(in, flt, static_cast<int8_t>(o2), n));
+-  const uint32_t c = static_cast<uint32_t>(mac(in, flt, 0, n));
+-  return static_cast<int32_t>(a + b - c);
++  TFLITE_DCHECK_LE(input_offset, 255);
++  constexpr uint32_t kMaxMacBytes = 4096;
++  uint32_t acc = 0;
++  for (uint32_t done = 0; done < n;) {
++    const uint32_t count = std::min(kMaxMacBytes, n - done);
++    lab2_prepare_mac(input_offset, precleaned);
++    acc += static_cast<uint32_t>(hw_simd_mac(
++        const_cast<int8_t*>(input + done), const_cast<int8_t*>(filter + done),
++        0, count));  // legacy argument unused by this explicitly prepared call
++    done += count;
++  }
++  return static_cast<int32_t>(acc);
++}
++
++// An int16 value is 256*high + (low + 128), with high/low both signed int8.
++// Form both byte-plane dot products on the NPU, then scale/add their sums.
++// The scratch arrays change every chunk, so these calls are never precleaned
++// or reuse-armed. At most 256 terms keeps each partial safely within int32.
++inline int64_t ConvDotProduct16(const int16_t* input, const int8_t* filter,
++                                uint32_t n) {
++  constexpr uint32_t kChunk = 256;
++  alignas(4) int8_t high[kChunk], low[kChunk];
++  int64_t acc = 0;
++  for (uint32_t done = 0; done < n;) {
++    const uint32_t count = std::min(kChunk, n - done);
++    for (uint32_t i = 0; i < count; ++i) {
++      const uint16_t bits = static_cast<uint16_t>(input[done + i]);
++      const int upper = bits >> 8;
++      high[i] = static_cast<int8_t>(upper < 128 ? upper : upper - 256);
++      low[i] = static_cast<int8_t>(static_cast<int>(bits & 255) - 128);
++    }
++    const int32_t lo = ConvDotProduct(low, filter + done, 128, count);
++    const int32_t hi = ConvDotProduct(high, filter + done, 0, count);
++    acc += static_cast<int64_t>(lo) + 256 * static_cast<int64_t>(hi);
++    done += count;
++  }
++  return acc;
+ }
+ 
+ // Fixed-point per-channel-quantization convolution kernel. The result is
+@@ -78,18 +100,15 @@
+ // computed by the NPU (hw_simd_mac); the CPU only does loop control, address
+ // math, padding checks, bias, requantization, output offset and clamping.
+ //
+-// One hw_simd_mac call covers the filter depth of one filter tap. When the
+-// filter spans the whole input depth (no groups) and the width dilation is 1,
+-// the in-image taps of a filter row are contiguous in both the input and the
+-// filter tensor, so they are covered by a single call.
++// One hw_simd_mac call covers up to 4096 channels of one filter tap. When
++// the filter spans the input depth (no groups) and width dilation is 1,
++// in-image taps of a filter row are contiguous in both operands, so a full
++// row is merged before applying the same 4096-byte split.
+ //
+-// input_offset = 128 (int8 zero point -128) does not fit the int8 offset of
+-// hw_simd_mac. It is split as 127 + 1:
+-//   sum (x + 128) * w = sum (x + 127) * w + sum (0 + 1) * w,
+-// where sum (0 + 1) * w, the filter tap sum, is also formed by the NPU (over a
+-// zero vector with offset 1) once per tap and convolution, and is added like a
+-// bias. Each output then needs one hw_simd_mac call per filter row instead of
+-// two.
++// input_offset = 128 (int8 zero point -128) stays int32_t through
++// lab2_prepare_mac -> hw_simd_mac -> CUSTOM-0 SET9 (funct3=4, funct7=5).
++// The prepared command is consumed even on an empty MAC, and the stack scope
++// clears it and hardware reuse on every convolution exit.
+ inline void ConvPerChannel(
+     const ConvParams& params, const int32_t* output_multiplier,
+     const int32_t* output_shift, const RuntimeShape& input_shape,
+@@ -97,6 +116,7 @@
+     const int8_t* filter_data, const RuntimeShape& bias_shape,
+     const int32_t* bias_data, const RuntimeShape& output_shape,
+     int8_t* output_data) {
++  const ConvMacScope mac_scope;
+   // Get parameters.
+   const int32_t input_offset = params.input_offset;  // r = s(q - Z)
+   const int stride_width = params.stride_width;
+@@ -165,42 +185,18 @@
+       (output_end <= input_begin || output_begin >= input_end) &&
+       (output_end <= filter_begin || output_begin >= filter_end);
+   if (output_disjoint) {
+-    hw_simd_mac_assume_clean_begin(input_data,
+-                                   static_cast<uint32_t>(input_end - input_begin),
+-                                   filter_data,
+-                                   static_cast<uint32_t>(filter_end - filter_begin));
+-  }
+-
+-  // input_offset = 128 -> NPU offset 127 plus the filter tap sums.
+-  constexpr int kMaxTapSums = 4096;
+-  static int32_t tap_sums[kMaxTapSums];
+-  constexpr uint32_t kZeroBytes = 1024;
+-  static int8_t zero_bytes[kZeroBytes];  // .bss: all zero
+-  const int tap_count = output_depth * filter_height * filter_width;
+-  const bool use_tap_sums = (input_offset == 128) && (tap_count <= kMaxTapSums);
+-  const int32_t npu_offset = use_tap_sums ? 127 : input_offset;
+-  if (use_tap_sums) {
+-    for (int tap = 0; tap < tap_count; ++tap) {
+-      int8_t* filter_tap =
+-          const_cast<int8_t*>(filter_data) + tap * filter_input_depth;
+-      uint32_t sum = 0;
+-      for (int done = 0; done < filter_input_depth; done += kZeroBytes) {
+-        const int left = filter_input_depth - done;
+-        const uint32_t len =
+-            left < static_cast<int>(kZeroBytes) ? left : kZeroBytes;
+-        sum += static_cast<uint32_t>(
+-            hw_simd_mac(zero_bytes, filter_tap + done, 1, len));
+-      }
+-      tap_sums[tap] = static_cast<int32_t>(sum);
+-    }
++    lab2_clean_operands(input_data,
++                        static_cast<uint32_t>(input_end - input_begin),
++                        filter_data,
++                        static_cast<uint32_t>(filter_end - filter_begin));
+   }
+ 
+   // Arm ptr1 reuse only for the precleaned (output-disjoint) case: the input
+   // tensor was written back once above and is not stored to before the
+   // matching disarm, so bytes the NPU fetched over AXI during this call stay
+-  // equal to memory. The tap-sum calls above ran unarmed.
++  // equal to memory.
+   if (output_disjoint) {
+-    hw_simd_mac_reuse_arm();
++    lab2_reuse_arm();
+   }
+ 
+   // Keep the original pixel-major ordering for aliased tensors: the fast
+@@ -213,7 +209,6 @@
+     const int output_row_stride = output_width * output_depth;
+     const int output_batch_stride = output_height * output_row_stride;
+     const uint32_t n = static_cast<uint32_t>(filter_input_depth);
+-    const int32_t dot_offset = use_tap_sums ? npu_offset : input_offset;
+     for (int batch = 0; batch < batches; ++batch) {
+       const int8_t* input_batch = input_data + batch * input_batch_stride;
+       int8_t* output_batch = output_data + batch * output_batch_stride;
+@@ -226,10 +221,7 @@
+           int in_group = 0;
+           for (int out_channel = 0; out_channel < output_depth; ++out_channel) {
+             int32_t acc = ConvDotProduct(input_group, filter_channel,
+-                                         dot_offset, n, true);
+-            if (use_tap_sums) {
+-              acc += tap_sums[out_channel];
+-            }
++                                         input_offset, n, true);
+             if (bias_data) {
+               acc += bias_data[out_channel];
+             }
+@@ -250,9 +242,7 @@
+         }
+       }
+     }
+-    hw_simd_mac_reuse_disarm();
+-    hw_simd_mac_assume_clean_end();
+-    return;
++    return;  // mac_scope cancels preparation and disarms both operand caches
+   }
+ 
+   for (int batch = 0; batch < batches; ++batch) {
+@@ -276,10 +266,6 @@
+           const int8_t* input_group = input_batch + group * filter_input_depth;
+           const int8_t* filter_channel =
+               filter_data + out_channel * filter_channel_stride;
+-          const int32_t* channel_tap_sums =
+-              use_tap_sums
+-                  ? tap_sums + out_channel * filter_height * filter_width
+-                  : nullptr;
+           int32_t acc = 0;
+           if (merge_full_rows) {
+             for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
+@@ -288,16 +274,8 @@
+               const int8_t* filter_row =
+                   filter_channel + filter_y * filter_row_stride;
+               const uint32_t n = static_cast<uint32_t>(filter_row_stride);
+-              if (use_tap_sums) {
+-                acc += ConvDotProduct(input_row + in_x_origin * input_depth,
+-                                      filter_row, npu_offset, n, output_disjoint);
+-                for (int filter_x = 0; filter_x < filter_width; ++filter_x) {
+-                  acc += channel_tap_sums[filter_y * filter_width + filter_x];
+-                }
+-              } else {
+-                acc += ConvDotProduct(input_row + in_x_origin * input_depth,
+-                                      filter_row, npu_offset, n, output_disjoint);
+-              }
++              acc += ConvDotProduct(input_row + in_x_origin * input_depth,
++                                    filter_row, input_offset, n, output_disjoint);
+             }
+           } else {
+             for (int filter_y = 0; filter_y < filter_height; ++filter_y) {
+@@ -319,12 +297,7 @@
+                     filter_row + filter_x * filter_input_depth;
+                 const uint32_t n =
+                     static_cast<uint32_t>(filter_input_depth);
+-                if (use_tap_sums) {
+-                  acc += ConvDotProduct(in, flt, npu_offset, n, output_disjoint);
+-                  acc += channel_tap_sums[filter_y * filter_width + filter_x];
+-                } else {
+-                  acc += ConvDotProduct(in, flt, npu_offset, n, output_disjoint);
+-                }
++                acc += ConvDotProduct(in, flt, input_offset, n, output_disjoint);
+               }
+             }
+           }
+@@ -342,11 +315,8 @@
+     }
+   }
+ 
+-  if (output_disjoint) {
+-    hw_simd_mac_reuse_disarm();
+-    hw_simd_mac_assume_clean_end();
+-  }
+-}
++}  // mac_scope resets state even when output aliases an operand
++
+ 
+ inline void ConvPerChannelWithPackedInt4Weights(
+     const ConvParams& params, const int32_t* output_multiplier,
+@@ -373,6 +343,7 @@
+     const int8_t* filter_data, const RuntimeShape& bias_shape,
+     const AccumScalar* bias_data, const RuntimeShape& output_shape,
+     int16_t* output_data) {
++  const ConvMacScope mac_scope;
+   // Get parameters.
+   const int stride_width = params.stride_width;
+   const int stride_height = params.stride_height;
+@@ -430,21 +401,12 @@
+                 continue;
+               }
+ 
+-              for (int in_channel = 0; in_channel < filter_input_depth;
+-                   ++in_channel) {
+-                int32_t input_val =
+-                    input_data[Offset(input_shape, batch, in_y, in_x,
+-                                      in_channel + group * filter_input_depth)];
+-                int32_t filter_val = filter_data[Offset(
+-                    filter_shape, out_channel, filter_y, filter_x, in_channel)];
+-                // Accumulate with 64 bits accumulator.
+-                // int64_t += int8_t * int16_t so the highest value we can
+-                // get from each accumulation is [-127, 127] * ([-32768,
+-                // 32767] -
+-                // [-32768, 32767]), which is [-8322945, 8322945].
+-                // log2(8322945) = 22.99.
+-                acc += filter_val * input_val;
+-              }
++              const int16_t* in = input_data + Offset(
++                  input_shape, batch, in_y, in_x, group * filter_input_depth);
++              const int8_t* flt = filter_data + Offset(
++                  filter_shape, out_channel, filter_y, filter_x, 0);
++              acc += static_cast<AccumScalar>(ConvDotProduct16(
++                  in, flt, static_cast<uint32_t>(filter_input_depth)));
+             }
+           }
+           if (bias_data) {

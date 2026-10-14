@@ -1,0 +1,25 @@
+START {'command': 'source /home/kuotzuwei15/NNchip/env.sh >/dev/null && PYTHONUNBUFFERED=1 make -C Platform run MODEL_FILE=ds_cnn_stream_fe.tflite MODEL_PROFILE=ds_cnn_stream_fe APP_DEFINES=', 'pid': 679002, 'port': '/dev/ttyUSB1', 'bitstream_sha256': '9be42f9d2954fc68016490fb93d1c76b014b09a59555c52bc635d59183c6b5f6', 'image_sha256': '652c07d98c30ad5b5816779402a24fa66eb0440e375f92edee5192dbebe59aa3', 'elf_sha256': '26efc1d4b4be38d90d3edac18cb18d91c8d5c21de04942331fa244bc9af9260c'}
+IMAGE_VERIFIED {'actual_bin_sha256': '652c07d98c30ad5b5816779402a24fa66eb0440e375f92edee5192dbebe59aa3', 'actual_elf_sha256': '26efc1d4b4be38d90d3edac18cb18d91c8d5c21de04942331fa244bc9af9260c'}
+LISTENING {'message': 'Listening on /dev/ttyUSB1 ...'}
+Listening on /dev/ttyUSB1 ...
+Waiting for user CPU RESET / bootloader SYNC; no automatic reset is issued.
+SYNC_OBSERVED {}
+BOOT_MENU {}
+SEND {'stage': 'enter_lab', 'key': 'l'}
+RETURN {'stage': 'enter_lab', 'start': 158914, 'end': 159071}
+SEND {'stage': 'set', 'key': 't'}
+RETURN {'stage': 'set', 'start': 159071, 'end': 159859}
+SEND {'stage': 'random', 'key': 'r'}
+RETURN {'stage': 'random', 'start': 159859, 'end': 160061}
+SEND {'stage': 'conv', 'key': 'c'}
+RETURN {'stage': 'conv', 'start': 160061, 'end': 160422}
+SEND {'stage': 'exit_lab', 'key': 'x'}
+RETURN {'stage': 'exit_lab', 'start': 160422, 'end': 160601}
+SEND {'stage': 'all_labels', 'key': 't'}
+RETURN {'stage': 'all_labels', 'start': 160601, 'end': 167254}
+SEND {'stage': 'reenter_lab', 'key': 'l'}
+RETURN {'stage': 'reenter_lab', 'start': 167254, 'end': 167411}
+SEND {'stage': 'random_after_model', 'key': 'r'}
+RETURN {'stage': 'random_after_model', 'start': 167411, 'end': 167613}
+SEQUENCE_RETURNED {}
+CAPTURE_END {'process_status': 0}

@@ -1,0 +1,38 @@
+Testing conv.h: /home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_block/mutant_wrong_offset.h
+  ds_cnn conv in=49x20x1 f=300x3x3x1 d=2,1 off=-102: 243000 outputs, 119 distinct values
+  ds_cnn CONV_2D layer 0: O1 2187000 calls; new 729000 calls, N values: N=3 x729000 (ptr1 reuse hits 703830)
+FAIL ds_cnn: b=1 in=49x20x1 f=300x3x3x1 s=1,1 d=2,1 VALID off=-102 bias=1 mism=100928/243000 hw_products=2187000 expected=2187000
+  border_path calls: N=1 x88, N=3 x27
+FAIL border_path: b=1 in=5x5x1 f=1x3x3x1 s=1,1 d=1,1 SAME off=-2 bias=1 mism=3/25 hw_products=169 expected=169
+  ds_cnn conv in=43x16x300 f=300x1x1x300 d=1,1 off=128: 206400 outputs, 125 distinct values
+  ds_cnn CONV_2D layer 1: O1 412800 calls; new 206400 calls, N values: N=300 x206400 (ptr1 reuse hits 205712)
+FAIL ds_cnn: b=1 in=43x16x300 f=300x1x1x300 s=1,1 d=1,1 VALID off=128 bias=1 mism=110257/206400 hw_products=61920000 expected=61920000
+  ds_cnn conv in=39x12x300 f=300x1x1x300 d=1,1 off=128: 140400 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 2: O1 280800 calls; new 140400 calls, N values: N=300 x140400 (ptr1 reuse hits 139932)
+FAIL ds_cnn: b=1 in=39x12x300 f=300x1x1x300 s=1,1 d=1,1 VALID off=128 bias=1 mism=78676/140400 hw_products=42120000 expected=42120000
+  ds_cnn conv in=30x10x300 f=300x1x1x300 d=1,1 off=128: 90000 outputs, 113 distinct values
+  ds_cnn CONV_2D layer 3: O1 180000 calls; new 90000 calls, N values: N=300 x90000 (ptr1 reuse hits 89700)
+FAIL ds_cnn: b=1 in=30x10x300 f=300x1x1x300 s=1,1 d=1,1 VALID off=128 bias=1 mism=80669/90000 hw_products=27000000 expected=27000000
+  ds_cnn conv in=22x6x300 f=300x1x1x300 d=1,1 off=128: 39600 outputs, 86 distinct values
+  ds_cnn CONV_2D layer 4: O1 79200 calls; new 39600 calls, N values: N=300 x39600 (ptr1 reuse hits 39468)
+FAIL ds_cnn: b=1 in=22x6x300 f=300x1x1x300 s=1,1 d=1,1 VALID off=128 bias=1 mism=25299/39600 hw_products=11880000 expected=11880000
+  ds_cnn conv in=13x4x300 f=300x1x1x300 d=1,1 off=128: 15600 outputs, 124 distinct values
+  ds_cnn CONV_2D layer 5: O1 31200 calls; new 15600 calls, N values: N=300 x15600 (ptr1 reuse hits 15548)
+FAIL ds_cnn: b=1 in=13x4x300 f=300x1x1x300 s=1,1 d=1,1 VALID off=128 bias=1 mism=14659/15600 hw_products=4680000 expected=4680000
+FAIL offset_sweep: b=1 in=5x6x4 f=1x3x3x4 s=2,2 d=1,2 SAME off=-128 bias=1 mism=5/9 hw_products=196 expected=196
+FAIL offset_sweep: b=1 in=5x6x12 f=7x3x3x12 s=2,2 d=1,2 VALID off=-127 bias=0 mism=14/14 hw_products=1512 expected=1512
+FAIL offset_sweep: b=2 in=5x6x3 f=6x3x3x3 s=1,2 d=1,1 VALID off=-126 bias=0 mism=66/72 hw_products=1944 expected=1944
+  ds_cnn         6 cases
+  border_path    1 cases
+  offset_sweep   257 cases
+  depth_sweep    300 cases
+  depth_sweep_grp 299 cases
+  grid           422 cases
+  grouped        239 cases
+  grouped_large  57 cases
+  random         1001 cases
+  (673 randomly drawn VALID shapes with no output were skipped)
+NPU product-count check failures: 0
+call-pattern failures (conv 0 >729000 or border taps merged): 0
+ptr1 reuse: 2541256 hits, 0 stale hits, 0 returns while armed, 714532 changed-input rerun mismatches
+FAILED: 213/2582 cases pass, 1187329 outputs compared, 1429032 mismatches

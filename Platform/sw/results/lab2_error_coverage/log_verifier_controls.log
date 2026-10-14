@@ -1,0 +1,7 @@
+REJECTED log control: missing_case_with_green_summary
+REJECTED log control: duplicate_case
+REJECTED log control: missing_recovery_with_green_summary
+REJECTED log control: wrong_late_beat_count
+REJECTED log control: failure_with_green_summary
+REJECTED log control: summary_only
+LOG VERIFIER RESULT: rejected=6 survived=0

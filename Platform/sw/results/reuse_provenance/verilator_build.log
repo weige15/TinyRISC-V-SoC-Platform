@@ -1,0 +1,398 @@
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:189:36: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  189 |             al = (n == 0) ? 0 : (n + p1[1:0] + 3)/4;
+      |                                    ^
+                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.020
+                      ... Use "/* verilator lint_off WIDTHEXPAND */" and lint_on around source to disable this message.
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:190:36: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  190 |             bl = (n == 0) ? 0 : (n + p2[1:0] + 3)/4;
+      |                                    ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:196:49: Operator SUB expects 32 bits on the RHS, but RHS's SEL generates 10 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  196 |                 if (ab > 1024-a[11:2]) ab = 1024-a[11:2];
+      |                                                 ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:196:30: Operator SUB expects 32 bits on the RHS, but RHS's SEL generates 10 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  196 |                 if (ab > 1024-a[11:2]) ab = 1024-a[11:2];
+      |                              ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:198:49: Operator SUB expects 32 bits on the RHS, but RHS's SEL generates 10 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  198 |                 if (bb > 1024-b[11:2]) bb = 1024-b[11:2];
+      |                                                 ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:198:30: Operator SUB expects 32 bits on the RHS, but RHS's SEL generates 10 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  198 |                 if (bb > 1024-b[11:2]) bb = 1024-b[11:2];
+      |                              ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:199:39: Operator SUB expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  199 |                 bytes_end = 4*(bi+bb) - p2[1:0];
+      |                                       ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:201:37: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  201 |                 needed = (bytes_end + p1[1:0] + 3)/4;
+      |                                     ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:204:36: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  204 |                 exp_len[exp_count] = (f ? bb : ab) - 1;
+      |                                    ^
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:78:22: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's SHIFTR generates 32 bits.
+                                                              : ... note: In instance 'npu_lab2_tb'
+   78 |             expected = word_data >> (8*addr[1:0]);
+      |                      ^
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:109:21: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  109 |                     if (trace_fd) $fdisplay(trace_fd, "M,%0d,%0d,%0d,%h,%h,%0d,%0d,%0d",
+      |                     ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_axi_trace_scoreboard.svh:129:69: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                                : ... note: In instance 'npu_lab2_tb'
+  129 |                 sb_rv = sb_armed && !sb_failed && sb_n != 0 && (sb_n+sb_a[1:0]+3)/4 <= 1024;
+      |                                                                     ^
+                      hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:132:17: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  132 |                 if (trace_fd) $fdisplay(trace_fd, "D,%0d,%0d,%0d,%0d", sb_call, cycle_number, sb_failed, sb_call_bytes);
+      |                 ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:144:25: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  144 |                         if (trace_fd) $fdisplay(trace_fd, "E,%0d,%0d,%0d,%0d", cycle_number, sb_epoch, funct7_i, rs1_i[0]);
+      |                         ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_axi_trace_scoreboard.svh:156:50: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                                : ... note: In instance 'npu_lab2_tb'
+  156 |                         fend = fstart + 4*((sb_n + sb_bptr[1:0] + 3)/4);
+      |                                                  ^
+                      hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:167:25: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  167 |                         if (trace_fd) $fdisplay(trace_fd, "C,%0d,%0d,%h,%h,%0d,%0d,%0d,%0d,%0d",
+      |                         ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:180:17: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  180 |                 if (trace_fd) $fdisplay(trace_fd, "A,%0d,%0d,%h,%0d", sb_call, cycle_number, araddr, int'(arlen)+1);
+      |                 ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:192:17: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  192 |                 if (trace_fd) $fdisplay(trace_fd, "R,%0d,%0d,%0d,%h,%h,%0d,%0d,%0d,%0d,%0d",
+      |                 ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_axi_trace_scoreboard.svh:198:65: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                                : ... note: In instance 'npu_lab2_tb'
+  198 |                     end_addr = (sb_a & 32'hfffffffc) + 4*((sb_n + sb_a[1:0] + 3)/4);
+      |                                                                 ^
+                      hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_axi_trace_scoreboard.svh:232:143: Operator SHIFTR expects 256 bits on the LHS, but LHS's VARXREF 'input_word' generates 32 bits.
+                                                                 : ... note: In instance 'npu_lab2_tb'
+  232 |                         av = dut.u_burst_dot_product.s1_valid ? (dut.u_burst_dot_product.in_q >> (8*s)) : (dut.u_burst_dot_product.input_word >> (8*s));
+      |                                                                                                                                               ^~
+                      hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:232:28: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's COND generates 256 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  232 |                         av = dut.u_burst_dot_product.s1_valid ? (dut.u_burst_dot_product.in_q >> (8*s)) : (dut.u_burst_dot_product.input_word >> (8*s));
+      |                            ^
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_axi_trace_scoreboard.svh:233:121: Operator SHIFTR expects 256 bits on the LHS, but LHS's VARREF 'rdata' generates 32 bits.
+                                                                 : ... note: In instance 'npu_lab2_tb'
+  233 |                         bv = dut.u_burst_dot_product.s1_valid ? (dut.u_burst_dot_product.fc_word_row >> (8*s)) : (rdata >> (8*s));
+      |                                                                                                                         ^~
+                      hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:233:28: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's COND generates 256 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  233 |                         bv = dut.u_burst_dot_product.s1_valid ? (dut.u_burst_dot_product.fc_word_row >> (8*s)) : (rdata >> (8*s));
+      |                            ^
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHTRUNC: hw/sim/npu_axi_trace_scoreboard.svh:254:13: Logical operator IF expects 1 bit on the If, but If's VARREF 'trace_fd' generates 32 bits.
+                                                               : ... note: In instance 'npu_lab2_tb'
+  254 |             if (trace_fd) begin $fclose(trace_fd); trace_fd = 0; end
+      |             ^~
+                     hw/sim/npu_lab2_tb.sv:477:1: ... note: In file included from 'npu_lab2_tb.sv'
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:511:27: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'arlen' generates 8 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  511 |                 b = arlen + 1;
+      |                           ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:601:27: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's ARRAYSEL generates 9 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  601 |                 r_b       = q_beats[q_head];
+      |                           ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:643:24: Operator ASSIGNDLY expects 1 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  643 |                 rlast  <= $urandom;
+      |                        ^~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:644:24: Operator ASSIGNDLY expects 2 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  644 |                 rresp  <= $urandom;
+      |                        ^~
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:719:47: Operator ADD expects 32 bits on the LHS, but LHS's SIGNED generates 8 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  719 |                 term = ($signed(mem[x[15:0]]) + off) * $signed(mem[y[15:0]]);
+      |                                               ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:734:68: Operator ADD expects 64 bits on the RHS, but RHS's VARREF 'off' generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  734 |                 reference_wide += (longint'($signed(mem[x[15:0]])) + off) *
+      |                                                                    ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:758:48: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  758 |                     rd = p1 + i; mem[rd[15:0]] = $urandom;
+      |                                                ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:762:48: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  762 |                     rd = p2 + i; mem[rd[15:0]] = $urandom;
+      |                                                ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:908:13: Operator TASKREF 'npu_cmd' expects 32 bits on the Function Argument, but Function Argument's REPLICATE generates 33 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  908 |             npu_cmd(32'd3, {$urandom, on} , $urandom, rd);
+      |             ^~~~~~~
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:947:61: Operator XOR expects 32 bits on the LHS, but LHS's ARRAYSEL generates 8 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  947 |                     x = p1 + i; mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                                                             ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:947:46: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's XOR generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  947 |                     x = p1 + i; mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                                              ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:951:45: Operator XOR expects 32 bits on the LHS, but LHS's ARRAYSEL generates 8 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+  951 |                 mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                                             ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:951:30: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's XOR generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  951 |                 mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                              ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:962:18: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  962 |             p1 = reuse_place(0, n, $urandom); p2 = reuse_place(1, n, $urandom);
+      |                  ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:962:52: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  962 |             p1 = reuse_place(0, n, $urandom); p2 = reuse_place(1, n, $urandom);
+      |                                                    ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:966:13: Operator TASKREF 'mutate_p1' expects 1 bits on the Function Argument, but Function Argument's MODDIV generates 32 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  966 |             mutate_p1(p1, n, $urandom % 2);
+      |             ^~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:991:13: Operator TASKREF 'npu_cmd' expects 32 bits on the Function Argument, but Function Argument's REPLICATE generates 33 bits.
+                                                 : ... note: In instance 'npu_lab2_tb'
+  991 |             npu_cmd(fc ? 32'd4 : 32'd3, {$urandom, on}, $urandom, rd);
+      |             ^~~~~~~
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1004:21: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1004 |             c1 = (n + p1[1:0] + 3)/4; c2 = (n + p2[1:0] + 3)/4;
+      |                     ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1004:47: Operator ADD expects 32 bits on the RHS, but RHS's SEL generates 2 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1004 |             c1 = (n + p1[1:0] + 3)/4; c2 = (n + p2[1:0] + 3)/4;
+      |                                               ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1005:21: Operator SHIFTR expects 64 bits on the LHS, but LHS's VARREF 'p2' generates 32 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1005 |             w0 = p2 >> 2; we = w0 + c2;
+      |                     ^~
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1005:35: Operator ADD expects 64 bits on the RHS, but RHS's VARREF 'c2' generates 32 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1005 |             w0 = p2 >> 2; we = w0 + c2;
+      |                                   ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1101:86: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1101 |                             mem[x[15:0]] = pat == 0 ? $urandom : pat == 1 ? 0 : (j%2 ? 8'h7f : 8'h80);
+      |                                                                                      ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1101:86: Operator COND expects 32 bits on the Conditional True, but Conditional True's CONST '8'h7f' generates 8 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1101 |                             mem[x[15:0]] = pat == 0 ? $urandom : pat == 1 ? 0 : (j%2 ? 8'h7f : 8'h80);
+      |                                                                                      ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1101:86: Operator COND expects 32 bits on the Conditional False, but Conditional False's CONST '8'h80' generates 8 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1101 |                             mem[x[15:0]] = pat == 0 ? $urandom : pat == 1 ? 0 : (j%2 ? 8'h7f : 8'h80);
+      |                                                                                      ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1101:42: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's COND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1101 |                             mem[x[15:0]] = pat == 0 ? $urandom : pat == 1 ? 0 : (j%2 ? 8'h7f : 8'h80);
+      |                                          ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1105:42: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's COND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1105 |                             mem[x[15:0]] = pat == 0 ? $urandom : 1;
+      |                                          ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1314:17: Logical operator LOGNOT expects 1 bit on the LHS, but LHS's VARREF 'trace_fd' generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1314 |             if (!trace_fd) $fatal(1, "cannot open AXI trace %s", trace_path);
+      |                 ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1331:50: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1331 |         for (i = 0; i < 65536; i = i + 1) mem[i] = $urandom;
+      |                                                  ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1478:60: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1478 |         for (i = 0; i < 65536; i = i + 1) mem[i] = (i % 2) ? 8'h7f : 8'h80;
+      |                                                            ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1490:18: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1490 |             p1 = place(n, $urandom, (inj % 2) == 0);
+      |                  ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1491:18: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1491 |             p2 = place(n, $urandom, (inj % 4) == 1);
+      |                  ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1514:38: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1514 |                 inj_resp = (inj % 2) ? 2'b10 : 2'b11;
+      |                                      ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1518:26: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1518 |                 run_case(place(n, $urandom, 1'b1), place(n, $urandom, 1'b0),
+      |                          ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1518:52: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1518 |                 run_case(place(n, $urandom, 1'b1), place(n, $urandom, 1'b0),
+      |                                                    ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1541:42: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1541 |             n = 1 + ($urandom % ((i % 2) ? 256 : 1024));
+      |                                          ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1542:22: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1542 |             run_case(place(n, $urandom, $urandom), place(n, $urandom, $urandom),
+      |                      ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1542:22: Operator FUNCREF 'place' expects 1 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1542 |             run_case(place(n, $urandom, $urandom), place(n, $urandom, $urandom),
+      |                      ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1542:52: Operator FUNCREF 'place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1542 |             run_case(place(n, $urandom, $urandom), place(n, $urandom, $urandom),
+      |                                                    ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1542:52: Operator FUNCREF 'place' expects 1 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1542 |             run_case(place(n, $urandom, $urandom), place(n, $urandom, $urandom),
+      |                                                    ^~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1554:64: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1554 |                 changed_memory_refetch(1 + $urandom % ((t % 2) ? 300 : 1024), "unarmed-reset");
+      |                                                                ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1557:64: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1557 |                 changed_memory_refetch(1 + $urandom % ((t % 2) ? 300 : 1024), "unarmed-disarmed");
+      |                                                                ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1562:22: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1562 |                 q1 = reuse_place(0, nn, $urandom); q2 = reuse_place(1, nn, $urandom);
+      |                      ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1562:57: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1562 |                 q1 = reuse_place(0, nn, $urandom); q2 = reuse_place(1, nn, $urandom);
+      |                                                         ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1567:17: Operator TASKREF 'mutate_p1' expects 1 bits on the Function Argument, but Function Argument's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1567 |                 mutate_p1(q1, nn, t % 2);
+      |                 ^~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1573:17: Operator TASKREF 'mutate_p1' expects 1 bits on the Function Argument, but Function Argument's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1573 |                 mutate_p1(q1, nn, t % 2);
+      |                 ^~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1588:72: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1588 |                 nn = (t < 64) ? lens[t % 15] : 1 + $urandom % ((t % 3) ? 300 : 4000);
+      |                                                                        ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1590:32: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1590 |                 reuse_call(q1, reuse_place(1, nn, $urandom), pick_offset(t), nn,
+      |                                ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1600:36: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1600 |                     reuse_call(q1, reuse_place(1, nn, $urandom), 3, nn - 1,
+      |                                    ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1602:36: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1602 |                     reuse_call(q1, reuse_place(1, nn, $urandom), 3, nn - 1,
+      |                                    ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1604:36: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1604 |                     reuse_call(q1, reuse_place(1, nn, $urandom), 4, nn,
+      |                                    ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1608:40: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1608 |                     reuse_call(q1 + 1, reuse_place(1, nn, $urandom), -5, nn,
+      |                                        ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1626:22: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1626 |                 q1 = reuse_place(0, nn, $urandom); q2 = reuse_place(1, nn, $urandom);
+      |                      ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1626:57: Operator FUNCREF 'reuse_place' expects 2 bits on the Function Argument, but Function Argument's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1626 |                 q1 = reuse_place(0, nn, $urandom); q2 = reuse_place(1, nn, $urandom);
+      |                                                         ^~~~~~~~~~~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1628:36: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1628 |                 inj_resp = (t % 2) ? 2'b10 : 2'b11;
+      |                                    ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1677:20: Operator ASSIGN expects 2 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1677 |                 al = $urandom;
+      |                    ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1679:73: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'al' generates 2 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1679 |                 fb = 32'h6000_8000 + ((t + 1) << 16) + {x[29:0], 2'b00} + al;
+      |                                                                         ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1682:49: Logical operator LOGAND expects 1 bit on the RHS, but RHS's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1682 |                     q[k] = {q[k][31:2], (k == 2 && (t % 2)) ? al + 2'd1 : al};
+      |                                                 ^~
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1685:75: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1685 |                     x = 32'h6000_0000 + ((t + 1) << 16) + i; mem[x[15:0]] = $urandom;
+      |                                                                           ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1688:46: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's RAND generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1688 |                     x = fb + i; mem[x[15:0]] = $urandom;
+      |                                              ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1714:40: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's MODDIVS generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1714 |                     inj_resp = (t % 2) ? 2'b10 : 2'b11;
+      |                                        ^
+%Warning-WIDTHEXPAND: hw/sim/npu_lab2_tb.sv:1728:61: Operator XOR expects 32 bits on the LHS, but LHS's ARRAYSEL generates 8 bits.
+                                                   : ... note: In instance 'npu_lab2_tb'
+ 1728 |                     x = fb + i; mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                                                             ^
+%Warning-WIDTHTRUNC: hw/sim/npu_lab2_tb.sv:1728:46: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's XOR generates 32 bits.
+                                                  : ... note: In instance 'npu_lab2_tb'
+ 1728 |                     x = fb + i; mem[x[15:0]] = mem[x[15:0]] ^ (1 + $urandom % 255);
+      |                                              ^
+make: Entering directory '/tmp/reuse-provenance-build.8YO5gr/obj'
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated.o /usr/share/verilator/include/verilated.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_timing.o /usr/share/verilator/include/verilated_timing.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -c -o verilated_threads.o /usr/share/verilator/include/verilated_threads.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -x c++-header Vnpu_lab2_tb__pch.h -o Vnpu_lab2_tb__pch.h.fast.gch
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -x c++-header Vnpu_lab2_tb__pch.h -o Vnpu_lab2_tb__pch.h.slow.gch
+echo "" > Vnpu_lab2_tb__ALL.verilator_deplist.tmp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb.o Vnpu_lab2_tb.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__1.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__1.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__2.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__2.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__3.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__3.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__4.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__4.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__5.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__5.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__6.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__6.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__7.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__7.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__8.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__8.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__9.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__9.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__10.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__10.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__11.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__11.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__12.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__12.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__13.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__13.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__14.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__14.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__15.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__15.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__16.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__16.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__17.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__17.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0.o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0.cpp
+g++ -Os  -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.fast -c -o Vnpu_lab2_tb__main.o Vnpu_lab2_tb__main.cpp
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.slow -c -o Vnpu_lab2_tb__ConstPool_0.o Vnpu_lab2_tb__ConstPool_0.cpp
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.slow -c -o Vnpu_lab2_tb___024root__Slow.o Vnpu_lab2_tb___024root__Slow.cpp
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.slow -c -o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0__Slow.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0__Slow.cpp
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.slow -c -o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0__Slow.o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0__Slow.cpp
+g++   -I.  -MMD -I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -faligned-new -fcf-protection=none -Wno-bool-operation -Wno-overloaded-virtual -Wno-shadow -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable     -DVL_TIME_CONTEXT   -fcoroutines -include Vnpu_lab2_tb__pch.h.slow -c -o Vnpu_lab2_tb__Syms.o Vnpu_lab2_tb__Syms.cpp
+Archive ar -rcs Vnpu_lab2_tb__ALL.a Vnpu_lab2_tb.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__1.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__2.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__3.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__4.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__5.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__6.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__7.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__8.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__9.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__10.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__11.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__12.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__13.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__14.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__15.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__16.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__17.o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0.o Vnpu_lab2_tb__main.o Vnpu_lab2_tb__ConstPool_0.o Vnpu_lab2_tb___024root__Slow.o Vnpu_lab2_tb___024root__DepSet_h47cf6218__0__Slow.o Vnpu_lab2_tb___024root__DepSet_h013bf16d__0__Slow.o Vnpu_lab2_tb__Syms.o
+g++     verilated.o verilated_timing.o verilated_threads.o Vnpu_lab2_tb__ALL.a    -pthread -lpthread -latomic   -o Vnpu_lab2_tb
+rm Vnpu_lab2_tb__ALL.verilator_deplist.tmp
+make: Leaving directory '/tmp/reuse-provenance-build.8YO5gr/obj'

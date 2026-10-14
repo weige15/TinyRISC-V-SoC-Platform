@@ -1,0 +1,7 @@
+REJECTED top-length-8bit: failures=337
+REJECTED beat-index-8bit: failures=1
+REJECTED cover-span-32bit: failures=409
+REJECTED host-length-8bit: mismatches=9989376
+REJECTED host-missing-offset: mismatches=5028000
+REJECTED host-wrong-filter-pointer: mismatches=10178432
+MUTATION RESULT: rejected=6 survived=0

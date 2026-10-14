@@ -1,0 +1,10 @@
+PROVENANCE CONTROL: PASS
+PROVENANCE MUTATION: cpu-register-preload REJECTED [FAIL] t=335000 AXI_PROVENANCE: call=1 ptr1 addr=60000ffc got=46 Raddr=60000ffc Rdata=01 Rseq=1 Rcycle=31 floor=29 epoch=1/1
+PROVENANCE MUTATION: corrupt-input-replica REJECTED [FAIL] t=1981945000 AXI_PROVENANCE: call=194 ptr1 addr=60000ffc got=00 Raddr=60000ffc Rdata=01 Rseq=98377 Rcycle=198182 floor=198176 epoch=129/129
+PROVENANCE MUTATION: corrupt-filter-cache REJECTED [FAIL] t=1981945000 AXI_PROVENANCE: call=194 ptr2 addr=60008ffc got=00 Raddr=60008ffc Rdata=01 Rseq=98378 Rcycle=198185 floor=198176 epoch=129/129
+PROVENANCE MUTATION: accept-without-rvalid REJECTED [FAIL] t=335000 AXI_PROVENANCE: DUT used non-AXI/error data or dropped a usable beat
+PROVENANCE MUTATION: arm-disarm-keep-copy REJECTED [FAIL] t=585000 AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+PROVENANCE MUTATION: ignore-N REJECTED [FAIL] t=1545000 AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+PROVENANCE MUTATION: ignore-ptr1 REJECTED [FAIL] t=1995000 AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+PROVENANCE MUTATION: reuse-while-unarmed REJECTED [FAIL] t=1265000 AR #0 got 60008ffc/ARLEN 0, expected 60000ffc/ARLEN 0
+PROVENANCE MUTATIONS: controls=1 rejected=8 survived=0

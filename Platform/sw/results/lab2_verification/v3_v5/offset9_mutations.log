@@ -1,0 +1,6 @@
+MUTATION: model-truncate-offset8 DETECTED (functional assertions)
+MUTATION: api-truncate-offset8 DETECTED (functional assertions)
+MUTATION: api-drop-disarm DETECTED (functional assertions)
+MUTATION: rtl-truncate-set9 DETECTED (functional assertions)
+MUTATION: rtl-sticky-set8 DETECTED (functional assertions)
+MUTATION RESULT: detected=5 escaped=0

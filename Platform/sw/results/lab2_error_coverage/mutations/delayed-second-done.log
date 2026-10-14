@@ -1,0 +1,4 @@
+[INFO] seed=20261007
+[FAIL] t=1035000 ptr1/slverr-first/B16/accepted-other: NPU_done repeated or wider than one cycle
+FATAL: /tmp/lab2-error-tests/mutations/delayed-second-done/tb.sv:119: assertion failed: ptr1/slverr-first/B16/accepted-other: NPU_done repeated or wider than one cycle
+       Time: 1035100  Scope: npu_lab2_tb.check

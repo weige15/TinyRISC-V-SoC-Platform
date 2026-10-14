@@ -1,0 +1,11 @@
+[INFO] seed=20261007
+REUSE_SAFETY_CASE: group=0 passed=64
+REUSE_SAFETY_CASE: group=1 passed=32
+REUSE_SAFETY_CASE: group=2 passed=64
+REUSE_SAFETY_CASE: group=3 passed=64
+REUSE_SAFETY_CASE: group=4 passed=64
+REUSE_SAFETY_CASE: group=5 passed=32
+REUSE_SAFETY: armed_same=64 arena_new_layer=32 rearm=64 unarmed_changed=64 changed_N=64 changed_ptr1=32 failures=0
+AXI_SCOREBOARD: R_beats=194516 MAC_bytes=856256 stream_bytes=838416 fast_bytes=17840 violations=0
+RESULT: PASS=1253345 FAIL=0 cases=384
+hw/sim/npu_lab2_tb.sv:1347: $finish called at 4086766000 (1ps)

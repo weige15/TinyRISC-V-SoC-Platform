@@ -1,0 +1,30 @@
+[PASS] burst length 1 (aligned, 1 byte): input+0x100 filter+0x200 length=1 result=-3036 bursts=2 ARLEN 0..0
+[PASS] burst length 1 (aligned, 4 bytes): input+0x104 filter+0x204 length=4 result=-11112 bursts=2 ARLEN 0..0
+[PASS] burst length 1: 4 bursts with ARLEN = 0
+[PASS] max burst (1024 bytes, aligned): input+0x400 filter+0x2400 length=1024 result=433857 bursts=2 ARLEN 255..255
+[PASS] max burst: 2 bursts with ARLEN = 255
+[PASS] 4 KB crossing (unaligned): input+0xf02 filter+0x2e81 length=601 result=-128713 bursts=4 ARLEN 54..95
+[PASS] 4 KB crossing (max-size chunk): input+0xe03 filter+0x2d00 length=1024 result=-21802 bursts=4 ARLEN 63..191
+[PASS] 4 KB crossing: 4 bursts end exactly on a 4 KB boundary
+[PASS] unaligned start/tail: 16 offset pairs x 12 lengths (1..303)
+[PASS] signed extremes (-128 x -128): input+0x3000 filter+0x3800 length=1024 result=16777216 bursts=2 ARLEN 255..255
+[PASS] signed extremes (-128 x 127): input+0x3001 filter+0x3802 length=1021 result=-16597376 bursts=2 ARLEN 255..255
+[PASS] signed extremes (127 x 127): input+0x3003 filter+0x3800 length=1021 result=16467709 bursts=2 ARLEN 255..255
+[PASS] signed extremes (mixed -128/127/-1): input+0x3002 filter+0x3801 length=1000 result=32846 bursts=2 ARLEN 250..250
+[PASS] signed extremes (multi-chunk -128 x -128): input+0x4001 filter+0x5003 length=2598 result=42544000 bursts=6 ARLEN 137..255
+[PASS] multi-chunk (2500 bytes): input+0x103 filter+0x1401 length=2500 result=-206048 bursts=6 ARLEN 113..255
+[PASS] multi-chunk (2048 bytes): input+0x400 filter+0x1800 length=2048 result=103242 bursts=4 ARLEN 255..255
+[PASS] zero length: input+0x100 filter+0x200 length=0 result=0, no read bursts
+[PASS] backpressure (aligned, max burst): input+0x400 filter+0x2400 length=1024 result=433857 bursts=2 ARLEN 255..255
+[PASS] backpressure (4 KB crossing): input+0xf02 filter+0x2e81 length=601 result=40145 bursts=4 ARLEN 54..95
+[PASS] backpressure (unaligned tail): input+0x1401 filter+0x1c03 length=303 result=-92241 bursts=2 ARLEN 75..76
+[PASS] backpressure (multi-chunk): input+0x103 filter+0x1401 length=2500 result=-206048 bursts=6 ARLEN 113..255
+[PASS] backpressure (burst length 1): input+0x102 filter+0x201 length=2 result=-14783 bursts=2 ARLEN 0..0
+[PASS] injected receiver stalls: input+0x103 filter+0x2401 length=64 result=6186 bursts=2 ARLEN 16..16
+[PASS] backpressure: 37 ARREADY stall cycles, 3204 RVALID gap cycles, 6 RREADY-low cycles with RVALID high
+[PASS] 150 random dot products (random offsets, lengths 0..2999, backpressure)
+[PASS] burst after single-word read and SIMD MAC: input+0x101 filter+0x203 length=9 result=23210 bursts=2 ARLEN 2..2
+[PASS] single-word AXI read and SIMD MAC share the NPU correctly
+Coverage: 830 bursts, 91 with ARLEN=0, 79 with ARLEN=255, 39 ending on a 4 KB boundary, 45 starting on one
+[PASS] All 366 burst dot product checks
+hw/sim/npu_burst_dot_product_tb.sv:530: $finish called at 955926000 (1ps)

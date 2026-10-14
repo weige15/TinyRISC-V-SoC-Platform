@@ -1,0 +1,396 @@
+LIMITS: SET/byte_length accepts 32-bit N=0..4294967295; largest legal whole-window N=134217728 at 0x60000000
+BOUNDS: words=ceil((N+low)/4); low<=3; N256<=65 window<=33554433 encoded<=1073741825; burst<=256, ARLEN=beats-1
+COUNTER dut.burst_dot_product_length_r                       bits=8 capacity=255 N256<=256 window_max<=134217728 encoded_max<=4294967295
+[FAIL] dut.burst_dot_product_length_r overflows
+COUNTER dut.read_offset_r                                    bits=2 capacity=3 N256<=3 window_max<=3 encoded_max<=3
+COUNTER dut.read_second_word_r                               bits=1 capacity=1 N256<=1 window_max<=1 encoded_max<=1
+COUNTER dut.write_second_pending_r                           bits=1 capacity=1 N256<=1 window_max<=1 encoded_max<=1
+COUNTER dut.burst_dot_product_arlen                          bits=8 capacity=255 N256<=64 window_max<=255 encoded_max<=255
+COUNTER dut.M_AXI_ARLEN                                      bits=8 capacity=255 N256<=64 window_max<=255 encoded_max<=255
+COUNTER dut.M_AXI_AWLEN                                      bits=8 capacity=255 N256<=0 window_max<=0 encoded_max<=0
+COUNTER dut.u_burst_dot_product.byte_length                  bits=32 capacity=4294967295 N256<=256 window_max<=134217728 encoded_max<=4294967295
+COUNTER dut.u_burst_dot_product.length_r                     bits=32 capacity=4294967295 N256<=256 window_max<=134217728 encoded_max<=4294967295
+COUNTER dut.u_burst_dot_product.reuse_length                 bits=32 capacity=4294967295 N256<=256 window_max<=134217728 encoded_max<=4294967295
+COUNTER dut.u_burst_dot_product.input_low                    bits=2 capacity=3 N256<=3 window_max<=3 encoded_max<=3
+COUNTER dut.u_burst_dot_product.filter_low                   bits=2 capacity=3 N256<=3 window_max<=3 encoded_max<=3
+COUNTER dut.u_burst_dot_product.input_left                   bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.filter_left                  bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.input_issued                 bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.filter_issued                bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.input_received               bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.filter_received              bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.input_cover                  bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.filter_cover                 bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.covering_words.span          bits=33 capacity=8589934591 N256<=262 window_max<=134217734 encoded_max<=4294967301
+COUNTER dut.u_burst_dot_product.burst_size.boundary          bits=11 capacity=2047 N256<=1024 window_max<=1024 encoded_max<=1024
+COUNTER dut.u_burst_dot_product.burst_size.beats             bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.input_beats                  bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.filter_beats                 bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.first_beats                  bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.m_axi_arlen                  bits=8 capacity=255 N256<=64 window_max<=255 encoded_max<=255
+COUNTER dut.u_burst_dot_product.q_beats[0]                   bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.q_beats[1]                   bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.beat_index                   bits=9 capacity=511 N256<=65 window_max<=256 encoded_max<=256
+COUNTER dut.u_burst_dot_product.q_count                      bits=2 capacity=3 N256<=2 window_max<=2 encoded_max<=2
+COUNTER dut.u_burst_dot_product.count_after                  bits=3 capacity=7 N256<=2 window_max<=2 encoded_max<=2
+COUNTER dut.u_burst_dot_product.q_head                       bits=1 capacity=1 N256<=1 window_max<=1 encoded_max<=1
+COUNTER dut.u_burst_dot_product.q_tail                       bits=1 capacity=1 N256<=1 window_max<=1 encoded_max<=1
+COUNTER dut.u_burst_dot_product.needed_increment             bits=10 capacity=1023 N256<=66 window_max<=257 encoded_max<=257
+COUNTER dut.u_burst_dot_product.needed_words                 bits=31 capacity=2147483647 N256<=66 window_max<=33554434 encoded_max<=1073741826
+COUNTER dut.u_burst_dot_product.freed_words                  bits=31 capacity=2147483647 N256<=65 window_max<=33554433 encoded_max<=1073741825
+COUNTER dut.u_burst_dot_product.filter_position              bits=33 capacity=8589934591 N256<=260 window_max<=134217732 encoded_max<=4294967300
+COUNTER dut.u_burst_dot_product.filter_limit                 bits=33 capacity=8589934591 N256<=259 window_max<=134217731 encoded_max<=4294967298
+COUNTER dut.u_burst_dot_product.fw_end                       bits=32 capacity=4294967295 N256<=1073741888 window_max<=1107296256 encoded_max<=2147483648
+COUNTER dut.u_burst_dot_product.fc_span                      bits=32 capacity=4294967295 N256<=4294967295 window_max<=4294967295 encoded_max<=4294967295
+COUNTER dut.u_burst_dot_product.fast_rows                    bits=9 capacity=511 N256<=9 window_max<=128 encoded_max<=128
+COUNTER dut.u_burst_dot_product.fast_k                       bits=9 capacity=511 N256<=9 window_max<=128 encoded_max<=128
+COUNTER dut.u_burst_dot_product.s1_k                         bits=9 capacity=511 N256<=9 window_max<=128 encoded_max<=128
+COUNTER dut.u_burst_dot_product.flanes[0].pos                bits=14 capacity=16383 N256<=319 window_max<=4127 encoded_max<=4127
+COUNTER dut.u_burst_dot_product.read_index                   bits=10 capacity=1023 N256<=1023 window_max<=1023 encoded_max<=1023
+COUNTER dut.u_burst_dot_product.read_index_hi                bits=10 capacity=1023 N256<=1023 window_max<=1023 encoded_max<=1023
+COUNTER dut.u_burst_dot_product.shift_bytes                  bits=2 capacity=3 N256<=3 window_max<=3 encoded_max<=3
+COUNTER dut.u_burst_dot_product.fc_wbase                     bits=15 capacity=32767 N256<=32767 window_max<=32767 encoded_max<=32767
+COUNTER dut.u_burst_dot_product.fc_wrel                      bits=15 capacity=32767 N256<=32767 window_max<=32767 encoded_max<=32767
+COUNTER dut.u_burst_dot_product.fast_row_base                bits=12 capacity=4095 N256<=4095 window_max<=4095 encoded_max<=4095
+COUNTER dut.u_burst_dot_product.banks[0].raddr               bits=12 capacity=4095 N256<=4095 window_max<=4095 encoded_max<=4095
+COUNTER dut.u_burst_dot_product.fast_rot                     bits=3 capacity=7 N256<=7 window_max<=7 encoded_max<=7
+COUNTER dut.u_burst_dot_product.s1_rot                       bits=3 capacity=7 N256<=7 window_max<=7 encoded_max<=7
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] initial ARVALID
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+[FAIL] SET did not preserve all 32 length bits
+[FAIL] latched length truncated
+[FAIL] cover wire truncated
+[FAIL] input_left truncated
+[FAIL] filter_left truncated
+[FAIL] input_issued truncated
+[FAIL] first burst/256-beat ARLEN encoding
+COUNTER RESULT: widths=54 snapshots=80 checks=8006 failures=337
+FATAL: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/sim/npu_lab2_counters_tb.sv:194: counter audit failed
+       Time: 5600000  Scope: npu_lab2_counters_tb

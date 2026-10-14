@@ -1,0 +1,4 @@
+[INFO] seed=7
+[FAIL] t=335000 AXI_PROVENANCE: call=1 ptr1 addr=60000ffc got=46 Raddr=60000ffc Rdata=01 Rseq=1 Rcycle=31 floor=29 epoch=1/1
+FATAL: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/sim/npu_lab2_tb.sv:124: assertion failed: AXI_PROVENANCE: call=1 ptr1 addr=60000ffc got=46 Raddr=60000ffc Rdata=01 Rseq=1 Rcycle=31 floor=29 epoch=1/1
+       Time: 335000  Scope: npu_lab2_tb.check

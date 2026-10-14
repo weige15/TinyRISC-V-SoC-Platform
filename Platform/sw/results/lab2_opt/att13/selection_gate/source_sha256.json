@@ -1,0 +1,20 @@
+{
+  "Platform/hw/srcs/NPU.v": "0465f9bae909b62dcf2aee61c10bba380c143bf324fbb1c8e8c51df9aa15289b",
+  "Platform/hw/srcs/npu_burst_dot_product.v": "11350a23182587405cfacd1db6a5a2d7161e293006b5688a336e4ae1f2ac0c7e",
+  "Platform/hw/sim/npu_lab2_tb.sv": "d9d1967c4974b93495ccf0c9af43a5ab630dad1161a85fa1b6e3eb3fd57db53d",
+  "Platform/hw/sim/npu_axi_trace_scoreboard.svh": "6d228ccf72102b6b8a992cbea8c4767fac121267dc542b9ddf8debce0ee79156",
+  "Platform/hw/sim/check_offset9_mutations.py": "3b7227541a59a3dcf3678b54838fbb5e6ca69e4488d7cd86a6b2e38e7f220fd5",
+  "Platform/sw/project/lab2_api.cc": "49a2f01ef6f69d6766c5764bcb99c38804448d6baad6e200510d2aa8ecc2a146",
+  "Platform/sw/project/lab2_api.h": "9d2c06180ddd6c0ec57254727a8702804c3338d9ea2cf4e09e9e3a320fa30c68",
+  "Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h": "8badcf62f36098f2d4c06eda18315099a80964ad413f71713786e3123cf3d1e5",
+  "Platform/sw/tests/check_mac_routing_mutations.py": "59e6fe9d5763f1c75e6fecbb3325f469fd76667945e113f16d5272b804ca6299",
+  "Platform/sw/tests/lab2_length_host_test.cc": "7b6e3491306e61744bae453b517d8911af59187daca4c4886779d9d278deac8d",
+  "Platform/sw/tests/mac_routing_host_test.cc": "ec3f9c5f49fa4dc17b5b3ec0a2c3df1fdf538b3d91278c9adfba0ff1a4842d9b",
+  "Platform/sw/tests/mac_routing_ref16.cc": "609928dc0076b226834a6b941b3c6bc597839ce359f16f1cb3ca95de3b7aaf7c",
+  "Platform/sw/tests/offset9_host_test.cc": "5e74d86f7045de3e3cfc8b10a541d824b743bc5bdf0ecc1b9916672052a242ea",
+  "Platform/sw/tests/offset9_model.cc": "fc7693e6a7bee55c53bf85f66893dc9778d2e9263d003ae060419feef1c453b8",
+  "Platform/sw/tests/offset9_model.h": "41ff5514c86439846c92c2691fb77584f407b4486e766ed7b4053cd35d34cabc",
+  "Platform/sw/tests/offset9_ref.cc": "23f782fa961526a37befcbafa5da21f9fe93edaf3a38d1b58cde50f08f27fc02",
+  "Platform/sw/tests/reuse_arena_host_test.cc": "dba16deac7b0b3bc1624b09f3ee67f5fc7234950fb0e2bdc2b7f889a7926142d",
+  "Platform/sw/tests/run_mac_routing_tests.sh": "48d1b97385721e2d0e1ef459702e5961f41faeb8bb883d0243c7e319f0ca7ea8"
+}

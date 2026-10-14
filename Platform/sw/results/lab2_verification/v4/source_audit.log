@@ -1,0 +1,9 @@
+api_rv32.ii:
+int32_t hw_simd_mac(
+extern "C" int32_t hw_simd_mac(int8_t* ptr1, int8_t* ptr2,
+conv_rv32.ii:
+int32_t hw_simd_mac(
+acc += static_cast<uint32_t>(hw_simd_mac(
+SYMBOL_CHECK: lab2_api_rv32.o single_global_text_symbol=1 failures=0
+SYMBOL_CHECK: main.elf single_global_text_symbol=1 failures=0
+PREPROCESS_CHECK: api_declaration=1 api_definition=1 conv_declaration=1 conv_direct_call=1 name_macro=0 failures=0

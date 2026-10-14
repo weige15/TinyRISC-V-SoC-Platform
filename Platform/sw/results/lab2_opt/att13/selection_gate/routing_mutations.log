@@ -1,0 +1,6 @@
+ROUTING MUTATION: bypass-real-entry DETECTED (functional assertions)
+ROUTING MUTATION: drop-scope-exit DETECTED (functional assertions)
+ROUTING MUTATION: skip-split-term DETECTED (functional assertions)
+ROUTING MUTATION: skip-empty-consumption DETECTED (functional assertions)
+ROUTING MUTATION: clear-only-prepared-bit DETECTED (functional assertions)
+ROUTING MUTATION RESULT: detected=5 escaped=0

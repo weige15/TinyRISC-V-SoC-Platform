@@ -1,0 +1,11 @@
+{
+  "Platform/hw/srcs/NPU.v": "0465f9bae909b62dcf2aee61c10bba380c143bf324fbb1c8e8c51df9aa15289b",
+  "Platform/hw/srcs/npu_burst_dot_product.v": "11350a23182587405cfacd1db6a5a2d7161e293006b5688a336e4ae1f2ac0c7e",
+  "Platform/sw/project/lab2_api.cc": "1abcca200c0fabe0db8b0e505beb0c11e56ec6f655d467b8df60588203112c45",
+  "Platform/sw/project/lab2_api.h": "9d2c06180ddd6c0ec57254727a8702804c3338d9ea2cf4e09e9e3a320fa30c68",
+  "Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h": "b8b4e5b00f9f1ef56d154a6d523268cc2df94333a9b0aeee6fbf91ef074c0763",
+  "Platform/sw/models/ds_cnn_stream_fe_profile.cc": "5366884306f2b725279358d55e73cd6fcee6ee74c49f4129bacd77c07dce024f",
+  "Platform/sw/project.mk": "f33be4fc53e6cdf5180a2f082fddef8c587b1d5daec48aec9453a1d7603c03a6",
+  "Platform/sw/Makefile": "9963c9b94ee51c93e2dc10d8c12e24a809b1a95d13a5dea6821c4fc7b1369a4a",
+  "Platform/sw/project/proj_menu.cc": "175c216e82358328413ceed7114dcb8d7ffc4e5f41f6e1208dc31bae3ec33066"
+}

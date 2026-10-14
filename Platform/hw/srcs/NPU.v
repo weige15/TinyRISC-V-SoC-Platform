@@ -136,22 +136,29 @@ module NPU (
     //                         contiguous filter-cache window. A COMPUTE that
     //                         hits ptr1 reuse, has ptr2 inside the window and
     //                         equal ptr1/ptr2 byte alignment issues no AXI
-    //                         request and runs a 16-lane MAC from local RAM.
+    //                         request and runs a 32-lane MAC from local RAM.
     //                         Contract: memory under both operands of armed
     //                         calls is unchanged until disarm.
+    //   funct7 = 5 (SET9)  : N = rs1, input_offset = signed(rs2[8:0]); rd = rs1.
+    //                         Explicit conv command for +128. Plain SET always
+    //                         overwrites ALL 9 bits with sign-extended int8.
+    // No instruction preloads operand RAM: rs1/rs2 are configuration or
+    // addresses for this service. The funct3=011 register-fed SIMD service
+    // has a separate accumulator and no write path to the burst engine RAMs.
     localparam [2:0]  FUNCT3_BURST_DOT_PRODUCT            = 3'b100;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH = 32'd0;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_COMPUTE    = 32'd1;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_STATUS     = 32'd2;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE      = 32'd3;
     localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_REUSE_FC   = 32'd4;
+    localparam [31:0] FUNCT7_BURST_DOT_PRODUCT_SET9       = 32'd5;
 
     reg [3:0] state_r;
     // Single-word AXI read (funct3 = 001) address channel registers.
     reg [31:0] axi_read_araddr_r;
     reg axi_read_arvalid_r;
     reg [31:0] burst_dot_product_length_r;
-    reg [ 7:0] burst_dot_product_offset_r;
+    reg [ 8:0] burst_dot_product_offset_r;
     wire [2:0] burst_dot_product_status;
     reg reuse_armed_r;
     reg fcache_armed_r;
@@ -269,7 +276,7 @@ module NPU (
             write_second_strb_r    <= 4'd0;
             write_second_pending_r <= 1'b0;
             burst_dot_product_length_r <= 32'd0;
-            burst_dot_product_offset_r <= 8'd0;
+            burst_dot_product_offset_r <= 9'd0;
             reuse_armed_r <= 1'b0;
             fcache_armed_r <= 1'b0;
         end else begin
@@ -304,7 +311,12 @@ module NPU (
                         end else if (funct3_i[2:0] == FUNCT3_BURST_DOT_PRODUCT) begin
                             if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET_LENGTH) begin
                                 burst_dot_product_length_r <= rs1_i;
-                                burst_dot_product_offset_r <= rs2_i[7:0];
+                                burst_dot_product_offset_r <= {rs2_i[7], rs2_i[7:0]};
+                                NPU_out <= rs1_i;
+                                state_r <= STATE_DONE;
+                            end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_SET9) begin
+                                burst_dot_product_length_r <= rs1_i;
+                                burst_dot_product_offset_r <= rs2_i[8:0];
                                 NPU_out <= rs1_i;
                                 state_r <= STATE_DONE;
                             end else if (funct7_i == FUNCT7_BURST_DOT_PRODUCT_COMPUTE) begin

@@ -1,0 +1,37 @@
+                 U __asan_handle_no_return
+                 U __asan_init
+                 U __asan_option_detect_stack_use_after_return
+                 U __asan_register_globals
+                 U __asan_report_load8
+                 U __asan_report_store1
+                 U __asan_report_store4
+                 U __asan_report_store8
+                 U __asan_stack_malloc_0
+                 U __asan_unregister_globals
+                 U __asan_version_mismatch_check_v8
+                 U __cyg_profile_func_enter
+                 U __cyg_profile_func_exit
+0000000000000000 V DW.ref.__gxx_personality_v0
+                 U __gxx_personality_v0
+0000000000000520 T hw_simd_mac
+0000000000000000 B hw_simd_mac_cnt
+0000000000000075 t hw_simd_mac.cold
+0000000000000060 T lab2_clean_operands
+0000000000000340 T lab2_conv_reset
+000000000000001a t lab2_conv_reset.cold
+00000000000004a0 T lab2_mac_is_idle
+000000000000004c t lab2_mac_is_idle.cold
+0000000000000110 T lab2_prepare_mac
+00000000000002e0 T lab2_reuse_arm
+0000000000000000 t lab2_reuse_arm.cold
+0000000000000000 r .LC0
+0000000000000048 B __odr_asan.hw_simd_mac_cnt
+                 U __stack_chk_fail
+0000000000000000 t _sub_D_00099_0
+0000000000000000 t _sub_I_00099_1
+                 U __ubsan_handle_load_invalid_value_abort
+                 U _Unwind_Resume
+                 U software_cfu_raw(unsigned int, unsigned int, unsigned long, unsigned long)
+0000000000000030 t (anonymous namespace)::memory_fence()
+0000000000000040 b (anonymous namespace)::g_conv_command
+0000000000000000 t (anonymous namespace)::clean_dcache_range(unsigned long, unsigned int)

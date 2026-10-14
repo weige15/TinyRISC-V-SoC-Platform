@@ -1,0 +1,7 @@
+========================================
+ NNchip environment ready
+========================================
+Python : /home/kuotzuwei15/NNchip/.venv/bin/python3
+RISC-V : /home/kuotzuwei15/NNchip/tools/riscv/riscv64-unknown-elf-gcc-10.1.0-2020.08.2-x86_64-linux-ubuntu14/bin/riscv64-unknown-elf-g++
+Vivado : /home/kuotzuwei15/NNchip/tools/Xilinx/Vivado/2024.1/bin/vivado
+Project: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform

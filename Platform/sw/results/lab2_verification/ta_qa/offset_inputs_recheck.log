@@ -1,0 +1,10 @@
+sw/results/lab2_verification/ta_qa/all_offsets_host.cc: OK
+sw/tests/offset9_host_test.cc: OK
+sw/tests/offset9_ref.cc: OK
+sw/tests/offset9_model.cc: OK
+sw/tests/offset9_model.h: OK
+sw/project/lab2_api.cc: OK
+sw/project/lab2_api.h: OK
+sw/app/cfu.h: OK
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK
+../tflite-micro/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK

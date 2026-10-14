@@ -1,0 +1,13 @@
+{
+  "source_base_commit": "6e4f4f6552070da5a54c4a927fa48e527649a0f0",
+  "scope": "Diagnostic normal-firmware board run. Existing bitstream reprogrammed, not freshly synthesized. Not final-commit GATE or Goal 8.",
+  "source_patch_scope": "Tracked measured inputs only; requires original Lab 2 download and dependencies. Ignored inputs are snapshots. Not a submission file list.",
+  "untracked_input_snapshots": [
+    "Platform/sw/project.mk"
+  ],
+  "original_capture_directory": "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_single",
+  "image_sha256": "47c8f3343157e5562968ea6b198a77195c97eb0d22ab8fd3e8564b9d70a1e145",
+  "elf_sha256": "6ff54ccdea91cac8d25f1b52c19dd1eb94716148b59c85d113b0b49b103de60a",
+  "resources_provenance": "Unchanged implemented RTL/bitstream; reused routed reports.",
+  "final_goal_verified": false
+}

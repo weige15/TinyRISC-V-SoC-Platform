@@ -1,0 +1,404 @@
+[INFO] seed=7
+REUSE_SAFETY_CASE: group=0 passed=64
+REUSE_SAFETY_CASE: group=1 passed=32
+REUSE_SAFETY_CASE: group=2 passed=64
+REUSE_SAFETY_CASE: group=3 passed=64
+REUSE_SAFETY_CASE: group=4 passed=64
+REUSE_SAFETY_CASE: group=5 passed=32
+REUSE_SAFETY: armed_same=64 arena_new_layer=32 rearm=64 unarmed_changed=64 changed_N=64 changed_ptr1=32 failures=0
+OFFSET9_COVERAGE: N=1 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=3 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=4 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=255 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=256 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=300 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+RECOVERY ptr1/slverr-first/B16/accepted-other PASS exact=72530 fresh_bytes=256
+ERROR_CASE ptr1/slverr-first/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=8
+RECOVERY ptr1/slverr-middle/B16/accepted-other PASS exact=-100721 fresh_bytes=256
+ERROR_CASE ptr1/slverr-middle/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=13
+RECOVERY ptr1/slverr-last/B16/accepted-other PASS exact=-78953 fresh_bytes=256
+ERROR_CASE ptr1/slverr-last/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=13
+RECOVERY ptr1/decerr-middle/B16/accepted-other PASS exact=76929 fresh_bytes=256
+ERROR_CASE ptr1/decerr-middle/B16/accepted-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=5
+RECOVERY ptr1/early-rlast/B16/accepted-other PASS exact=80111 fresh_bytes=256
+ERROR_CASE ptr1/early-rlast/B16/accepted-other PASS accepted_beats=8 ARs=2 other=1 discarded=0 random_stalls=7
+ERROR_CASE ptr1/correct-rlast/B16/accepted-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=22
+RECOVERY ptr1/rlast-late-1/B16/accepted-other PASS exact=61979 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-1/B16/accepted-other PASS accepted_beats=17 ARs=2 other=1 discarded=1 random_stalls=29
+RECOVERY ptr1/rlast-late-5/B16/accepted-other PASS exact=8939 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-5/B16/accepted-other PASS accepted_beats=21 ARs=2 other=1 discarded=5 random_stalls=17
+RECOVERY ptr1/slverr-first/B16/held-other PASS exact=25435 fresh_bytes=256
+ERROR_CASE ptr1/slverr-first/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=24
+RECOVERY ptr1/slverr-middle/B16/held-other PASS exact=-188646 fresh_bytes=256
+ERROR_CASE ptr1/slverr-middle/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=11
+RECOVERY ptr1/slverr-last/B16/held-other PASS exact=65871 fresh_bytes=256
+ERROR_CASE ptr1/slverr-last/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=42
+RECOVERY ptr1/decerr-middle/B16/held-other PASS exact=-4656 fresh_bytes=256
+ERROR_CASE ptr1/decerr-middle/B16/held-other PASS accepted_beats=16 ARs=2 other=1 discarded=0 random_stalls=20
+RECOVERY ptr1/early-rlast/B16/held-other PASS exact=73950 fresh_bytes=256
+ERROR_CASE ptr1/early-rlast/B16/held-other PASS accepted_beats=8 ARs=2 other=1 discarded=0 random_stalls=19
+ERROR_CASE ptr1/correct-rlast/B16/held-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=17
+RECOVERY ptr1/rlast-late-1/B16/held-other PASS exact=-44282 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-1/B16/held-other PASS accepted_beats=17 ARs=2 other=1 discarded=1 random_stalls=18
+RECOVERY ptr1/rlast-late-5/B16/held-other PASS exact=23137 fresh_bytes=256
+ERROR_CASE ptr1/rlast-late-5/B16/held-other PASS accepted_beats=21 ARs=2 other=1 discarded=5 random_stalls=39
+RECOVERY ptr2/slverr-first/B16/accepted-other PASS exact=107378 fresh_bytes=256
+ERROR_CASE ptr2/slverr-first/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=3
+RECOVERY ptr2/slverr-middle/B16/accepted-other PASS exact=20813 fresh_bytes=256
+ERROR_CASE ptr2/slverr-middle/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=25
+RECOVERY ptr2/slverr-last/B16/accepted-other PASS exact=-6071 fresh_bytes=256
+ERROR_CASE ptr2/slverr-last/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=26
+RECOVERY ptr2/decerr-middle/B16/accepted-other PASS exact=100506 fresh_bytes=256
+ERROR_CASE ptr2/decerr-middle/B16/accepted-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=22
+RECOVERY ptr2/early-rlast/B16/accepted-other PASS exact=-5610 fresh_bytes=256
+ERROR_CASE ptr2/early-rlast/B16/accepted-other PASS accepted_beats=8 ARs=3 other=1 discarded=0 random_stalls=10
+ERROR_CASE ptr2/correct-rlast/B16/accepted-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=34
+RECOVERY ptr2/rlast-late-1/B16/accepted-other PASS exact=156988 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-1/B16/accepted-other PASS accepted_beats=17 ARs=3 other=1 discarded=1 random_stalls=25
+RECOVERY ptr2/rlast-late-5/B16/accepted-other PASS exact=-70448 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-5/B16/accepted-other PASS accepted_beats=21 ARs=3 other=1 discarded=5 random_stalls=44
+RECOVERY ptr2/slverr-first/B16/held-other PASS exact=8480 fresh_bytes=256
+ERROR_CASE ptr2/slverr-first/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=18
+RECOVERY ptr2/slverr-middle/B16/held-other PASS exact=50288 fresh_bytes=256
+ERROR_CASE ptr2/slverr-middle/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=8
+RECOVERY ptr2/slverr-last/B16/held-other PASS exact=-25346 fresh_bytes=256
+ERROR_CASE ptr2/slverr-last/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=21
+RECOVERY ptr2/decerr-middle/B16/held-other PASS exact=-33413 fresh_bytes=256
+ERROR_CASE ptr2/decerr-middle/B16/held-other PASS accepted_beats=16 ARs=3 other=1 discarded=0 random_stalls=23
+RECOVERY ptr2/early-rlast/B16/held-other PASS exact=-33726 fresh_bytes=256
+ERROR_CASE ptr2/early-rlast/B16/held-other PASS accepted_beats=8 ARs=3 other=1 discarded=0 random_stalls=18
+ERROR_CASE ptr2/correct-rlast/B16/held-other PASS accepted_beats=16 ARs=4 other=0 discarded=0 random_stalls=12
+RECOVERY ptr2/rlast-late-1/B16/held-other PASS exact=-41612 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-1/B16/held-other PASS accepted_beats=17 ARs=3 other=1 discarded=1 random_stalls=22
+RECOVERY ptr2/rlast-late-5/B16/held-other PASS exact=39786 fresh_bytes=256
+ERROR_CASE ptr2/rlast-late-5/B16/held-other PASS accepted_beats=21 ARs=3 other=1 discarded=5 random_stalls=30
+RECOVERY ptr1/slverr-first/B256/accepted-other PASS exact=39277 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-first/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=192
+RECOVERY ptr1/slverr-middle/B256/accepted-other PASS exact=-66042 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-middle/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=243
+RECOVERY ptr1/slverr-last/B256/accepted-other PASS exact=98919 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-last/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=164
+RECOVERY ptr1/decerr-middle/B256/accepted-other PASS exact=-43090 fresh_bytes=2176
+ERROR_CASE ptr1/decerr-middle/B256/accepted-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=156
+RECOVERY ptr1/early-rlast/B256/accepted-other PASS exact=266329 fresh_bytes=2176
+ERROR_CASE ptr1/early-rlast/B256/accepted-other PASS accepted_beats=128 ARs=2 other=1 discarded=0 random_stalls=157
+ERROR_CASE ptr1/correct-rlast/B256/accepted-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=376
+RECOVERY ptr1/rlast-late-1/B256/accepted-other PASS exact=-270031 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-1/B256/accepted-other PASS accepted_beats=257 ARs=2 other=1 discarded=1 random_stalls=195
+RECOVERY ptr1/rlast-late-5/B256/accepted-other PASS exact=-42 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-5/B256/accepted-other PASS accepted_beats=261 ARs=2 other=1 discarded=5 random_stalls=176
+RECOVERY ptr1/slverr-first/B256/held-other PASS exact=-296490 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-first/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=188
+RECOVERY ptr1/slverr-middle/B256/held-other PASS exact=57446 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-middle/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=758
+RECOVERY ptr1/slverr-last/B256/held-other PASS exact=-152840 fresh_bytes=2176
+ERROR_CASE ptr1/slverr-last/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=244
+RECOVERY ptr1/decerr-middle/B256/held-other PASS exact=-136845 fresh_bytes=2176
+ERROR_CASE ptr1/decerr-middle/B256/held-other PASS accepted_beats=256 ARs=2 other=1 discarded=0 random_stalls=499
+RECOVERY ptr1/early-rlast/B256/held-other PASS exact=-33170 fresh_bytes=2176
+ERROR_CASE ptr1/early-rlast/B256/held-other PASS accepted_beats=128 ARs=2 other=1 discarded=0 random_stalls=257
+ERROR_CASE ptr1/correct-rlast/B256/held-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=222
+RECOVERY ptr1/rlast-late-1/B256/held-other PASS exact=-253365 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-1/B256/held-other PASS accepted_beats=257 ARs=2 other=1 discarded=1 random_stalls=540
+RECOVERY ptr1/rlast-late-5/B256/held-other PASS exact=-259799 fresh_bytes=2176
+ERROR_CASE ptr1/rlast-late-5/B256/held-other PASS accepted_beats=261 ARs=2 other=1 discarded=5 random_stalls=583
+RECOVERY ptr2/slverr-first/B256/accepted-other PASS exact=-154931 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-first/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=173
+RECOVERY ptr2/slverr-middle/B256/accepted-other PASS exact=-198899 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-middle/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=333
+RECOVERY ptr2/slverr-last/B256/accepted-other PASS exact=-182849 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-last/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=325
+RECOVERY ptr2/decerr-middle/B256/accepted-other PASS exact=14065 fresh_bytes=2176
+ERROR_CASE ptr2/decerr-middle/B256/accepted-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=154
+RECOVERY ptr2/early-rlast/B256/accepted-other PASS exact=67907 fresh_bytes=2176
+ERROR_CASE ptr2/early-rlast/B256/accepted-other PASS accepted_beats=128 ARs=3 other=1 discarded=0 random_stalls=96
+ERROR_CASE ptr2/correct-rlast/B256/accepted-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=155
+RECOVERY ptr2/rlast-late-1/B256/accepted-other PASS exact=-142710 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-1/B256/accepted-other PASS accepted_beats=257 ARs=3 other=1 discarded=1 random_stalls=166
+RECOVERY ptr2/rlast-late-5/B256/accepted-other PASS exact=-32661 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-5/B256/accepted-other PASS accepted_beats=261 ARs=3 other=1 discarded=5 random_stalls=360
+RECOVERY ptr2/slverr-first/B256/held-other PASS exact=88660 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-first/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=231
+RECOVERY ptr2/slverr-middle/B256/held-other PASS exact=-162944 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-middle/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=202
+RECOVERY ptr2/slverr-last/B256/held-other PASS exact=290905 fresh_bytes=2176
+ERROR_CASE ptr2/slverr-last/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=279
+RECOVERY ptr2/decerr-middle/B256/held-other PASS exact=-167687 fresh_bytes=2176
+ERROR_CASE ptr2/decerr-middle/B256/held-other PASS accepted_beats=256 ARs=3 other=1 discarded=0 random_stalls=482
+RECOVERY ptr2/early-rlast/B256/held-other PASS exact=24371 fresh_bytes=2176
+ERROR_CASE ptr2/early-rlast/B256/held-other PASS accepted_beats=128 ARs=3 other=1 discarded=0 random_stalls=191
+ERROR_CASE ptr2/correct-rlast/B256/held-other PASS accepted_beats=256 ARs=4 other=0 discarded=0 random_stalls=302
+RECOVERY ptr2/rlast-late-1/B256/held-other PASS exact=-223689 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-1/B256/held-other PASS accepted_beats=257 ARs=3 other=1 discarded=1 random_stalls=473
+RECOVERY ptr2/rlast-late-5/B256/held-other PASS exact=81925 fresh_bytes=2176
+ERROR_CASE ptr2/rlast-late-5/B256/held-other PASS accepted_beats=261 ARs=3 other=1 discarded=5 random_stalls=813
+ERROR_COVERAGE: cases=64/64 recoveries=56/56 masks=ff,ff,ff,ff,ff,ff,ff,ff
+      LATENCY mode=  zero N=1 align=0/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=0/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=0/2 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=0/3 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=1/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=1/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=1/2 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=1/3 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=2/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=2/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=2/2 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=2/3 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=3/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=3/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=3/2 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=1 align=3/3 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=0/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=0/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=0/2 cycles=6 beats=3 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=0/3 cycles=6 beats=3 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=1/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=1/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=1/2 cycles=6 beats=3 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=1/3 cycles=6 beats=3 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=  zero N=3 align=2/0 cycles=6 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=2/1 cycles=6 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=2/2 cycles=7 beats=4 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=2/3 cycles=7 beats=4 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=3/0 cycles=6 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=3/1 cycles=6 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=3/2 cycles=7 beats=4 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=3 align=3/3 cycles=7 beats=4 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=  zero N=64 align=0/0 cycles=35 beats=32 gaps=0 tail=2 overlap=15 offer_overlap=15
+      LATENCY mode=  zero N=64 align=0/1 cycles=36 beats=33 gaps=0 tail=2 overlap=15 offer_overlap=15
+      LATENCY mode=  zero N=64 align=0/2 cycles=36 beats=33 gaps=0 tail=2 overlap=15 offer_overlap=15
+      LATENCY mode=  zero N=64 align=0/3 cycles=36 beats=33 gaps=0 tail=2 overlap=15 offer_overlap=15
+      LATENCY mode=  zero N=64 align=1/0 cycles=36 beats=33 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=1/1 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=1/2 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=1/3 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=2/0 cycles=36 beats=33 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=2/1 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=2/2 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=2/3 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=3/0 cycles=36 beats=33 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=3/1 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=3/2 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=64 align=3/3 cycles=37 beats=34 gaps=0 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=  zero N=256 align=0/0 cycles=131 beats=128 gaps=0 tail=2 overlap=63 offer_overlap=63
+      LATENCY mode=  zero N=256 align=0/1 cycles=132 beats=129 gaps=0 tail=2 overlap=63 offer_overlap=63
+      LATENCY mode=  zero N=256 align=0/2 cycles=132 beats=129 gaps=0 tail=2 overlap=63 offer_overlap=63
+      LATENCY mode=  zero N=256 align=0/3 cycles=132 beats=129 gaps=0 tail=2 overlap=63 offer_overlap=63
+      LATENCY mode=  zero N=256 align=1/0 cycles=132 beats=129 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=1/1 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=1/2 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=1/3 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=2/0 cycles=132 beats=129 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=2/1 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=2/2 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=2/3 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=3/0 cycles=132 beats=129 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=3/1 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=3/2 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=256 align=3/3 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=  zero N=300 align=0/0 cycles=153 beats=150 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=300 align=0/1 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=300 align=0/2 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=300 align=0/3 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=300 align=1/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=1/1 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=1/2 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=1/3 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=2/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=2/1 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=2/2 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=2/3 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=3/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=3/1 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=3/2 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=300 align=3/3 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=random N=1 align=0/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=1 align=0/1 cycles=14 beats=2 gaps=7 tail=2 overlap=2 offer_overlap=2
+      LATENCY mode=random N=1 align=0/2 cycles=6 beats=2 gaps=1 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=1 align=0/3 cycles=8 beats=2 gaps=2 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=1 align=1/0 cycles=10 beats=2 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=1 align=1/1 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=1 align=1/2 cycles=8 beats=2 gaps=0 tail=2 overlap=3 offer_overlap=3
+      LATENCY mode=random N=1 align=1/3 cycles=8 beats=2 gaps=1 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=1 align=2/0 cycles=6 beats=2 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=1 align=2/1 cycles=25 beats=2 gaps=9 tail=2 overlap=11 offer_overlap=11
+      LATENCY mode=random N=1 align=2/2 cycles=9 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=3
+      LATENCY mode=random N=1 align=2/3 cycles=7 beats=2 gaps=0 tail=2 overlap=2 offer_overlap=2
+      LATENCY mode=random N=1 align=3/0 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=1 align=3/1 cycles=8 beats=2 gaps=1 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=1 align=3/2 cycles=26 beats=2 gaps=5 tail=2 overlap=16 offer_overlap=16
+      LATENCY mode=random N=1 align=3/3 cycles=5 beats=2 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=3 align=0/0 cycles=8 beats=2 gaps=2 tail=2 overlap=-2 offer_overlap=0
+      LATENCY mode=random N=3 align=0/1 cycles=7 beats=2 gaps=1 tail=2 overlap=-1 offer_overlap=0
+      LATENCY mode=random N=3 align=0/2 cycles=22 beats=3 gaps=5 tail=2 overlap=-2 offer_overlap=0
+      LATENCY mode=random N=3 align=0/3 cycles=8 beats=3 gaps=1 tail=2 overlap=-1 offer_overlap=0
+      LATENCY mode=random N=3 align=1/0 cycles=12 beats=2 gaps=3 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=3 align=1/1 cycles=16 beats=2 gaps=10 tail=2 overlap=-7 offer_overlap=1
+      LATENCY mode=random N=3 align=1/2 cycles=10 beats=3 gaps=4 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=3 align=1/3 cycles=8 beats=3 gaps=0 tail=2 overlap=0 offer_overlap=0
+      LATENCY mode=random N=3 align=2/0 cycles=8 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=3 align=2/1 cycles=7 beats=3 gaps=1 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=3 align=2/2 cycles=10 beats=4 gaps=3 tail=2 overlap=-3 offer_overlap=1
+      LATENCY mode=random N=3 align=2/3 cycles=13 beats=4 gaps=5 tail=2 overlap=-4 offer_overlap=1
+      LATENCY mode=random N=3 align=3/0 cycles=6 beats=3 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=3 align=3/1 cycles=10 beats=3 gaps=2 tail=2 overlap=2 offer_overlap=2
+      LATENCY mode=random N=3 align=3/2 cycles=21 beats=4 gaps=11 tail=2 overlap=8 offer_overlap=8
+      LATENCY mode=random N=3 align=3/3 cycles=11 beats=4 gaps=0 tail=2 overlap=1 offer_overlap=1
+      LATENCY mode=random N=64 align=0/0 cycles=108 beats=32 gaps=69 tail=2 overlap=47 offer_overlap=49
+      LATENCY mode=random N=64 align=0/1 cycles=68 beats=33 gaps=31 tail=2 overlap=28 offer_overlap=29
+      LATENCY mode=random N=64 align=0/2 cycles=67 beats=33 gaps=30 tail=2 overlap=29 offer_overlap=29
+      LATENCY mode=random N=64 align=0/3 cycles=47 beats=33 gaps=11 tail=2 overlap=18 offer_overlap=18
+      LATENCY mode=random N=64 align=1/0 cycles=56 beats=33 gaps=19 tail=2 overlap=22 offer_overlap=22
+      LATENCY mode=random N=64 align=1/1 cycles=50 beats=34 gaps=11 tail=2 overlap=26 offer_overlap=26
+      LATENCY mode=random N=64 align=1/2 cycles=105 beats=34 gaps=59 tail=2 overlap=70 offer_overlap=70
+      LATENCY mode=random N=64 align=1/3 cycles=62 beats=34 gaps=25 tail=2 overlap=18 offer_overlap=24
+      LATENCY mode=random N=64 align=2/0 cycles=117 beats=33 gaps=75 tail=2 overlap=48 offer_overlap=54
+      LATENCY mode=random N=64 align=2/1 cycles=50 beats=34 gaps=13 tail=2 overlap=21 offer_overlap=22
+      LATENCY mode=random N=64 align=2/2 cycles=46 beats=34 gaps=9 tail=2 overlap=20 offer_overlap=20
+      LATENCY mode=random N=64 align=2/3 cycles=53 beats=34 gaps=15 tail=2 overlap=21 offer_overlap=21
+      LATENCY mode=random N=64 align=3/0 cycles=45 beats=33 gaps=8 tail=2 overlap=18 offer_overlap=20
+      LATENCY mode=random N=64 align=3/1 cycles=56 beats=34 gaps=16 tail=2 overlap=24 offer_overlap=24
+      LATENCY mode=random N=64 align=3/2 cycles=72 beats=34 gaps=32 tail=2 overlap=37 offer_overlap=37
+      LATENCY mode=random N=64 align=3/3 cycles=55 beats=34 gaps=16 tail=2 overlap=26 offer_overlap=27
+      LATENCY mode=random N=256 align=0/0 cycles=135 beats=128 gaps=3 tail=2 overlap=67 offer_overlap=67
+      LATENCY mode=random N=256 align=0/1 cycles=284 beats=129 gaps=150 tail=2 overlap=145 offer_overlap=147
+      LATENCY mode=random N=256 align=0/2 cycles=141 beats=129 gaps=7 tail=2 overlap=66 offer_overlap=69
+      LATENCY mode=random N=256 align=0/3 cycles=194 beats=129 gaps=62 tail=2 overlap=80 offer_overlap=82
+      LATENCY mode=random N=256 align=1/0 cycles=149 beats=129 gaps=12 tail=2 overlap=61 offer_overlap=69
+      LATENCY mode=random N=256 align=1/1 cycles=244 beats=130 gaps=109 tail=2 overlap=121 offer_overlap=122
+      LATENCY mode=random N=256 align=1/2 cycles=159 beats=130 gaps=26 tail=2 overlap=73 offer_overlap=73
+      LATENCY mode=random N=256 align=1/3 cycles=167 beats=130 gaps=34 tail=2 overlap=80 offer_overlap=81
+      LATENCY mode=random N=256 align=2/0 cycles=233 beats=129 gaps=101 tail=2 overlap=115 offer_overlap=115
+      LATENCY mode=random N=256 align=2/1 cycles=371 beats=130 gaps=236 tail=2 overlap=189 offer_overlap=189
+      LATENCY mode=random N=256 align=2/2 cycles=479 beats=130 gaps=343 tail=2 overlap=249 offer_overlap=256
+      LATENCY mode=random N=256 align=2/3 cycles=149 beats=130 gaps=16 tail=2 overlap=67 offer_overlap=71
+      LATENCY mode=random N=256 align=3/0 cycles=189 beats=129 gaps=57 tail=2 overlap=96 offer_overlap=96
+      LATENCY mode=random N=256 align=3/1 cycles=133 beats=130 gaps=0 tail=2 overlap=64 offer_overlap=64
+      LATENCY mode=random N=256 align=3/2 cycles=352 beats=130 gaps=219 tail=2 overlap=172 offer_overlap=173
+      LATENCY mode=random N=256 align=3/3 cycles=156 beats=130 gaps=23 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=random N=300 align=0/0 cycles=156 beats=150 gaps=3 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=random N=300 align=0/1 cycles=228 beats=151 gaps=73 tail=2 overlap=108 offer_overlap=108
+      LATENCY mode=random N=300 align=0/2 cycles=350 beats=151 gaps=195 tail=2 overlap=168 offer_overlap=169
+      LATENCY mode=random N=300 align=0/3 cycles=205 beats=151 gaps=47 tail=2 overlap=96 offer_overlap=98
+      LATENCY mode=random N=300 align=1/0 cycles=462 beats=151 gaps=306 tail=2 overlap=245 offer_overlap=246
+      LATENCY mode=random N=300 align=1/1 cycles=186 beats=152 gaps=31 tail=2 overlap=90 offer_overlap=90
+      LATENCY mode=random N=300 align=1/2 cycles=261 beats=152 gaps=106 tail=2 overlap=123 offer_overlap=123
+      LATENCY mode=random N=300 align=1/3 cycles=362 beats=152 gaps=205 tail=2 overlap=177 offer_overlap=177
+      LATENCY mode=random N=300 align=2/0 cycles=171 beats=151 gaps=17 tail=2 overlap=83 offer_overlap=83
+      LATENCY mode=random N=300 align=2/1 cycles=590 beats=152 gaps=432 tail=2 overlap=301 offer_overlap=301
+      LATENCY mode=random N=300 align=2/2 cycles=201 beats=152 gaps=45 tail=2 overlap=92 offer_overlap=94
+      LATENCY mode=random N=300 align=2/3 cycles=192 beats=152 gaps=35 tail=2 overlap=98 offer_overlap=98
+      LATENCY mode=random N=300 align=3/0 cycles=167 beats=151 gaps=13 tail=2 overlap=84 offer_overlap=84
+      LATENCY mode=random N=300 align=3/1 cycles=412 beats=152 gaps=254 tail=2 overlap=203 offer_overlap=205
+      LATENCY mode=random N=300 align=3/2 cycles=541 beats=152 gaps=376 tail=2 overlap=272 offer_overlap=272
+      LATENCY mode=random N=300 align=3/3 cycles=362 beats=152 gaps=207 tail=2 overlap=170 offer_overlap=170
+[INFO] required matrix: 24320 calls + 12160 window-end calls, fail=0
+[INFO] long sweep done: 25152 calls, pass=33763727 fail=0
+      LATENCY mode=  zero N=300 align=0/0 cycles=153 beats=150 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=8193 align=0/0 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=0/1 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=8193 align=0/1 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=0/2 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=8193 align=0/2 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=0/3 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+      LATENCY mode=  zero N=8193 align=0/3 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=1/0 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=1/0 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=1/1 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=1/1 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=1/2 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=1/2 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=1/3 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=1/3 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=2/0 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=2/0 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=2/1 cycles=155 beats=152 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=2/1 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=2/2 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=2/2 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=2/3 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=2/3 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=300 align=3/0 cycles=154 beats=151 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=3/0 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=3/1 cycles=155 beats=152 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=3/1 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=3/2 cycles=155 beats=152 gaps=0 tail=2 overlap=74 offer_overlap=74
+      LATENCY mode=  zero N=8193 align=3/2 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3585 offer_overlap=3585
+      LATENCY mode=  zero N=300 align=3/3 cycles=155 beats=152 gaps=0 tail=2 overlap=76 offer_overlap=76
+      LATENCY mode=  zero N=8193 align=3/3 cycles=4101 beats=4098 gaps=0 tail=2 overlap=3841 offer_overlap=3841
+      LATENCY mode=  zero N=70000 align=1/3 cycles=35005 beats=35002 gaps=0 tail=2 overlap=34908 offer_overlap=34908
+      LATENCY mode=  zero N=140000 align=1/2 cycles=70005 beats=70002 gaps=0 tail=2 overlap=69816 offer_overlap=69816
+[INFO] error-prefetch=97 error-held-AR=29 full-256-bursts=2830
+      LATENCY mode=  zero N=300 align=0/0 cycles=153 beats=150 gaps=0 tail=2 overlap=74 offer_overlap=74
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-11257696 offer_overlap=-11257696
+REUSE_LATENCY mode=  zero N=300 align=0/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-11257780 offer_overlap=-11257780
+REUSE_LATENCY mode=  zero N=300 align=0/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-11257865 offer_overlap=-11257865
+REUSE_LATENCY mode=  zero N=300 align=0/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-11257950 offer_overlap=-11257950
+      LATENCY mode=  zero N=300 align=1/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=1/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-11258194 offer_overlap=-11258194
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258278 offer_overlap=-11258278
+REUSE_LATENCY mode=  zero N=300 align=1/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258363 offer_overlap=-11258363
+REUSE_LATENCY mode=  zero N=300 align=1/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258448 offer_overlap=-11258448
+      LATENCY mode=  zero N=300 align=2/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=2/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-11258692 offer_overlap=-11258692
+REUSE_LATENCY mode=  zero N=300 align=2/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258776 offer_overlap=-11258776
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258861 offer_overlap=-11258861
+REUSE_LATENCY mode=  zero N=300 align=2/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-11258946 offer_overlap=-11258946
+      LATENCY mode=  zero N=300 align=3/0 cycles=154 beats=151 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=3/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-11259190 offer_overlap=-11259190
+REUSE_LATENCY mode=  zero N=300 align=3/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-11259274 offer_overlap=-11259274
+REUSE_LATENCY mode=  zero N=300 align=3/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-11259359 offer_overlap=-11259359
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-11259444 offer_overlap=-11259444
+[INFO] reuse: hits=3477 forced-refetches=814 changed-data=120
+      LATENCY mode=  zero N=300 align=0/0 cycles=153 beats=150 gaps=0 tail=2 overlap=74 offer_overlap=74
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-12301251 offer_overlap=-12301251
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-12301335 offer_overlap=-12301335
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=79 beats=75 gaps=0 tail=2 overlap=-12301419 offer_overlap=-12301419
+      LATENCY mode=  zero N=300 align=0/0 cycles=153 beats=150 gaps=0 tail=2 overlap=74 offer_overlap=74
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=14 beats=0 gaps=0 tail=12301673 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=0 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=14 beats=0 gaps=0 tail=12301692 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=0 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=0/0 cycles=14 beats=0 gaps=0 tail=12301711 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=0 cycles=14
+      LATENCY mode=  zero N=300 align=1/1 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-12301880 offer_overlap=-12301880
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-12301965 offer_overlap=-12301965
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=80 beats=76 gaps=0 tail=2 overlap=-12302050 offer_overlap=-12302050
+      LATENCY mode=  zero N=300 align=1/1 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=14 beats=0 gaps=0 tail=12302307 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=1 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=14 beats=0 gaps=0 tail=12302326 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=1 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=1/1 cycles=14 beats=0 gaps=0 tail=12302345 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=1 cycles=14
+      LATENCY mode=  zero N=300 align=2/2 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-12302514 offer_overlap=-12302514
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-12302599 offer_overlap=-12302599
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=80 beats=76 gaps=0 tail=2 overlap=-12302684 offer_overlap=-12302684
+      LATENCY mode=  zero N=300 align=2/2 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=14 beats=0 gaps=0 tail=12302941 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=2 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=14 beats=0 gaps=0 tail=12302960 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=2 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=2/2 cycles=14 beats=0 gaps=0 tail=12302979 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=2 cycles=14
+      LATENCY mode=  zero N=300 align=3/3 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-12303148 offer_overlap=-12303148
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-12303233 offer_overlap=-12303233
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=80 beats=76 gaps=0 tail=2 overlap=-12303318 offer_overlap=-12303318
+      LATENCY mode=  zero N=300 align=3/3 cycles=155 beats=152 gaps=0 tail=2 overlap=75 offer_overlap=75
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=14 beats=0 gaps=0 tail=12303575 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=3 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=14 beats=0 gaps=0 tail=12303594 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=3 cycles=14
+REUSE_LATENCY mode=  zero N=300 align=3/3 cycles=14 beats=0 gaps=0 tail=12303613 overlap=0 offer_overlap=0
+FC_FAST_LATENCY N=300 align=3 cycles=14
+[INFO] fcache: fast=1590 streamed=14889 appends=4026 changed-data=64
+COVERAGE: lengths=304 (1..300,511,512,513,1024) alignments=16 offsets=5 matrix=24320 window_end=12160 signed_wrap=2
+AXI_SCOREBOARD: R_beats=5817496 MAC_bytes=26204362 stream_bytes=25329590 fast_bytes=874772 violations=0
+[INFO] computes=57105 commands=176774 back-to-back=176653 bursts=153730 multi-beat=100538 split-segments=45983 4k-boundary-bursts=63461 beats=5817496 discarded=195
+RESULT: PASS=44353150 FAIL=0 cases=57105
+- hw/sim/npu_lab2_tb.sv:1798: Verilog $finish

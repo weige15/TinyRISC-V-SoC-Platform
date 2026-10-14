@@ -1,0 +1,46 @@
+ROUTING CASE: fast entries=80 computes=80 products=24000 software_idle=1 reuse_armed=0
+ROUTING CASE: fast-split entries=240 computes=240 products=655440 software_idle=1 reuse_armed=0
+ROUTING CASE: merged-and-border entries=376 computes=376 products=156000 software_idle=1 reuse_armed=0
+ROUTING CASE: merged-split entries=448 computes=448 products=780000 software_idle=1 reuse_armed=0
+ROUTING CASE: border-and-grouped-split entries=2080 computes=2080 products=4260880 software_idle=1 reuse_armed=0
+ROUTING CASE: stride-and-dilation-split entries=224 computes=224 products=458864 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-input entries=80 computes=80 products=640 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-filter entries=80 computes=80 products=640 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-input-general entries=376 computes=376 products=4160 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-filter-general entries=376 computes=376 products=4160 software_idle=1 reuse_armed=0
+ROUTING CASE: empty-fast entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: empty-general entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: all-padding entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-31 entries=4464 computes=4464 products=20088 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-32 entries=4608 computes=4608 products=20736 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-33 entries=4752 computes=4752 products=21384 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-65 entries=9360 computes=9360 products=42120 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-alias-input entries=4752 computes=4752 products=57024 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-alias-filter entries=4752 computes=4752 products=57024 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-grouped entries=14256 computes=14256 products=114048 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-wide-row entries=5940 computes=5940 products=10692000 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-row-4096 entries=5940 computes=5940 products=8515584 software_idle=1 reuse_armed=0
+ROUTING CASE: valid-row-4100 entries=6732 computes=6732 products=8523900 software_idle=1 reuse_armed=0
+ROUTING SPLIT: tuples=42 N=0,1,4095,4096,4097,8193 offsets=7 exact_visitation=1
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=48 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=560 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=12240 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=142800 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=12288 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=143360 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=96 computes=96 products=12336 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=1120 computes=1120 products=143920 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=96 computes=96 products=14400 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=1120 computes=1120 products=168000 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: all-65536-int16-values entries=512 computes=512 products=131072 software_idle=1 reuse_armed=0
+ROUTING FAIL [prepared-N-zero]: software preparation fields not all zero
+ROUTING FAIL [prepared-N-zero]: ordinary call inherited convolution state
+ROUTING FAIL [prepared-N-zero]: ordinary call did not use its own legacy offset
+ROUTING FAIL [prepared-N-zero]: software preparation fields not all zero
+ROUTING FAIL [prepared-N-zero]: ordinary call inherited convolution state
+ROUTING FAIL [prepared-N-zero]: ordinary call did not use its own legacy offset
+ROUTING EMPTY: prepared_N_zero=2 preparation_consumed=1 computes=0
+ROUTING FAIL [prepared-N-zero]: unbalanced/nonidle real API returns
+ROUTING RESULT: conv_or_dot_cases=36 real_entries=74822 real_exits=74822 nonidle_mac_exits=2 model_failures=0 failures=7

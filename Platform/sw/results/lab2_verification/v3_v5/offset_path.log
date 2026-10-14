@@ -1,0 +1,98 @@
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:45:                              int32_t input_offset, uint32_t n,
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:47:  TFLITE_DCHECK_GE(input_offset, -256);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:48:  TFLITE_DCHECK_LE(input_offset, 255);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:53:    lab2_prepare_mac(input_offset, precleaned);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:97:// input_offset = 128 (int8 zero point -128) stays int32_t through
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:110:  const int32_t input_offset = params.input_offset;  // r = s(q - Z)
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:213:                                         input_offset, n, true);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:267:                                    filter_row, input_offset, n, output_disjoint);
+sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h:289:                acc += ConvDotProduct(in, flt, input_offset, n, output_disjoint);
+sw/project/lab2_api.h:15:    int8_t input_offset, uint32_t N
+sw/project/lab2_api.h:24:void lab2_prepare_mac(int32_t input_offset, bool precleaned);
+sw/project/lab2_api.cc:73:    cfu_raw_op(4, 4, 1, 0);
+sw/project/lab2_api.cc:78:    cfu_raw_op(4, 3, 0, 0);
+sw/project/lab2_api.cc:81:extern "C" void lab2_prepare_mac(int32_t input_offset, bool precleaned) {
+sw/project/lab2_api.cc:82:    g_conv_command = {input_offset, precleaned, true};
+sw/project/lab2_api.cc:87:           g_conv_command.offset == 0;
+sw/project/lab2_api.cc:93:                               int8_t input_offset, uint32_t N) {
+sw/project/lab2_api.cc:106:        cfu_raw_op(4, 5, N, command.offset);  // SET9, without narrowing +128
+sw/project/lab2_api.cc:108:        cfu_raw_op(4, 0, N, input_offset);    // legacy SET8, all int8 values
+sw/project/lab2_api.cc:110:    return static_cast<int32_t>(cfu_raw_op(4, 1, ptr1, ptr2));
+sw/app/cfu.h:6:typedef uintptr_t CfuWord;
+sw/app/cfu.h:26:uint32_t software_cfu_raw(uint32_t funct3, uint32_t funct7, CfuWord rs1,
+sw/app/cfu.h:27:                          CfuWord rs2);
+sw/app/cfu.h:33:#define cfu_raw_op_hw(funct3, funct7, rs1, rs2)                           \
+sw/app/cfu.h:39:                     : "r"((CfuWord)(rs1)), "r"((CfuWord)(rs2))           \
+sw/app/cfu.h:44:#define cfu_raw_op_hw(funct3, funct7, rs1, rs2) \
+sw/app/cfu.h:45:  software_cfu_raw((uint32_t)(funct3), (uint32_t)(funct7), (CfuWord)(rs1), \
+sw/app/cfu.h:46:                   (CfuWord)(rs2))
+sw/app/cfu.h:49:#define cfu_raw_op_sw(funct3, funct7, rs1, rs2) \
+sw/app/cfu.h:50:  software_cfu_raw((uint32_t)(funct3), (uint32_t)(funct7), (CfuWord)(rs1), \
+sw/app/cfu.h:51:                   (CfuWord)(rs2))
+sw/app/cfu.h:54:#define cfu_raw_op(funct3, funct7, rs1, rs2) \
+sw/app/cfu.h:55:  cfu_raw_op_sw(funct3, funct7, rs1, rs2)
+sw/app/cfu.h:57:#define cfu_raw_op(funct3, funct7, rs1, rs2) \
+sw/app/cfu.h:58:  cfu_raw_op_hw(funct3, funct7, rs1, rs2)
+sw/app/cfu.h:61:static inline uint32_t cfu_simd_mac_reset(CfuWord input, CfuWord filter) {
+sw/app/cfu.h:62:  return cfu_raw_op(CFU_FUNCT3_SIMD_MAC, CFU_FUNCT7_SIMD_MAC_RESET, input,
+sw/app/cfu.h:66:static inline uint32_t cfu_simd_mac_accumulate(CfuWord input,
+sw/app/cfu.h:67:                                                CfuWord filter) {
+sw/app/cfu.h:68:  return cfu_raw_op(CFU_FUNCT3_SIMD_MAC, CFU_FUNCT7_SIMD_MAC_ACCUMULATE,
+sw/app/cfu.h:73:  cfu_raw_op_hw(CFU_FUNCT3_COMPUTE, funct7, rs1, rs2)
+sw/app/cfu.h:75:  cfu_raw_op_hw(CFU_FUNCT3_AXI_READ, funct7, rs1, rs2)
+sw/app/cfu.h:77:  cfu_raw_op_hw(CFU_FUNCT3_AXI_WRITE, funct7, rs1, rs2)
+sw/app/cfu.h:78:#define cfu_op3_hw(funct7, rs1, rs2) cfu_raw_op_hw(3, funct7, rs1, rs2)
+sw/app/cfu.h:79:#define cfu_op4_hw(funct7, rs1, rs2) cfu_raw_op_hw(4, funct7, rs1, rs2)
+sw/app/cfu.h:80:#define cfu_op5_hw(funct7, rs1, rs2) cfu_raw_op_hw(5, funct7, rs1, rs2)
+sw/app/cfu.h:81:#define cfu_op6_hw(funct7, rs1, rs2) cfu_raw_op_hw(6, funct7, rs1, rs2)
+sw/app/cfu.h:82:#define cfu_op7_hw(funct7, rs1, rs2) cfu_raw_op_hw(7, funct7, rs1, rs2)
+sw/app/cfu.h:85:  cfu_raw_op_sw(CFU_FUNCT3_COMPUTE, funct7, rs1, rs2)
+sw/app/cfu.h:87:  cfu_raw_op_sw(CFU_FUNCT3_AXI_READ, funct7, rs1, rs2)
+sw/app/cfu.h:89:  cfu_raw_op_sw(CFU_FUNCT3_AXI_WRITE, funct7, rs1, rs2)
+sw/app/cfu.h:90:#define cfu_op3_sw(funct7, rs1, rs2) cfu_raw_op_sw(3, funct7, rs1, rs2)
+sw/app/cfu.h:91:#define cfu_op4_sw(funct7, rs1, rs2) cfu_raw_op_sw(4, funct7, rs1, rs2)
+sw/app/cfu.h:92:#define cfu_op5_sw(funct7, rs1, rs2) cfu_raw_op_sw(5, funct7, rs1, rs2)
+sw/app/cfu.h:93:#define cfu_op6_sw(funct7, rs1, rs2) cfu_raw_op_sw(6, funct7, rs1, rs2)
+sw/app/cfu.h:94:#define cfu_op7_sw(funct7, rs1, rs2) cfu_raw_op_sw(7, funct7, rs1, rs2)
+sw/app/cfu.h:97:  cfu_raw_op(CFU_FUNCT3_COMPUTE, funct7, rs1, rs2)
+sw/app/cfu.h:99:  cfu_raw_op(CFU_FUNCT3_AXI_READ, funct7, rs1, rs2)
+sw/app/cfu.h:101:  cfu_raw_op(CFU_FUNCT3_AXI_WRITE, funct7, rs1, rs2)
+sw/app/cfu.h:102:#define cfu_op3(funct7, rs1, rs2) cfu_raw_op(3, funct7, rs1, rs2)
+sw/app/cfu.h:103:#define cfu_op4(funct7, rs1, rs2) cfu_raw_op(4, funct7, rs1, rs2)
+sw/app/cfu.h:104:#define cfu_op5(funct7, rs1, rs2) cfu_raw_op(5, funct7, rs1, rs2)
+sw/app/cfu.h:105:#define cfu_op6(funct7, rs1, rs2) cfu_raw_op(6, funct7, rs1, rs2)
+sw/app/cfu.h:106:#define cfu_op7(funct7, rs1, rs2) cfu_raw_op(7, funct7, rs1, rs2)
+sw/app/cfu.h:108:uint32_t cfu_op(CfuWord rs1, CfuWord rs2, uint32_t func);
+sw/app/cfu.h:109:uint32_t cfu_op_hw(CfuWord rs1, CfuWord rs2, uint32_t func);
+sw/tests/offset9_model.cc:35:int signed_bits(uint32_t bits, unsigned width) {
+sw/tests/offset9_model.cc:43:uint32_t software_cfu_raw(uint32_t funct3, uint32_t funct7, CfuWord rs1, CfuWord rs2) {
+sw/tests/offset9_model.cc:50:    stats.configured_bits = funct7 == 0
+sw/tests/offset9_model.cc:70:  stats.engine_bits = stats.configured_bits;
+sw/tests/offset9_model.cc:71:  const int off = signed_bits(stats.engine_bits, 9);
+sw/tests/offset9_model.cc:120:    const int x = signed_bits(static_cast<uint32_t>(signed_bits(a[i], 8) + off), 10);
+sw/tests/offset9_model.cc:121:    const int p = signed_bits(static_cast<uint32_t>(x * signed_bits(b[i], 8)), 17);
+hw/srcs/NPU.v:118:    //   funct7 = 0 (SET)    : N = rs1 (bytes), input_offset = int8(rs2[7:0]);
+hw/srcs/NPU.v:120:    //   funct7 = 1 (COMPUTE): rd = sum_{i<N} (int8(mem[rs1 + i]) + input_offset)
+hw/srcs/NPU.v:142:    //   funct7 = 5 (SET9)  : N = rs1, input_offset = signed(rs2[8:0]); rd = rs1.
+hw/srcs/NPU.v:161:    reg [ 8:0] burst_dot_product_offset_r;
+hw/srcs/NPU.v:196:        .input_offset   (burst_dot_product_offset_r),
+hw/srcs/NPU.v:226:    reg [1:0] read_offset_r;
+hw/srcs/NPU.v:252:        read_word_pair >> {read_offset_r, 3'b000};
+hw/srcs/NPU.v:264:            read_offset_r          <= 2'b00;
+hw/srcs/NPU.v:279:            burst_dot_product_offset_r <= 9'd0;
+hw/srcs/NPU.v:293:                            read_offset_r      <= rs1_i[1:0];
+hw/srcs/NPU.v:314:                                burst_dot_product_offset_r <= {rs2_i[7], rs2_i[7:0]};
+hw/srcs/NPU.v:319:                                burst_dot_product_offset_r <= rs2_i[8:0];
+hw/srcs/NPU.v:382:                        if ((read_offset_r != 2'b00) && !read_second_word_r) begin
+hw/srcs/npu_burst_dot_product.v:36:    input [8:0] input_offset,
+hw/srcs/npu_burst_dot_product.v:63:    reg [8:0] offset_r;
+hw/srcs/npu_burst_dot_product.v:238:        wire [16:0] pv = product(in_q[8*fl +: 8], fc_word_row[8*fl +: 8], offset_r, v);
+hw/srcs/npu_burst_dot_product.v:273:    wire [16:0] p0 = product(input_word[7:0],m_axi_rdata[7:0],offset_r,lane_valid[0]);
+hw/srcs/npu_burst_dot_product.v:274:    wire [16:0] p1 = product(input_word[15:8],m_axi_rdata[15:8],offset_r,lane_valid[1]);
+hw/srcs/npu_burst_dot_product.v:275:    wire [16:0] p2 = product(input_word[23:16],m_axi_rdata[23:16],offset_r,lane_valid[2]);
+hw/srcs/npu_burst_dot_product.v:276:    wire [16:0] p3 = product(input_word[31:24],m_axi_rdata[31:24],offset_r,lane_valid[3]);
+hw/srcs/npu_burst_dot_product.v:287:            offset_r <= 0; input_low <= 0; filter_low <= 0; length_r <= 0;
+hw/srcs/npu_burst_dot_product.v:322:                offset_r <= input_offset;
+hw/srcs/npu_burst_dot_product.v:329:                offset_r <= input_offset;
+hw/srcs/npu_burst_dot_product.v:351:                offset_r <= input_offset;
+GREP RESULT: direct offset/128 scalar-int8 narrowing matches=0 failures=0

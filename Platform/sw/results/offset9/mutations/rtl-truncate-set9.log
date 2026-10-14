@@ -1,0 +1,4 @@
+[INFO] seed=20261014
+[FAIL] t=286000 offset128-conv SET offset bits got 180 expected 080
+FATAL: hw/sim/npu_lab2_tb.sv:120: assertion failed: offset128-conv SET offset bits got 180 expected 080
+       Time: 286000  Scope: npu_lab2_tb.check

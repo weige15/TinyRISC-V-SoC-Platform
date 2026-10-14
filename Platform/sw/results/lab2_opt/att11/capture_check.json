@@ -1,0 +1,43 @@
+{
+  "average_cycles": 1382495604.8,
+  "baseline_average_cycles": 4157256607.6,
+  "speedup": 3.0070667806581657,
+  "best_row_average_cycles": 1321874023.0,
+  "deviation_percent": 4.586033218386349,
+  "failures": [
+    "Invoke average differs from best row by +4.586033% (>1% absolute)"
+  ],
+  "scope": "Capture checks only: NOT clean-build/image/report provenance, normal firmware identity, RTL/host GATE, GitHub state, or Goals 8/9.",
+  "full_goal_verified": false,
+  "capture_checks_passed": false,
+  "best_row": "8",
+  "per_label_cycles": {
+    "label0": 1311355359,
+    "label1": 1422730343,
+    "label6": 1425937601,
+    "label8": 1349656218,
+    "label11": 1402798503
+  },
+  "resources": {
+    "LUT": 8323,
+    "FF": 1784,
+    "DSP": 4,
+    "RAMB36": 32,
+    "RAMB18": 0,
+    "BRAM36_equivalent": 32.0
+  },
+  "timing": {
+    "WNS_ns": 0.194,
+    "TNS_ns": 0.0,
+    "setup_failing_endpoints": 0
+  },
+  "source_golden_words_matched": 60,
+  "input_sha256": {
+    "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/fused_prepare/uart.log": "61682de2fdc3dd24f8b93a6931d1b6db3f357a717c17ccb90ef4bc6fb9b50b6b",
+    "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/fused_prepare/post_route_utilization_npu.rpt": "9637c12330f1d7086a83b09171be85698ac81b98ce588c6ea913e13e8bacbc98",
+    "/home/kuotzuwei15/NNchip/scratch/lab2_finalization/fused_prepare/post_route_timing_summary.rpt": "7e6a07b77fed1f271c4d9dee0c9c6e489cc876005ec8906d01bf71f8e84fe0c1",
+    "/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/lab2_latency.md": "20d3556858d41263f80216b9ac608d6276e2d6773176cab98f87b8d68abd148a",
+    "/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/goal5_acc_uart.log": "bda941df9934518a8776e0cbea8d5cc60759050573c71368f0b1f6f6d54db595",
+    "/home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/models/ds_cnn_stream_fe_profile.cc": "5366884306f2b725279358d55e73cd6fcee6ee74c49f4129bacd77c07dce024f"
+  }
+}

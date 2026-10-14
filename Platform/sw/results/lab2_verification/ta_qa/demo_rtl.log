@@ -1,0 +1,6 @@
+COVERAGE: lengths=304 (1..300,511,512,513,1024) alignments=16 offsets=5 matrix=24320 window_end=12160 signed_wrap=2
+ERROR_COVERAGE: cases=64/64 recoveries=56/56 masks=ff,ff,ff,ff,ff,ff,ff,ff
+REUSE_SAFETY: armed_same=64 arena_new_layer=32 rearm=64 unarmed_changed=64 changed_N=64 changed_ptr1=32 failures=0
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+AXI_SCOREBOARD: R_beats=5824786 MAC_bytes=26438836 stream_bytes=25311838 fast_bytes=1126998 violations=0
+V1/V2/V5 full RTL: PASS=43806036 FAIL=0 cases=57255

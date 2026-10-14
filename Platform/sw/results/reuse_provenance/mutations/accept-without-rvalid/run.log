@@ -1,0 +1,4 @@
+[INFO] seed=7
+[FAIL] t=335000 AXI_PROVENANCE: DUT used non-AXI/error data or dropped a usable beat
+FATAL: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/hw/sim/npu_lab2_tb.sv:124: assertion failed: AXI_PROVENANCE: DUT used non-AXI/error data or dropped a usable beat
+       Time: 335000  Scope: npu_lab2_tb.check

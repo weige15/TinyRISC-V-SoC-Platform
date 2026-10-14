@@ -1,0 +1,59 @@
+ROUTING CASE: fast entries=80 computes=80 products=24000 software_idle=1 reuse_armed=0
+ROUTING FAIL [fast-split]: reference bytes/redzones/aliased operands differ
+ROUTING FAIL [fast-split]: MAC definition not entered/exited once per expected command
+ROUTING FAIL [fast-split]: unexpected COMPUTE count
+ROUTING FAIL [fast-split]: channel products skipped/duplicated
+ROUTING CASE: fast-split entries=160 computes=160 products=655360 software_idle=1 reuse_armed=0
+ROUTING CASE: merged-and-border entries=376 computes=376 products=156000 software_idle=1 reuse_armed=0
+ROUTING FAIL [merged-split]: reference bytes/redzones/aliased operands differ
+ROUTING FAIL [merged-split]: channel products skipped/duplicated
+ROUTING CASE: merged-split entries=448 computes=448 products=779928 software_idle=1 reuse_armed=0
+ROUTING FAIL [border-and-grouped-split]: reference bytes/redzones/aliased operands differ
+ROUTING FAIL [border-and-grouped-split]: MAC definition not entered/exited once per expected command
+ROUTING FAIL [border-and-grouped-split]: unexpected COMPUTE count
+ROUTING FAIL [border-and-grouped-split]: channel products skipped/duplicated
+ROUTING CASE: border-and-grouped-split entries=1040 computes=1040 products=4259840 software_idle=1 reuse_armed=0
+ROUTING FAIL [stride-and-dilation-split]: reference bytes/redzones/aliased operands differ
+ROUTING FAIL [stride-and-dilation-split]: MAC definition not entered/exited once per expected command
+ROUTING FAIL [stride-and-dilation-split]: unexpected COMPUTE count
+ROUTING FAIL [stride-and-dilation-split]: channel products skipped/duplicated
+ROUTING CASE: stride-and-dilation-split entries=112 computes=112 products=458752 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-input entries=80 computes=80 products=640 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-filter entries=80 computes=80 products=640 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-input-general entries=376 computes=376 products=4160 software_idle=1 reuse_armed=0
+ROUTING CASE: alias-filter-general entries=376 computes=376 products=4160 software_idle=1 reuse_armed=0
+ROUTING CASE: empty-fast entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: empty-general entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: all-padding entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING FAIL [split-exact-visitation]: split sum differs from unsplit wide oracle
+ROUTING FAIL [split-exact-visitation]: split did not visit every term exactly once
+ROUTING FAIL [split-exact-visitation]: split bypassed real function entry
+ROUTING FAIL [split-exact-visitation]: split product count
+ROUTING FAIL [split-exact-visitation]: split sum differs from unsplit wide oracle
+ROUTING FAIL [split-exact-visitation]: split did not visit every term exactly once
+ROUTING FAIL [split-exact-visitation]: split bypassed real function entry
+ROUTING FAIL [split-exact-visitation]: split product count
+ROUTING FAIL [split-exact-visitation]: split sum differs from unsplit wide oracle
+ROUTING FAIL [split-exact-visitation]: split did not visit every term exactly once
+ROUTING FAIL [split-exact-visitation]: split bypassed real function entry
+ROUTING FAIL [split-exact-visitation]: split product count
+ROUTING FAIL [split-exact-visitation]: split sum differs from unsplit wide oracle
+ROUTING FAIL [split-exact-visitation]: split did not visit every term exactly once
+ROUTING FAIL [split-exact-visitation]: split bypassed real function entry
+ROUTING FAIL [split-exact-visitation]: split product count
+ROUTING SPLIT: tuples=42 N=0,1,4095,4096,4097,8193 offsets=7 exact_visitation=1
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=48 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=560 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=12240 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=142800 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=48 computes=48 products=12288 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=560 computes=560 products=143360 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=96 computes=96 products=12336 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=1120 computes=1120 products=143920 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=96 computes=96 products=14400 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=1120 computes=1120 products=168000 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc32 entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: int16-acc64 entries=0 computes=0 products=0 software_idle=1 reuse_armed=0
+ROUTING CASE: all-65536-int16-values entries=512 computes=512 products=131072 software_idle=1 reuse_armed=0
+ROUTING EMPTY: prepared_N_zero=2 preparation_consumed=1 computes=0
+ROUTING RESULT: conv_or_dot_cases=26 real_entries=8010 real_exits=8010 nonidle_mac_exits=0 model_failures=0 failures=76

@@ -1,0 +1,3 @@
+Module-header diff against original Lab 2 setup:
+PASS: identical module name/ports/directions; active-low rst_n retained.
+HEADER_SHA256 fd104bea66d19f94a2b3938683f7b610623aff4264f531c019d8b00ef370231e

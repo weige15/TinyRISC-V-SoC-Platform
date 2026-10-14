@@ -1,0 +1,14 @@
+Platform/sw/project/lab2_api.cc: OK
+Platform/sw/project/lab2_api.h: OK
+Platform/sw/app/cfu.h: OK
+Platform/sw/tflm_patches/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK
+Platform/sw/tests/run_mac_routing_tests.sh: OK
+Platform/sw/tests/check_mac_routing_mutations.py: OK
+Platform/sw/tests/mac_routing_host_test.cc: OK
+Platform/sw/tests/mac_routing_ref16.cc: OK
+Platform/sw/tests/offset9_model.cc: OK
+Platform/sw/tests/offset9_model.h: OK
+Platform/sw/tests/offset9_ref.cc: OK
+tflite-micro/tensorflow/lite/kernels/internal/reference/integer_ops/conv.h: OK
+Platform/hw/srcs/NPU.v: OK
+Platform/hw/srcs/npu_burst_dot_product.v: OK

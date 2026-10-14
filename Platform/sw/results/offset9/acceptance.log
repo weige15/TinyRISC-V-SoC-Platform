@@ -1,0 +1,70 @@
+HOST CONV: offset=-128 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=-128 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=-128 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=-128 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=-127 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=-127 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=-127 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=-127 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=-102 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=-102 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=-102 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=-102 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=-1 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=-1 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=-1 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=-1 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=0 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=0 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=0 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=0 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=1 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=1 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=1 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=1 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=127 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=127 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=127 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=127 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST CONV: offset=128 shape=1x1-depth300 alignments=16 patterns=2 cases=32 bytes=1536 failures=0
+HOST CONV: offset=128 shape=3x3-depth300-SAME alignments=16 patterns=2 cases=32 bytes=7680 failures=0
+HOST CONV: offset=128 shape=3x3-stride2-dilation2 alignments=16 patterns=2 cases=32 bytes=2304 failures=0
+HOST CONV: offset=128 shape=3x3-grouped alignments=16 patterns=2 cases=32 bytes=11520 failures=0
+HOST COMMAND: N=1 alignments=16 plain_offsets=7 tuples=112
+HOST COMMAND: N=3 alignments=16 plain_offsets=7 tuples=112
+HOST COMMAND: N=4 alignments=16 plain_offsets=7 tuples=112
+HOST COMMAND: N=255 alignments=16 plain_offsets=7 tuples=112
+HOST COMMAND: N=256 alignments=16 plain_offsets=7 tuples=112
+HOST COMMAND: N=300 alignments=16 plain_offsets=7 tuples=112
+HOST ALTERNATING: actual_convolutions=1280 each_followed_by_plain=1 post128_plain_int8_values=256 plain_calls=2624 reuse_hits=19104 fast_hits=4392 stale=0
+HOST RESULT: conv_cases=1280 bytes=196608 unsaturated=196601 byte_mismatches=0 model_failures=0 failures=0
+OFFSET9_COVERAGE: N=1 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=3 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=4 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=255 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=256 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=300 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+RESULT: PASS=5195548 FAIL=0 cases=10848
+OFFSET9_COVERAGE: N=1 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=3 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=4 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=255 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=256 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=300 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+RESULT: PASS=5223350 FAIL=0 cases=10848
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+ERROR_COVERAGE: cases=64/64 recoveries=56/56 masks=ff,ff,ff,ff,ff,ff,ff,ff
+COVERAGE: lengths=304 (1..300,511,512,513,1024) alignments=16 offsets=5 matrix=24320 window_end=12160 signed_wrap=2
+RESULT: PASS=43520197 FAIL=0 cases=57133
+OFFSET9_COVERAGE: N=1 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=3 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=4 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=255 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=256 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_COVERAGE: N=300 alignments=16 patterns=3 reuse_modes=2 plain_offsets=7 tuples=672
+OFFSET9_RESULT: tuples=4032 wide=6560 alternating_plain=4288 int8_sweep=256 reuse_hits=2272 fast_hits=568 failures=0
+RESULT: PASS=5176393 FAIL=0 cases=10848
+GREP RESULT: offset/128 scalar-int8 narrowing matches=0 failures=0
+OFFSET9 ACCEPTANCE: failures=0; evidence: /home/kuotzuwei15/NNchip/TinyRISC-V-SoC-Platform/Platform/sw/results/offset9

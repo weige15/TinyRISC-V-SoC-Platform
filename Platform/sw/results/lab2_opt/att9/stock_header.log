@@ -1,0 +1,25 @@
+/home/kuotzuwei15/NNchip/scratch/lab2_finalization/stock_header_after_stock/lab2_api.h: OK
+riscv64-unknown-elf-g++ (SiFive GCC 10.1.0-2020.08.2) 10.1.0
+Header mode: stock; isolated directory: /home/kuotzuwei15/NNchip/scratch/lab2_finalization/stock_header_after_stock
+			ac: R_RISCV_CALL	lab2_prepare_mac
+			c8: R_RISCV_CALL	hw_simd_mac
+			dc: R_RISCV_CALL	lab2_prepare_mac
+			f4: R_RISCV_CALL	hw_simd_mac
+			49c: R_RISCV_CALL	lab2_prepare_mac
+			4bc: R_RISCV_CALL	hw_simd_mac
+			624: R_RISCV_CALL	lab2_prepare_mac
+			63c: R_RISCV_CALL	hw_simd_mac
+			82c: R_RISCV_CALL	lab2_prepare_mac
+			84c: R_RISCV_CALL	hw_simd_mac
+			930: R_RISCV_CALL	lab2_prepare_mac
+			950: R_RISCV_CALL	hw_simd_mac
+			99c: R_RISCV_CALL	lab2_prepare_mac
+			9bc: R_RISCV_CALL	hw_simd_mac
+			cac: R_RISCV_CALL	lab2_prepare_mac
+			cc4: R_RISCV_CALL	hw_simd_mac
+			6c: R_RISCV_CALL	lab2_prepare_mac
+			84: R_RISCV_CALL	hw_simd_mac
+			cc: R_RISCV_CALL	lab2_prepare_mac
+			e4: R_RISCV_CALL	hw_simd_mac
+PASS: int8/int16 kernel + real MAC compile against stock header; one C MAC; no unresolved MAC/helpers.
+Scope: compile/relocatable-link preflight only, not a firmware link or fresh-board Goal 8 acceptance.

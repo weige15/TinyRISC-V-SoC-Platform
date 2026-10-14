@@ -1,0 +1,3 @@
+Icarus Verilog version 12.0 (stable) (v12_0)
+Verilator 5.020 2024-01-01 rev (Debian 5.020-1)
+Python 3.12.3

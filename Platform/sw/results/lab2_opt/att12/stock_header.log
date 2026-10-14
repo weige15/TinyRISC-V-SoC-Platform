@@ -1,0 +1,32 @@
+/home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_block/stock_header/lab2_api.h: OK
+riscv64-unknown-elf-g++ (SiFive GCC 10.1.0-2020.08.2) 10.1.0
+Header mode: stock; isolated directory: /home/kuotzuwei15/NNchip/scratch/lab2_finalization/channel_block/stock_header
+			bc: R_RISCV_CALL	lab2_prepared_mac
+			dc: R_RISCV_CALL	lab2_prepared_mac
+			4f4: R_RISCV_CALL	lab2_prepared_mac
+			528: R_RISCV_CALL	lab2_prepared_mac
+			68c: R_RISCV_CALL	lab2_prepared_mac
+			6b8: R_RISCV_CALL	lab2_prepared_mac
+			980: R_RISCV_CALL	lab2_prepared_mac
+			9b4: R_RISCV_CALL	lab2_prepared_mac
+			d20: R_RISCV_CALL	lab2_prepared_mac
+			d54: R_RISCV_CALL	lab2_prepared_mac
+			74: R_RISCV_CALL	lab2_prepared_mac
+			c4: R_RISCV_CALL	lab2_prepared_mac
+			20: R_RISCV_CALL	hw_simd_mac
+			bc: R_RISCV_CALL	lab2_prepared_mac
+			dc: R_RISCV_CALL	lab2_prepared_mac
+			4f4: R_RISCV_CALL	lab2_prepared_mac
+			528: R_RISCV_CALL	lab2_prepared_mac
+			68c: R_RISCV_CALL	lab2_prepared_mac
+			6b8: R_RISCV_CALL	lab2_prepared_mac
+			980: R_RISCV_CALL	lab2_prepared_mac
+			9b4: R_RISCV_CALL	lab2_prepared_mac
+			d20: R_RISCV_CALL	lab2_prepared_mac
+			d54: R_RISCV_CALL	lab2_prepared_mac
+			74: R_RISCV_CALL	lab2_prepared_mac
+			c4: R_RISCV_CALL	lab2_prepared_mac
+PASS: no direct CUSTOM-0 in stock_header_probe.dis
+PASS: no direct CUSTOM-0 in prepared_adapter.dis
+PASS: int8/int16 kernel + real MAC compile against stock header; one C MAC; no unresolved MAC/helpers.
+Scope: compile/relocatable-link preflight only, not a firmware link or fresh-board Goal 8 acceptance.

@@ -1,0 +1,4 @@
+[INFO] seed=20261014
+[FAIL] t=386000 plain-after-offset128 SET offset bits got 080 expected 180
+FATAL: hw/sim/npu_lab2_tb.sv:120: assertion failed: plain-after-offset128 SET offset bits got 080 expected 180
+       Time: 386000  Scope: npu_lab2_tb.check
