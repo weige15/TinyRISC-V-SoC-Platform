@@ -32,6 +32,8 @@ module npu_transpose_fast #(
     input             cfg_shape_we,   // rs1 = hw dim (0..5), rs2 = extent
     input             cfg_adv_we,     // rs1 = hw dim (0..5), rs2 = byte delta
     input             cfg_fast_we,    // rs1 = total bytes, rs2 = {k[3:0] @ 16, R[15:0]}
+    input             cfg_wm_we,      // rs1 = read watermark: end address (exclusive) of the input bytes
+                                      // that software has already cleaned out of the D-cache
     input      [31:0] cfg_rs1,
     input      [31:0] cfg_rs2,
     input             start,
@@ -75,11 +77,25 @@ module npu_transpose_fast #(
     // fill
     reg [31:0] ar_addr;       // next AR address (word aligned)
     reg [12:0] ar_left;       // words still to request
+    reg [12:0] ar_issued;     // words requested so far in this run
+    // Read watermark: number of input words (counted from the word aligned
+    // input base) that software has cleaned; no AR may reach beyond it. It is
+    // cleared when a run completes, so every run needs fresh watermark writes.
+    reg [13:0] wm_w;
+    wire [13:0] wm_avail = wm_w - {1'b0, ar_issued};   // words that may still be requested
     reg [12:0] wr_ptr;        // words received
     reg [12:0] n_in_words;
     wire [12:0] to4k_ar2 = 13'd1024 - {3'd0, ar_addr[11:2]};
     wire [12:0] ar_len_a = (ar_left < 13'd256) ? ar_left : 13'd256;
-    wire [12:0] ar_len   = (ar_len_a < to4k_ar2) ? ar_len_a : to4k_ar2;
+    wire [12:0] ar_len_b = (ar_len_a < to4k_ar2) ? ar_len_a : to4k_ar2;
+`ifdef NPU_TP_NO_WM
+    // mutation used by the testbench check: watermark ignored
+    wire        ar_wm_ok = 1'b1;
+    wire [12:0] ar_len   = ar_len_b;
+`else
+    wire        ar_wm_ok = (wm_avail != 14'd0) && !wm_avail[13];
+    wire [12:0] ar_len   = ({1'b0, ar_len_b} < wm_avail) ? ar_len_b : wm_avail[12:0];
+`endif
     assign rready = run && !fill_done;
     wire fill_we = rvalid && rready;
 
@@ -199,6 +215,7 @@ module npu_transpose_fast #(
             pcnt <= 13'd0; gptr <= 13'd0; rptr <= 13'd0;
             ic <= 13'd0; wcol <= 12'd0; rbase <= 16'd0;
             wr_ptr <= 13'd0; ar_left <= 13'd0; ar_addr <= 32'd0;
+            ar_issued <= 13'd0; wm_w <= 14'd0;
             for (i = 0; i < 6; i = i + 1) begin
                 shape[i] <= 16'd1; adv[i] <= 16'd0;
                 brem[i] <= 16'd0; orem[i] <= 16'd0;
@@ -208,6 +225,8 @@ module npu_transpose_fast #(
             if (cfg_base_we) begin in_base <= cfg_rs1; out_base <= cfg_rs2; end
             if (cfg_shape_we && cfg_rs1 < 6) shape[cfg_rs1[2:0]] <= cfg_rs2[15:0];
             if (cfg_adv_we && cfg_rs1 < 6)   adv[cfg_rs1[2:0]]   <= cfg_rs2[15:0];
+            if (cfg_wm_we)
+                wm_w <= ((cfg_rs1[15:0] + 16'd3) >> 2) - in_base[15:2];
             if (cfg_fast_we) begin
                 tot_bytes <= cfg_rs1[15:0];
                 r_cnt     <= cfg_rs2[15:0];
@@ -223,6 +242,7 @@ module npu_transpose_fast #(
                     n_in_words <= (tot_bytes + {14'd0, in_base[1:0]} + 16'd3) >> 2;
                     ar_addr <= {in_base[31:2], 2'b00};
                     ar_left <= (tot_bytes + {14'd0, in_base[1:0]} + 16'd3) >> 2;
+                    ar_issued <= 13'd0;
                     wr_ptr <= 13'd0;
                     fill_done <= 1'b0; build_done <= 1'b0; gather_go <= 1'b0;
                     building <= 1'b1; bcnt <= 14'd0; boff <= 16'd0;
@@ -242,12 +262,13 @@ module npu_transpose_fast #(
                 // ---------------- fill: AR issue ----------------
                 if (arvalid) begin
                     if (arready) arvalid <= 1'b0;
-                end else if (ar_left != 13'd0) begin
+                end else if (ar_left != 13'd0 && ar_wm_ok) begin
                     araddr  <= ar_addr;
                     arlen   <= ar_len[7:0] - 8'd1;
                     arvalid <= 1'b1;
                     ar_addr <= ar_addr + {17'd0, ar_len, 2'b00};
                     ar_left <= ar_left - ar_len;
+                    ar_issued <= ar_issued + ar_len;
                 end
                 if (fill_we) begin
                     wr_ptr <= wr_ptr + 13'd1;
@@ -354,6 +375,7 @@ module npu_transpose_fast #(
                 if (bvalid) b_cnt <= b_cnt + 13'd1;
 
                 if (all_done) begin
+                    wm_w <= 14'd0;
                     run  <= 1'b0;
                     done <= 1'b1;
                 end

@@ -39,7 +39,9 @@ namespace reference_ops {
 // The NPU reads and writes DDR directly, so the input is cleaned out of the
 // D-cache first and the output range is cleaned + invalidated before the run
 // (preserving unrelated bytes that share a boundary line) and invalidated
-// afterwards.
+// afterwards. In burst mode the input is cleaned in 1 KB chunks while the NPU
+// is already running; the NPU's read watermark (funct7=8) keeps its AR
+// requests behind the cleaned part.
 //
 // Burst mode (CUSTOM-0 funct3 = 6, funct7 = 5, hw/srcs/npu_transpose_fast.v):
 // for int8 tensors of at most 16 KiB the NPU first reads the whole input with
@@ -67,16 +69,28 @@ inline void CacheClean(const void* ptr, uintptr_t bytes) {
   for (; a < end; a += 32) cbo_clean(reinterpret_cast<void*>(a));
 }
 
+// One line per iteration: the loop runs while the NPU is busy and is shorter
+// than the NPU run, and the smaller code footprint matters (cold I-cache).
 inline void CacheInvalidate(const void* ptr, uintptr_t bytes) {
   uintptr_t a = reinterpret_cast<uintptr_t>(ptr) & ~static_cast<uintptr_t>(31);
   const uintptr_t end = reinterpret_cast<uintptr_t>(ptr) + bytes;
-  for (; a + 128 <= end; a += 128) {
-    cbo_invalidate(reinterpret_cast<void*>(a));
-    cbo_invalidate(reinterpret_cast<void*>(a + 32));
-    cbo_invalidate(reinterpret_cast<void*>(a + 64));
-    cbo_invalidate(reinterpret_cast<void*>(a + 96));
-  }
   for (; a < end; a += 32) cbo_invalidate(reinterpret_cast<void*>(a));
+}
+
+// Number of leading hardware dimensions (h < value) known to hold extent 1 /
+// delta 0 (reset state is all (1, 0)); starts at 0 = nothing known.
+inline int& hw_pad_known() {
+  static int p = 0;
+  return p;
+}
+
+// Single-beat engine only: write back and drop the whole output range. Kept out
+// of line so the burst path stays small (the code is cold in the I-cache on
+// most calls).
+__attribute__((noinline, cold)) inline void PrepareOutputSlow(void* output_data,
+                                                             uintptr_t bytes) {
+  CacheClean(output_data, bytes);
+  CacheInvalidate(output_data, bytes);
 }
 
 }  // namespace transpose_internal
@@ -105,75 +119,91 @@ void Transpose(const TransposeParams& params, const RuntimeShape& input_shape,
   for (int i = dims - 2; i >= 0; --i) {
     in_stride[i] = in_stride[i + 1] * in_dims[i + 1];
   }
-
-  int32_t total = 1;
-  for (int d = 0; d < dims; ++d) total *= out_dims[d];
+  const int32_t total = in_stride[0] * in_dims[0];
 
   if (total > 0) {
     const uintptr_t bytes = static_cast<uintptr_t>(total) * esize;
     const int pad = kHwDims - dims;
 
-    // Burst mode eligibility (see the comment at the top of this file).
+    // Hardware dimension h = d + pad; dimensions h < pad must read (1, 0).
+    // They already do for h < hw_pad_known(), only the new ones are written.
+    int& known = hw_pad_known();
+    for (int h = known; h < pad; ++h) {
+      cfu_raw_op_hw(6, 2, h, 1);
+      cfu_raw_op_hw(6, 3, h, 0);
+    }
+    known = pad;
+
+    // Per output dimension d, right to left:
+    //   delta[d] = s[d] - sum_{e>d} (extent[e] - 1) * s[e],  s[d] = in byte stride of perm[d].
+    // The same loop finds the burst mode parameters: R = product of the k
+    // innermost output extents, k minimal with R % 4 == 0 (R <= 4096).
+    int32_t acc = 0;
     int32_t fast_r = 1;
     int32_t fast_k = 0;
-    bool fast = (esize == 1) && ((total & 3) == 0) &&
-                ((reinterpret_cast<uintptr_t>(output_data) & 3) == 0) &&
-                (((reinterpret_cast<uintptr_t>(input_data) & 3) + bytes) <= 16384);
-    if (fast) {
-      fast = false;
-      for (int h = kHwDims - 1; h >= 0; --h) {
-        const int d = h - pad;
-        fast_r *= (d < 0) ? 1 : out_dims[d];
+    int fstate = 0;  // 0 searching, 1 found, 2 hopeless
+    for (int d = dims - 1; d >= 0; --d) {
+      const int32_t ext = out_dims[d];
+      const int32_t sd = in_stride[params.perm[d]] * esize;
+      cfu_raw_op_hw(6, 2, d + pad, ext);
+      cfu_raw_op_hw(6, 3, d + pad, sd - acc);
+      acc += (ext - 1) * sd;
+      if (fstate == 0) {
+        fast_r *= ext;
         ++fast_k;
         if ((fast_r & 3) == 0) {
-          fast = (fast_r <= 4096);
-          break;
+          fstate = 1;
+        } else if (fast_r > 4096) {
+          fstate = 2;
         }
-        if (fast_r > 4096) break;
       }
     }
 
-    CacheClean(input_data, bytes);
+    // Burst mode eligibility (see the comment at the top of this file).
+    const bool fast = (fstate == 1) && (fast_r <= 4096) && (esize == 1) &&
+                      ((total & 3) == 0) &&
+                      ((reinterpret_cast<uintptr_t>(output_data) & 3) == 0) &&
+                      (((reinterpret_cast<uintptr_t>(input_data) & 3) + bytes) <= 16384);
+
     if (fast) {
       // The NPU overwrites every output byte: only lines shared with
-      // neighbouring data must be written back first.
+      // neighbouring data must be written back first (the NPU writes the
+      // output only after the whole input has been read, i.e. after the last
+      // watermark below).
       const uintptr_t o = reinterpret_cast<uintptr_t>(output_data);
       if (o & 31) cbo_clean(output_data);
       if ((o + bytes) & 31) cbo_clean(reinterpret_cast<void*>(o + bytes - 1));
     } else {
-      CacheClean(output_data, bytes);
-      CacheInvalidate(output_data, bytes);
+      CacheClean(input_data, bytes);
+      PrepareOutputSlow(output_data, bytes);
     }
 
     cfu_raw_op_hw(6, 0, reinterpret_cast<uintptr_t>(input_data),
                   reinterpret_cast<uintptr_t>(output_data));
-    cfu_raw_op_hw(6, 1, esize, 0);
-    for (int h = 0; h < kHwDims; ++h) {
-      const int d = h - pad;
-      if (d < 0) {
-        cfu_raw_op_hw(6, 2, h, 1);
-        cfu_raw_op_hw(6, 3, h, 0);
-      } else {
-        int32_t delta = in_stride[params.perm[d]] * esize;
-        for (int e = d + 1; e < dims; ++e) {
-          delta -= (out_dims[e] - 1) * in_stride[params.perm[e]] * esize;
-        }
-        cfu_raw_op_hw(6, 2, h, out_dims[d]);
-        cfu_raw_op_hw(6, 3, h, delta);
-      }
-    }
     if (fast) {
       cfu_raw_op_hw(6, 5, static_cast<uint32_t>(total),
                     (static_cast<uint32_t>(fast_k) << 16) |
                         static_cast<uint32_t>(fast_r));
-    }
-    if (fast) {
-      // Start without waiting; the output lines are invalidated while the NPU
-      // runs (the CPU does not touch the output range meanwhile), then wait.
+      // Start without waiting. The engine builds its tables at once but its
+      // AXI reads stop at the read watermark (funct7=8: end address of the
+      // input bytes already cleaned), which is advanced after every 1 KB chunk
+      // of cbo.clean, so the input fetch overlaps the cache cleaning.
       cfu_raw_op_hw(6, 6, 0, 0);
+      const uintptr_t in_end = reinterpret_cast<uintptr_t>(input_data) + bytes;
+      uintptr_t p = reinterpret_cast<uintptr_t>(input_data) & ~static_cast<uintptr_t>(31);
+      while (p < in_end) {
+        const uintptr_t n = (in_end - p < 1024) ? (in_end - p) : 1024;
+        CacheClean(reinterpret_cast<const void*>(p), n);
+        p += n;
+        cfu_raw_op_hw(6, 8, p, 0);
+      }
+      // The output lines are invalidated while the NPU runs (the CPU does not
+      // touch the output range meanwhile), then wait.
       CacheInvalidate(output_data, bytes);
       cfu_raw_op_hw(6, 7, 0, 0);
     } else {
+      // funct7=1 (element size) also selects the single-beat engine.
+      cfu_raw_op_hw(6, 1, esize, 0);
       cfu_raw_op_hw(6, 4, 0, 0);
       CacheInvalidate(output_data, bytes);
     }

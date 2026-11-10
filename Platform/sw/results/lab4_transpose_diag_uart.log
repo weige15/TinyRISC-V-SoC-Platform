@@ -1,0 +1,150 @@
+SYNC!@#[2J[H
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> l[2J[H
+Running Lab menu
+[2J[H
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ x: eXit to previous menu
+lab> x[2J[H---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> t[2J[H
+Running TFLM inference, verification, and cycles
+
+=== TFLM Functional Verification ===
+Model: mobileViT_xxs.tflite (1212672 bytes)
+Convolution path: software/reference (upstream TFLM ConvPerChannel)
+Tensor arena: 8388608 bytes
+Profile: mobileVit_xxs
+Input profile: zero input
+Output profile: Print Output Value, tolerance=0
+Samples: 1
+AllocateTensors: kTfLiteOk
+
+--- Sample 1/1 ---
+Running inference...
+TDIAG n=66
+TD 0 dims=4 in=1,16,16,64,0,0 perm=0,3,1,2,0,0 es=1 fast=1 k=1 r=16 cyc=31153 p=21887,22794,30396
+TD 1 dims=6 in=1,64,8,2,8,2 perm=0,3,5,2,4,1 es=1 fast=1 k=1 r=64 cyc=30211 p=21258,21899,25896
+TD 2 dims=5 in=1,4,64,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=64 cyc=16369 p=11348,12154,15981
+TD 3 dims=5 in=1,4,64,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=15415 p=10655,11200,13218
+TD 4 dims=5 in=1,4,64,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=15311 p=10533,11096,13114
+TD 5 dims=5 in=1,4,4,8,64,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=6918 p=2281,2704,4728
+TD 6 dims=5 in=1,4,4,64,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=64 cyc=7196 p=2550,2982,5000
+TD 7 dims=5 in=1,4,4,64,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=10436 p=5784,6216,8234
+TD 8 dims=5 in=1,4,64,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=16332 p=11204,12070,15944
+TD 9 dims=5 in=1,4,64,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=64 cyc=15492 p=10728,11276,13294
+TD 10 dims=5 in=1,4,4,8,64,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=6931 p=2247,2715,4739
+TD 11 dims=5 in=1,4,64,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=15546 p=10813,11330,14333
+TD 12 dims=5 in=1,4,4,64,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=64 cyc=6879 p=2242,2664,4682
+TD 13 dims=5 in=1,4,4,64,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=10585 p=5938,6370,8388
+TD 14 dims=6 in=1,2,2,8,8,64 perm=0,5,3,1,4,2 es=1 fast=1 k=2 r=16 cyc=30769 p=21449,22412,30013
+TD 15 dims=4 in=1,64,16,16,0,0 perm=0,2,3,1,0,0 es=1 fast=1 k=1 r=64 cyc=29590 p=20942,21280,25277
+TD 16 dims=4 in=1,8,8,80,0,0 perm=0,3,1,2,0,0 es=1 fast=1 k=1 r=8 cyc=10618 p=7299,7937,9211
+TD 17 dims=6 in=1,80,4,2,4,2 perm=0,3,5,2,4,1 es=1 fast=1 k=1 r=80 cyc=10025 p=6749,7345,8614
+TD 18 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=5513 p=3420,4323,5166
+TD 19 dims=5 in=1,4,16,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=16 cyc=4594 p=2902,3450,3980
+TD 20 dims=5 in=1,4,4,8,16,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=2369 p=760,1227,1763
+TD 21 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4914 p=3254,3770,4573
+TD 22 dims=5 in=1,4,4,16,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=16 cyc=2273 p=708,1130,1660
+TD 23 dims=5 in=1,4,4,16,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4319 p=2739,3171,3701
+TD 24 dims=5 in=1,4,16,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=16 cyc=5513 p=3457,4322,5172
+TD 25 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4627 p=2937,3484,4014
+TD 26 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4513 p=2810,3371,3901
+TD 27 dims=5 in=1,4,4,8,16,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=2283 p=714,1137,1673
+TD 28 dims=5 in=1,4,4,16,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=16 cyc=2648 p=1074,1506,2036
+TD 29 dims=5 in=1,4,4,16,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4418 p=2843,3275,3805
+TD 30 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=5401 p=3345,4202,5060
+TD 31 dims=5 in=1,4,16,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=16 cyc=4594 p=2907,3451,3981
+TD 32 dims=5 in=1,4,4,8,16,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=2325 p=714,1181,1717
+TD 33 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=5000 p=3342,3857,4652
+TD 34 dims=5 in=1,4,4,16,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=16 cyc=2274 p=708,1130,1660
+TD 35 dims=5 in=1,4,4,16,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4522 p=2942,3374,3904
+TD 36 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=5420 p=3420,4229,5079
+TD 37 dims=5 in=1,4,16,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=16 cyc=4656 p=2969,3513,4043
+TD 38 dims=5 in=1,4,4,8,16,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=2326 p=714,1182,1718
+TD 39 dims=5 in=1,4,16,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4914 p=3256,3771,4566
+TD 40 dims=5 in=1,4,4,16,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=16 cyc=2273 p=708,1130,1660
+TD 41 dims=5 in=1,4,4,16,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=4476 p=2901,3333,3863
+TD 42 dims=6 in=1,2,2,4,4,80 perm=0,5,3,1,4,2 es=1 fast=1 k=2 r=8 cyc=11009 p=7313,8281,10645
+TD 43 dims=4 in=1,80,8,8,0,0 perm=0,2,3,1,0,0 es=1 fast=1 k=1 r=80 cyc=9725 p=6707,7045,8314
+TD 44 dims=4 in=1,4,4,96,0,0 perm=0,3,1,2,0,0 es=1 fast=1 k=1 r=4 cyc=4130 p=2655,3242,3648
+TD 45 dims=6 in=1,96,2,2,2,2 perm=0,3,5,2,4,1 es=1 fast=1 k=1 r=96 cyc=3660 p=2176,2772,3173
+TD 46 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2842 p=1514,2418,2664
+TD 47 dims=5 in=1,4,4,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=4 cyc=1922 p=1000,1546,1704
+TD 48 dims=5 in=1,4,4,8,4,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=1183 p=342,809,973
+TD 49 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2161 p=1272,1787,2036
+TD 50 dims=5 in=1,4,4,4,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=4 cyc=1132 p=336,758,916
+TD 51 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=1776 p=969,1401,1559
+TD 52 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2741 p=1509,2320,2608
+TD 53 dims=5 in=1,4,4,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=4 cyc=1924 p=1002,1547,1705
+TD 54 dims=5 in=1,4,4,8,4,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=1230 p=388,856,1020
+TD 55 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2218 p=1329,1844,2037
+TD 56 dims=5 in=1,4,4,4,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=4 cyc=1133 p=336,758,916
+TD 57 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=1775 p=968,1400,1558
+TD 58 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2699 p=1467,2276,2565
+TD 59 dims=5 in=1,4,4,4,8,0 perm=0,1,3,4,2,0 es=1 fast=1 k=1 r=4 cyc=1922 p=1000,1546,1704
+TD 60 dims=5 in=1,4,4,8,4,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=8 cyc=1186 p=342,810,974
+TD 61 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=2135 p=1245,1760,1953
+TD 62 dims=5 in=1,4,4,4,8,0 perm=0,1,2,4,3,0 es=1 fast=1 k=1 r=4 cyc=1132 p=336,758,916
+TD 63 dims=5 in=1,4,4,4,8,0 perm=0,1,3,2,4,0 es=1 fast=1 k=1 r=8 cyc=1780 p=973,1405,1563
+TD 64 dims=6 in=1,2,2,2,2,96 perm=0,5,3,1,4,2 es=1 fast=1 k=2 r=4 cyc=4628 p=2780,3693,4291
+TD 65 dims=4 in=1,96,4,4,0,0 perm=0,2,3,1,0,0 es=1 fast=1 k=1 r=96 cyc=3368 p=2141,2479,2880
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data unavailable: expected 12 float32 words, got type=9, bytes=10.
+Output (10 bytes):
+00: -32
+01: 114
+02: -38
+03: 52
+04: 50
+05: 127
+06: -120
+07: -128
+08: -71
+09: 80
+
+==============================================
+ Counter |       Total | Starts |   Average   
+---------+-------------+--------+-------------
+    0    |     8255718 |     37 |      223127
+    1    |      451352 |     66 |        6838
+    2    |           0 |      0 |         n/a
+    3    |           0 |      0 |         n/a
+    4    |           0 |      0 |         n/a
+    5    |           0 |      0 |         n/a
+    6    |           0 |      0 |         n/a
+    7    |           0 |      0 |         n/a
+    8    |           0 |      0 |         n/a
+    9    |           0 |      0 |         n/a
+==============================================
+Cycles: 5689867044
+Time (50000000 Hz): 113797 ms
+---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> 

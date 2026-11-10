@@ -199,6 +199,7 @@ module NPU (
         .cfg_shape_we(transpose_idle_cmd && funct7_i == 32'd2),
         .cfg_adv_we  (transpose_idle_cmd && funct7_i == 32'd3),
         .cfg_fast_we (transpose_idle_cmd && funct7_i == 32'd5),
+        .cfg_wm_we   (transpose_idle_cmd && funct7_i == 32'd8),
         .cfg_rs1(rs1_i), .cfg_rs2(rs2_i),
         .start(transpose_idle_cmd && (funct7_i == 32'd4 || funct7_i == 32'd6) && t_fast),
         .done(f_done), .busy(f_busy),

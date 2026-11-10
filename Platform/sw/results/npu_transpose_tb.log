@@ -1,4 +1,5 @@
-rank histogram: 1:84 2:91 3:79 4:89 5:74 6:83
-cases run: 500, failing cases: 0, protocol errors: 0, engine cycles: 600240, burst-engine cases: 238
+rank histogram: 1:100 2:94 3:74 4:74 5:88 6:70
+cases run: 500, failing cases: 0, protocol errors: 0, engine cycles: 590823, burst-engine cases: 222
+watermark writes: 404, AR-beyond-watermark violations: 0
 npu_transpose_tb: PASS (500/500)
-sim/npu_transpose_tb.sv:349: $finish called at 6219600000 (1ps)
+hw/sim/npu_transpose_tb.sv:390: $finish called at 6124950000 (1ps)

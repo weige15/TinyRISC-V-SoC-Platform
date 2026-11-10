@@ -1,0 +1,919 @@
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 1 MISMATCH rank=2 esize=1 total=64 off=0: byte 16 got be exp 92
+case 1 MISMATCH rank=2 esize=1 total=64 off=1: byte 17 got ad exp b4
+case 1 MISMATCH rank=2 esize=1 total=64 off=2: byte 18 got de exp 7f
+AR beyond watermark: addr 60001000 len 49 wm 00000000
+case 3 MISMATCH rank=4 esize=1 total=192 off=0: byte 16 got be exp 86
+case 3 MISMATCH rank=4 esize=1 total=192 off=1: byte 17 got ef exp 5d
+case 3 MISMATCH rank=4 esize=1 total=192 off=2: byte 18 got de exp e6
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 129 wm 00000000
+case 5 MISMATCH rank=6 esize=1 total=2560 off=0: byte 16 got be exp 82
+case 5 MISMATCH rank=6 esize=1 total=2560 off=1: byte 17 got ad exp bc
+case 5 MISMATCH rank=6 esize=1 total=2560 off=2: byte 18 got de exp af
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 256 wm 00000000
+AR beyond watermark: addr 60001c00 len 256 wm 00000000
+AR beyond watermark: addr 60002000 len 256 wm 00000000
+AR beyond watermark: addr 60002400 len 256 wm 00000000
+AR beyond watermark: addr 60002800 len 256 wm 00000000
+AR beyond watermark: addr 60002c00 len 256 wm 60002140
+case 7 MISMATCH rank=4 esize=1 total=16384 off=0: byte 16 got ef exp b7
+case 7 MISMATCH rank=4 esize=1 total=16384 off=1: byte 17 got ef exp 38
+case 7 MISMATCH rank=4 esize=1 total=16384 off=256: byte 272 got be exp ab
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 256 wm 00000000
+AR beyond watermark: addr 60001c00 len 256 wm 00000000
+AR beyond watermark: addr 60002000 len 256 wm 00000000
+AR beyond watermark: addr 60002400 len 256 wm 60001160
+AR beyond watermark: addr 60002800 len 256 wm 60001160
+case 9 MISMATCH rank=6 esize=1 total=16384 off=0: byte 16 got ef exp 1b
+case 9 MISMATCH rank=6 esize=1 total=16384 off=64: byte 80 got ad exp 37
+case 9 MISMATCH rank=6 esize=1 total=16384 off=128: byte 144 got ef exp df
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 160 wm 00000000
+case 11 MISMATCH rank=6 esize=1 total=2688 off=0: byte 16 got ef exp f9
+case 11 MISMATCH rank=6 esize=1 total=2688 off=1: byte 17 got de exp 0d
+case 11 MISMATCH rank=6 esize=1 total=2688 off=2: byte 18 got ad exp b5
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 15 MISMATCH rank=6 esize=1 total=2048 off=0: byte 16 got ad exp 04
+case 15 MISMATCH rank=6 esize=1 total=2048 off=4: byte 20 got ad exp 9f
+case 15 MISMATCH rank=6 esize=1 total=2048 off=32: byte 48 got ad exp 23
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 129 wm 00000000
+case 19 MISMATCH rank=6 esize=1 total=2560 off=0: byte 16 got de exp 58
+case 19 MISMATCH rank=6 esize=1 total=2560 off=80: byte 96 got ef exp 73
+case 19 MISMATCH rank=6 esize=1 total=2560 off=160: byte 176 got be exp 23
+AR beyond watermark: addr 60001000 len 192 wm 00000000
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+AR beyond watermark: addr 60001000 len 1 wm 00000000
+case 25 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got ef exp f0
+case 25 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got be exp 83
+case 25 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got ad exp 27
+AR beyond watermark: addr 60001000 len 14 wm 00000000
+case 27 MISMATCH rank=4 esize=1 total=56 off=0: byte 16 got ef exp 39
+case 27 MISMATCH rank=4 esize=1 total=56 off=1: byte 17 got ef exp 0b
+case 27 MISMATCH rank=4 esize=1 total=56 off=2: byte 18 got ef exp 1e
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 77 wm 00000000
+case 31 MISMATCH rank=6 esize=1 total=2352 off=0: byte 16 got be exp 47
+case 31 MISMATCH rank=6 esize=1 total=2352 off=7: byte 23 got ef exp bc
+case 31 MISMATCH rank=6 esize=1 total=2352 off=14: byte 30 got de exp 5a
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 128 wm 00000000
+case 33 MISMATCH rank=6 esize=1 total=2560 off=0: byte 16 got ef exp 91
+case 33 MISMATCH rank=6 esize=1 total=2560 off=1: byte 17 got be exp 91
+case 33 MISMATCH rank=6 esize=1 total=2560 off=2: byte 18 got ad exp f4
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 35 MISMATCH rank=5 esize=1 total=2048 off=0: byte 16 got de exp d1
+case 35 MISMATCH rank=5 esize=1 total=2048 off=1: byte 17 got ef exp 9f
+case 35 MISMATCH rank=5 esize=1 total=2048 off=2: byte 18 got be exp fd
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 175 wm 00000000
+case 37 MISMATCH rank=5 esize=1 total=2744 off=0: byte 16 got ad exp 4e
+case 37 MISMATCH rank=5 esize=1 total=2744 off=8: byte 24 got de exp 35
+case 37 MISMATCH rank=5 esize=1 total=2744 off=16: byte 32 got ef exp 02
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 39 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ef exp 62
+case 39 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got be exp 25
+case 39 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ad exp 78
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 192 wm 00000000
+case 41 MISMATCH rank=3 esize=1 total=1792 off=0: byte 16 got ef exp 97
+case 41 MISMATCH rank=3 esize=1 total=1792 off=1: byte 17 got ef exp 3d
+case 41 MISMATCH rank=3 esize=1 total=1792 off=2: byte 18 got ef exp 5e
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 43 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got be exp e8
+case 43 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ad exp 5f
+case 43 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got de exp 58
+AR beyond watermark: addr 60001000 len 49 wm 00000000
+case 45 MISMATCH rank=4 esize=1 total=192 off=0: byte 16 got de exp 63
+case 45 MISMATCH rank=4 esize=1 total=192 off=1: byte 17 got de exp e2
+case 45 MISMATCH rank=4 esize=1 total=192 off=2: byte 18 got de exp ce
+AR beyond watermark: addr 60001000 len 121 wm 00000000
+case 47 MISMATCH rank=4 esize=1 total=480 off=0: byte 16 got be exp ce
+case 47 MISMATCH rank=4 esize=1 total=480 off=1: byte 17 got be exp 17
+case 47 MISMATCH rank=4 esize=1 total=480 off=2: byte 18 got be exp 7e
+AR beyond watermark: addr 60001000 len 41 wm 00000000
+case 49 MISMATCH rank=6 esize=1 total=160 off=0: byte 16 got ad exp 82
+case 49 MISMATCH rank=6 esize=1 total=160 off=1: byte 17 got ad exp f6
+case 49 MISMATCH rank=6 esize=1 total=160 off=5: byte 21 got ad exp d5
+AR beyond watermark: addr 60001000 len 9 wm 00000000
+case 50 MISMATCH rank=5 esize=1 total=36 off=0: byte 16 got ef exp 92
+case 50 MISMATCH rank=5 esize=1 total=36 off=1: byte 17 got ad exp 8d
+case 50 MISMATCH rank=5 esize=1 total=36 off=2: byte 18 got ad exp 58
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 48 wm 60001480
+case 51 MISMATCH rank=5 esize=1 total=2240 off=0: byte 16 got ef exp eb
+case 51 MISMATCH rank=5 esize=1 total=2240 off=280: byte 296 got be exp 83
+case 51 MISMATCH rank=5 esize=1 total=2240 off=560: byte 576 got ad exp 66
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 48 wm 00000000
+case 53 MISMATCH rank=6 esize=1 total=2240 off=0: byte 16 got ef exp b8
+case 53 MISMATCH rank=6 esize=1 total=2240 off=1: byte 17 got be exp 19
+case 53 MISMATCH rank=6 esize=1 total=2240 off=2: byte 18 got ad exp 0d
+AR beyond watermark: addr 60001000 len 13 wm 00000000
+case 57 MISMATCH rank=3 esize=1 total=48 off=0: byte 16 got be exp e0
+case 57 MISMATCH rank=3 esize=1 total=48 off=1: byte 17 got be exp bf
+case 57 MISMATCH rank=3 esize=1 total=48 off=2: byte 18 got be exp 4a
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 129 wm 00000000
+case 59 MISMATCH rank=4 esize=1 total=1536 off=0: byte 16 got be exp f8
+case 59 MISMATCH rank=4 esize=1 total=1536 off=16: byte 32 got ad exp 64
+case 59 MISMATCH rank=4 esize=1 total=1536 off=32: byte 48 got de exp 56
+AR beyond watermark: addr 60001000 len 73 wm 00000000
+case 61 MISMATCH rank=5 esize=1 total=288 off=0: byte 16 got de exp 39
+case 61 MISMATCH rank=5 esize=1 total=288 off=4: byte 20 got ad exp ba
+case 61 MISMATCH rank=5 esize=1 total=288 off=8: byte 24 got be exp 5c
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 49 wm 00000000
+case 63 MISMATCH rank=6 esize=1 total=2240 off=0: byte 16 got be exp 2d
+case 63 MISMATCH rank=6 esize=1 total=2240 off=2: byte 18 got be exp 98
+case 63 MISMATCH rank=6 esize=1 total=2240 off=16: byte 32 got ad exp 5b
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 67 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp 8f
+case 67 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp 44
+case 67 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp 40
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 129 wm 00000000
+case 69 MISMATCH rank=6 esize=1 total=1536 off=0: byte 16 got be exp d4
+case 69 MISMATCH rank=6 esize=1 total=1536 off=1: byte 17 got ad exp 32
+case 69 MISMATCH rank=6 esize=1 total=1536 off=2: byte 18 got de exp 67
+AR beyond watermark: addr 60001000 len 5 wm 00000000
+case 71 MISMATCH rank=2 esize=1 total=16 off=0: byte 16 got ad exp 00
+case 71 MISMATCH rank=2 esize=1 total=16 off=1: byte 17 got ef exp a3
+case 71 MISMATCH rank=2 esize=1 total=16 off=2: byte 18 got ad exp 15
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 73 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got be exp e8
+case 73 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ad exp 4c
+case 73 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got de exp 23
+AR beyond watermark: addr 60001000 len 84 wm 00000000
+case 75 MISMATCH rank=4 esize=1 total=336 off=0: byte 16 got ef exp 17
+case 75 MISMATCH rank=4 esize=1 total=336 off=1: byte 17 got be exp 6e
+case 75 MISMATCH rank=4 esize=1 total=336 off=2: byte 18 got ad exp d7
+AR beyond watermark: addr 60001000 len 7 wm 00000000
+case 79 MISMATCH rank=2 esize=1 total=28 off=0: byte 16 got ef exp 27
+case 79 MISMATCH rank=2 esize=1 total=28 off=1: byte 17 got ef exp 07
+case 79 MISMATCH rank=2 esize=1 total=28 off=2: byte 18 got ef exp 43
+AR beyond watermark: addr 60001000 len 225 wm 00000000
+case 81 MISMATCH rank=3 esize=1 total=896 off=0: byte 16 got be exp 32
+case 81 MISMATCH rank=3 esize=1 total=896 off=1: byte 17 got ad exp 21
+case 81 MISMATCH rank=3 esize=1 total=896 off=2: byte 18 got de exp 77
+AR beyond watermark: addr 60001000 len 7 wm 00000000
+case 83 MISMATCH rank=4 esize=1 total=24 off=0: byte 16 got de exp 55
+case 83 MISMATCH rank=4 esize=1 total=24 off=1: byte 17 got ef exp 35
+case 83 MISMATCH rank=4 esize=1 total=24 off=2: byte 18 got be exp f4
+AR beyond watermark: addr 60001000 len 29 wm 00000000
+case 85 MISMATCH rank=4 esize=1 total=112 off=0: byte 16 got de exp a0
+case 85 MISMATCH rank=4 esize=1 total=112 off=1: byte 17 got de exp a2
+case 85 MISMATCH rank=4 esize=1 total=112 off=2: byte 18 got de exp ff
+AR beyond watermark: addr 60001000 len 33 wm 00000000
+case 87 MISMATCH rank=2 esize=1 total=128 off=0: byte 16 got ad exp 65
+case 87 MISMATCH rank=2 esize=1 total=128 off=1: byte 17 got ad exp fc
+case 87 MISMATCH rank=2 esize=1 total=128 off=2: byte 18 got ad exp a0
+AR beyond watermark: addr 60001000 len 193 wm 00000000
+case 89 MISMATCH rank=6 esize=1 total=768 off=0: byte 16 got de exp 8c
+case 89 MISMATCH rank=6 esize=1 total=768 off=1: byte 17 got de exp 0a
+case 89 MISMATCH rank=6 esize=1 total=768 off=2: byte 18 got de exp 52
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 128 wm 00000000
+case 93 MISMATCH rank=5 esize=1 total=1536 off=0: byte 16 got ef exp 9b
+case 93 MISMATCH rank=5 esize=1 total=1536 off=1: byte 17 got ef exp f4
+case 93 MISMATCH rank=5 esize=1 total=1536 off=8: byte 24 got be exp c6
+AR beyond watermark: addr 60001000 len 225 wm 00000000
+case 95 MISMATCH rank=6 esize=1 total=896 off=0: byte 16 got be exp e8
+case 95 MISMATCH rank=6 esize=1 total=896 off=1: byte 17 got ad exp 41
+case 95 MISMATCH rank=6 esize=1 total=896 off=2: byte 18 got de exp 04
+AR beyond watermark: addr 60001000 len 71 wm 00000000
+case 99 MISMATCH rank=4 esize=1 total=280 off=0: byte 16 got ad exp c8
+case 99 MISMATCH rank=4 esize=1 total=280 off=1: byte 17 got ad exp 4f
+case 99 MISMATCH rank=4 esize=1 total=280 off=2: byte 18 got ad exp c4
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 137 wm 00000000
+case 101 MISMATCH rank=5 esize=1 total=1568 off=0: byte 16 got ad exp c1
+case 101 MISMATCH rank=5 esize=1 total=1568 off=1: byte 17 got ad exp 23
+case 101 MISMATCH rank=5 esize=1 total=1568 off=28: byte 44 got be exp f2
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 24 wm 00000000
+case 103 MISMATCH rank=6 esize=1 total=1120 off=0: byte 16 got ef exp 66
+case 103 MISMATCH rank=6 esize=1 total=1120 off=1: byte 17 got ad exp da
+case 103 MISMATCH rank=6 esize=1 total=1120 off=112: byte 128 got ad exp 59
+AR beyond watermark: addr 60001000 len 145 wm 00000000
+case 105 MISMATCH rank=6 esize=1 total=576 off=0: byte 16 got be exp 4f
+case 105 MISMATCH rank=6 esize=1 total=576 off=3: byte 19 got be exp e3
+case 105 MISMATCH rank=6 esize=1 total=576 off=6: byte 22 got be exp 82
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 107 MISMATCH rank=3 esize=1 total=512 off=0: byte 16 got ad exp 64
+case 107 MISMATCH rank=3 esize=1 total=512 off=1: byte 17 got de exp bf
+case 107 MISMATCH rank=3 esize=1 total=512 off=2: byte 18 got ef exp 82
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 109 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got de exp 46
+case 109 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ef exp 0b
+case 109 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got be exp 11
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 129 wm 60001280
+AR beyond watermark: addr 60001000 len 161 wm 00000000
+case 113 MISMATCH rank=5 esize=1 total=640 off=0: byte 16 got be exp df
+case 113 MISMATCH rank=5 esize=1 total=640 off=1: byte 17 got be exp fe
+case 113 MISMATCH rank=5 esize=1 total=640 off=8: byte 24 got ad exp 84
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 115 MISMATCH rank=4 esize=1 total=512 off=0: byte 16 got ad exp 49
+case 115 MISMATCH rank=4 esize=1 total=512 off=1: byte 17 got de exp 0f
+case 115 MISMATCH rank=4 esize=1 total=512 off=2: byte 18 got ef exp 43
+AR beyond watermark: addr 60001000 len 25 wm 00000000
+case 117 MISMATCH rank=3 esize=1 total=96 off=0: byte 16 got be exp 87
+case 117 MISMATCH rank=3 esize=1 total=96 off=1: byte 17 got ad exp 4e
+case 117 MISMATCH rank=3 esize=1 total=96 off=2: byte 18 got de exp 45
+AR beyond watermark: addr 60001000 len 4 wm 00000000
+case 119 MISMATCH rank=2 esize=1 total=12 off=0: byte 16 got be exp 82
+case 119 MISMATCH rank=2 esize=1 total=12 off=1: byte 17 got be exp 21
+case 119 MISMATCH rank=2 esize=1 total=12 off=2: byte 18 got be exp 20
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 121 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got de exp 4c
+case 121 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ef exp c1
+case 121 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got be exp 0a
+AR beyond watermark: addr 60001000 len 113 wm 00000000
+case 123 MISMATCH rank=5 esize=1 total=448 off=0: byte 16 got be exp 29
+case 123 MISMATCH rank=5 esize=1 total=448 off=1: byte 17 got be exp 36
+case 123 MISMATCH rank=5 esize=1 total=448 off=4: byte 20 got ef exp ea
+AR beyond watermark: addr 60001000 len 33 wm 00000000
+case 125 MISMATCH rank=3 esize=1 total=128 off=0: byte 16 got be exp af
+case 125 MISMATCH rank=3 esize=1 total=128 off=1: byte 17 got be exp 72
+case 125 MISMATCH rank=3 esize=1 total=128 off=2: byte 18 got ad exp 60
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 127 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ef exp ca
+case 127 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got be exp 44
+case 127 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ad exp cb
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 129 MISMATCH rank=2 esize=1 total=8 off=0: byte 16 got be exp 71
+case 129 MISMATCH rank=2 esize=1 total=8 off=1: byte 17 got ad exp 23
+case 129 MISMATCH rank=2 esize=1 total=8 off=2: byte 18 got de exp d0
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 137 wm 00000000
+case 131 MISMATCH rank=4 esize=1 total=1568 off=0: byte 16 got be exp 6b
+case 131 MISMATCH rank=4 esize=1 total=1568 off=1: byte 17 got ad exp 33
+case 131 MISMATCH rank=4 esize=1 total=1568 off=2: byte 18 got de exp a1
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 133 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got de exp 48
+case 133 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ef exp 62
+case 133 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got be exp f7
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 135 MISMATCH rank=6 esize=1 total=1024 off=0: byte 16 got be exp 5c
+case 135 MISMATCH rank=6 esize=1 total=1024 off=1: byte 17 got ad exp 40
+case 135 MISMATCH rank=6 esize=1 total=1024 off=2: byte 18 got de exp ea
+AR beyond watermark: addr 60001000 len 192 wm 00000000
+case 137 MISMATCH rank=6 esize=1 total=768 off=0: byte 16 got ef exp 19
+case 137 MISMATCH rank=6 esize=1 total=768 off=1: byte 17 got be exp 0c
+case 137 MISMATCH rank=6 esize=1 total=768 off=2: byte 18 got ad exp 08
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 139 MISMATCH rank=3 esize=1 total=512 off=0: byte 16 got de exp b6
+case 139 MISMATCH rank=3 esize=1 total=512 off=1: byte 17 got de exp 0b
+case 139 MISMATCH rank=3 esize=1 total=512 off=4: byte 20 got ef exp 6b
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 145 wm 00000000
+case 141 MISMATCH rank=5 esize=1 total=1600 off=0: byte 16 got ad exp 0e
+case 141 MISMATCH rank=5 esize=1 total=1600 off=1: byte 17 got de exp a1
+case 141 MISMATCH rank=5 esize=1 total=1600 off=2: byte 18 got ef exp 63
+AR beyond watermark: addr 60001000 len 91 wm 00000000
+case 145 MISMATCH rank=5 esize=1 total=360 off=0: byte 16 got de exp f0
+case 145 MISMATCH rank=5 esize=1 total=360 off=2: byte 18 got de exp 7d
+case 145 MISMATCH rank=5 esize=1 total=360 off=4: byte 20 got de exp b9
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 161 wm 00000000
+case 147 MISMATCH rank=6 esize=1 total=2688 off=0: byte 16 got ad exp 81
+case 147 MISMATCH rank=6 esize=1 total=2688 off=1: byte 17 got ad exp 72
+case 147 MISMATCH rank=6 esize=1 total=2688 off=2: byte 18 got ad exp ec
+AR beyond watermark: addr 60001000 len 41 wm 00000000
+case 149 MISMATCH rank=5 esize=1 total=160 off=0: byte 16 got be exp ce
+case 149 MISMATCH rank=5 esize=1 total=160 off=1: byte 17 got be exp 12
+case 149 MISMATCH rank=5 esize=1 total=160 off=2: byte 18 got be exp 60
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 225 wm 00000000
+case 151 MISMATCH rank=4 esize=1 total=1920 off=0: byte 16 got be exp 6e
+case 151 MISMATCH rank=4 esize=1 total=1920 off=5: byte 21 got ad exp af
+case 151 MISMATCH rank=4 esize=1 total=1920 off=10: byte 26 got de exp 9d
+AR beyond watermark: addr 60001000 len 24 wm 00000000
+case 154 MISMATCH rank=6 esize=1 total=96 off=0: byte 16 got ef exp 88
+case 154 MISMATCH rank=6 esize=1 total=96 off=1: byte 17 got ad exp f0
+case 154 MISMATCH rank=6 esize=1 total=96 off=4: byte 20 got ef exp 23
+AR beyond watermark: addr 60001000 len 8 wm 00000000
+case 157 MISMATCH rank=3 esize=1 total=32 off=0: byte 16 got ef exp b7
+case 157 MISMATCH rank=3 esize=1 total=32 off=1: byte 17 got be exp f9
+case 157 MISMATCH rank=3 esize=1 total=32 off=2: byte 18 got ad exp c5
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 81 wm 00000000
+case 161 MISMATCH rank=5 esize=1 total=1344 off=0: byte 16 got be exp e2
+case 161 MISMATCH rank=5 esize=1 total=1344 off=2: byte 18 got ad exp fe
+case 161 MISMATCH rank=5 esize=1 total=1344 off=4: byte 20 got de exp b1
+AR beyond watermark: addr 60001000 len 81 wm 00000000
+case 167 MISMATCH rank=5 esize=1 total=320 off=0: byte 16 got be exp 41
+case 167 MISMATCH rank=5 esize=1 total=320 off=1: byte 17 got be exp e4
+case 167 MISMATCH rank=5 esize=1 total=320 off=2: byte 18 got be exp 26
+AR beyond watermark: addr 60001000 len 176 wm 00000000
+case 169 MISMATCH rank=4 esize=1 total=700 off=0: byte 16 got be exp e8
+case 169 MISMATCH rank=4 esize=1 total=700 off=4: byte 20 got ad exp bb
+case 169 MISMATCH rank=4 esize=1 total=700 off=8: byte 24 got de exp 76
+AR beyond watermark: addr 60001000 len 6 wm 00000000
+AR beyond watermark: addr 60001000 len 1 wm 00000000
+case 173 MISMATCH rank=2 esize=1 total=4 off=0: byte 16 got ef exp c6
+case 173 MISMATCH rank=2 esize=1 total=4 off=1: byte 17 got be exp c9
+case 173 MISMATCH rank=2 esize=1 total=4 off=2: byte 18 got ad exp 12
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 175 MISMATCH rank=3 esize=1 total=8 off=0: byte 16 got ef exp c6
+case 175 MISMATCH rank=3 esize=1 total=8 off=1: byte 17 got be exp a3
+case 175 MISMATCH rank=3 esize=1 total=8 off=2: byte 18 got ad exp 3c
+AR beyond watermark: addr 60001000 len 36 wm 00000000
+case 177 MISMATCH rank=4 esize=1 total=144 off=0: byte 16 got ef exp 1c
+case 177 MISMATCH rank=4 esize=1 total=144 off=1: byte 17 got ad exp 8d
+case 177 MISMATCH rank=4 esize=1 total=144 off=2: byte 18 got ef exp 44
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 179 MISMATCH rank=3 esize=1 total=8 off=0: byte 16 got be exp ef
+case 179 MISMATCH rank=3 esize=1 total=8 off=1: byte 17 got de exp 6c
+case 179 MISMATCH rank=3 esize=1 total=8 off=2: byte 18 got be exp 7f
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 181 MISMATCH rank=6 esize=1 total=2048 off=0: byte 16 got ad exp 96
+case 181 MISMATCH rank=6 esize=1 total=2048 off=1: byte 17 got ad exp 95
+case 181 MISMATCH rank=6 esize=1 total=2048 off=2: byte 18 got ad exp d1
+AR beyond watermark: addr 60001000 len 5 wm 00000000
+case 183 MISMATCH rank=1 esize=1 total=16 off=0: byte 16 got de exp ba
+case 183 MISMATCH rank=1 esize=1 total=16 off=1: byte 17 got ef exp dc
+case 183 MISMATCH rank=1 esize=1 total=16 off=2: byte 18 got be exp 27
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 33 wm 00000000
+case 185 MISMATCH rank=5 esize=1 total=1152 off=0: byte 16 got de exp 59
+case 185 MISMATCH rank=5 esize=1 total=1152 off=3: byte 19 got ad exp 43
+case 185 MISMATCH rank=5 esize=1 total=1152 off=6: byte 22 got be exp 2a
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 129 wm 600014c0
+case 187 MISMATCH rank=6 esize=1 total=1536 off=0: byte 16 got be exp 05
+case 187 MISMATCH rank=6 esize=1 total=1536 off=4: byte 20 got de exp 6d
+case 187 MISMATCH rank=6 esize=1 total=1536 off=12: byte 28 got ad exp 08
+AR beyond watermark: addr 60001000 len 225 wm 00000000
+case 191 MISMATCH rank=3 esize=1 total=896 off=0: byte 16 got be exp 1e
+case 191 MISMATCH rank=3 esize=1 total=896 off=1: byte 17 got ef exp 03
+case 191 MISMATCH rank=3 esize=1 total=896 off=2: byte 18 got de exp 4a
+AR beyond watermark: addr 60001000 len 1 wm 00000000
+case 193 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got ef exp d4
+case 193 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got be exp 1d
+case 193 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got ad exp 2c
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+AR beyond watermark: addr 60001000 len 71 wm 00000000
+case 197 MISMATCH rank=4 esize=1 total=280 off=0: byte 16 got ad exp 93
+case 197 MISMATCH rank=4 esize=1 total=280 off=1: byte 17 got be exp d4
+case 197 MISMATCH rank=4 esize=1 total=280 off=2: byte 18 got ef exp b1
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 29 wm 00000000
+case 199 MISMATCH rank=5 esize=1 total=2160 off=0: byte 16 got be exp b8
+case 199 MISMATCH rank=5 esize=1 total=2160 off=1: byte 17 got be exp c1
+case 199 MISMATCH rank=5 esize=1 total=2160 off=2: byte 18 got be exp 96
+AR beyond watermark: addr 60001000 len 81 wm 00000000
+case 201 MISMATCH rank=4 esize=1 total=320 off=0: byte 16 got ad exp 7f
+case 201 MISMATCH rank=4 esize=1 total=320 off=1: byte 17 got ad exp f6
+case 201 MISMATCH rank=4 esize=1 total=320 off=2: byte 18 got ad exp 9b
+AR beyond watermark: addr 60001000 len 224 wm 00000000
+case 203 MISMATCH rank=4 esize=1 total=896 off=0: byte 16 got ef exp 13
+case 203 MISMATCH rank=4 esize=1 total=896 off=1: byte 17 got be exp 35
+case 203 MISMATCH rank=4 esize=1 total=896 off=2: byte 18 got ad exp 82
+AR beyond watermark: addr 60001000 len 161 wm 00000000
+case 205 MISMATCH rank=4 esize=1 total=640 off=0: byte 16 got de exp 13
+case 205 MISMATCH rank=4 esize=1 total=640 off=1: byte 17 got ef exp a2
+case 205 MISMATCH rank=4 esize=1 total=640 off=2: byte 18 got be exp 25
+AR beyond watermark: addr 60001000 len 21 wm 00000000
+case 207 MISMATCH rank=2 esize=1 total=80 off=0: byte 16 got be exp 24
+case 207 MISMATCH rank=2 esize=1 total=80 off=1: byte 17 got ad exp 7d
+case 207 MISMATCH rank=2 esize=1 total=80 off=2: byte 18 got de exp 4a
+AR beyond watermark: addr 60001000 len 33 wm 00000000
+case 209 MISMATCH rank=4 esize=1 total=128 off=0: byte 16 got be exp c0
+case 209 MISMATCH rank=4 esize=1 total=128 off=1: byte 17 got ad exp b4
+case 209 MISMATCH rank=4 esize=1 total=128 off=2: byte 18 got de exp c0
+AR beyond watermark: addr 60001000 len 43 wm 00000000
+case 211 MISMATCH rank=3 esize=1 total=168 off=0: byte 16 got be exp e7
+case 211 MISMATCH rank=3 esize=1 total=168 off=1: byte 17 got ad exp 84
+case 211 MISMATCH rank=3 esize=1 total=168 off=2: byte 18 got de exp 00
+AR beyond watermark: addr 60001000 len 73 wm 00000000
+case 213 MISMATCH rank=5 esize=1 total=288 off=0: byte 16 got be exp 82
+case 213 MISMATCH rank=5 esize=1 total=288 off=3: byte 19 got be exp 96
+case 213 MISMATCH rank=5 esize=1 total=288 off=6: byte 22 got be exp 6e
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 217 MISMATCH rank=5 esize=1 total=1024 off=0: byte 16 got ad exp 95
+case 217 MISMATCH rank=5 esize=1 total=1024 off=1: byte 17 got ad exp a9
+case 217 MISMATCH rank=5 esize=1 total=1024 off=2: byte 18 got ad exp 30
+AR beyond watermark: addr 60001000 len 9 wm 00000000
+case 219 MISMATCH rank=2 esize=1 total=32 off=0: byte 16 got ad exp 6f
+case 219 MISMATCH rank=2 esize=1 total=32 off=1: byte 17 got ad exp 06
+case 219 MISMATCH rank=2 esize=1 total=32 off=8: byte 24 got de exp 29
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 223 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp eb
+case 223 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp 28
+case 223 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp 6b
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 225 MISMATCH rank=2 esize=1 total=4 off=0: byte 16 got be exp 76
+case 225 MISMATCH rank=2 esize=1 total=4 off=1: byte 17 got ad exp fe
+case 225 MISMATCH rank=2 esize=1 total=4 off=2: byte 18 got de exp 4e
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 227 MISMATCH rank=2 esize=1 total=64 off=0: byte 16 got ad exp 58
+case 227 MISMATCH rank=2 esize=1 total=64 off=1: byte 17 got de exp a8
+case 227 MISMATCH rank=2 esize=1 total=64 off=2: byte 18 got ef exp 65
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 229 MISMATCH rank=5 esize=1 total=1024 off=0: byte 16 got de exp d0
+case 229 MISMATCH rank=5 esize=1 total=1024 off=1: byte 17 got ef exp d0
+case 229 MISMATCH rank=5 esize=1 total=1024 off=2: byte 18 got be exp 65
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 95 wm 00000000
+case 231 MISMATCH rank=6 esize=1 total=1400 off=0: byte 16 got be exp d4
+case 231 MISMATCH rank=6 esize=1 total=1400 off=7: byte 23 got ad exp 37
+case 231 MISMATCH rank=6 esize=1 total=1400 off=14: byte 30 got de exp 58
+AR beyond watermark: addr 60001000 len 211 wm 00000000
+case 233 MISMATCH rank=5 esize=1 total=840 off=0: byte 16 got ad exp bf
+case 233 MISMATCH rank=5 esize=1 total=840 off=1: byte 17 got de exp 3c
+case 233 MISMATCH rank=5 esize=1 total=840 off=2: byte 18 got ef exp 92
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 235 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp de
+case 235 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp 45
+case 235 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp 20
+AR beyond watermark: addr 60001000 len 97 wm 00000000
+case 237 MISMATCH rank=5 esize=1 total=384 off=0: byte 16 got ad exp 2e
+case 237 MISMATCH rank=5 esize=1 total=384 off=16: byte 32 got de exp fd
+case 237 MISMATCH rank=5 esize=1 total=384 off=32: byte 48 got ef exp 88
+AR beyond watermark: addr 60001000 len 169 wm 00000000
+case 239 MISMATCH rank=6 esize=1 total=672 off=0: byte 16 got be exp 55
+case 239 MISMATCH rank=6 esize=1 total=672 off=16: byte 32 got ef exp ed
+case 239 MISMATCH rank=6 esize=1 total=672 off=32: byte 48 got de exp 97
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 241 MISMATCH rank=5 esize=1 total=1024 off=0: byte 16 got de exp af
+case 241 MISMATCH rank=5 esize=1 total=1024 off=1: byte 17 got ef exp 0e
+case 241 MISMATCH rank=5 esize=1 total=1024 off=2: byte 18 got be exp 7d
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 243 MISMATCH rank=2 esize=1 total=8 off=0: byte 16 got ef exp 83
+case 243 MISMATCH rank=2 esize=1 total=8 off=1: byte 17 got be exp 76
+case 243 MISMATCH rank=2 esize=1 total=8 off=2: byte 18 got ad exp 23
+AR beyond watermark: addr 60001000 len 9 wm 00000000
+case 245 MISMATCH rank=4 esize=1 total=32 off=0: byte 16 got de exp 51
+case 245 MISMATCH rank=4 esize=1 total=32 off=1: byte 17 got ef exp 00
+case 245 MISMATCH rank=4 esize=1 total=32 off=2: byte 18 got be exp 27
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 247 MISMATCH rank=4 esize=1 total=8 off=0: byte 16 got ad exp 89
+case 247 MISMATCH rank=4 esize=1 total=8 off=1: byte 17 got de exp a1
+case 247 MISMATCH rank=4 esize=1 total=8 off=2: byte 18 got ef exp 45
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 251 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got be exp b0
+case 251 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ad exp d7
+case 251 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got de exp cf
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 128 wm 00000000
+case 255 MISMATCH rank=6 esize=1 total=1536 off=0: byte 16 got ef exp 75
+case 255 MISMATCH rank=6 esize=1 total=1536 off=4: byte 20 got be exp cd
+case 255 MISMATCH rank=6 esize=1 total=1536 off=8: byte 24 got ad exp ed
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 257 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got de exp 67
+case 257 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ef exp 04
+case 257 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got be exp 58
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 65 wm 00000000
+case 261 MISMATCH rank=6 esize=1 total=1280 off=0: byte 16 got be exp f0
+case 261 MISMATCH rank=6 esize=1 total=1280 off=1: byte 17 got ad exp 02
+case 261 MISMATCH rank=6 esize=1 total=1280 off=2: byte 18 got de exp f6
+AR beyond watermark: addr 60001000 len 25 wm 00000000
+case 263 MISMATCH rank=4 esize=1 total=96 off=0: byte 16 got be exp 80
+case 263 MISMATCH rank=4 esize=1 total=96 off=1: byte 17 got ef exp 4c
+case 263 MISMATCH rank=4 esize=1 total=96 off=2: byte 18 got de exp a6
+AR beyond watermark: addr 60001000 len 64 wm 00000000
+AR beyond watermark: addr 60001000 len 75 wm 00000000
+case 271 MISMATCH rank=5 esize=1 total=300 off=0: byte 16 got ef exp 3a
+case 271 MISMATCH rank=5 esize=1 total=300 off=1: byte 17 got be exp 90
+case 271 MISMATCH rank=5 esize=1 total=300 off=2: byte 18 got ad exp 8a
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 275 MISMATCH rank=4 esize=1 total=512 off=0: byte 16 got de exp 35
+case 275 MISMATCH rank=4 esize=1 total=512 off=1: byte 17 got de exp 10
+case 275 MISMATCH rank=4 esize=1 total=512 off=2: byte 18 got de exp ba
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 277 MISMATCH rank=2 esize=1 total=8 off=0: byte 16 got ad exp df
+case 277 MISMATCH rank=2 esize=1 total=8 off=1: byte 17 got de exp 41
+AR beyond watermark: addr 60001000 len 49 wm 00000000
+case 279 MISMATCH rank=3 esize=1 total=192 off=0: byte 16 got ad exp 75
+case 279 MISMATCH rank=3 esize=1 total=192 off=1: byte 17 got be exp e6
+case 279 MISMATCH rank=3 esize=1 total=192 off=2: byte 18 got ef exp 53
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 283 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got de exp 2d
+case 283 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ef exp 74
+case 283 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got be exp a9
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 88 wm 00000000
+case 285 MISMATCH rank=5 esize=1 total=1372 off=0: byte 16 got de exp 94
+AR beyond watermark: addr 60001000 len 210 wm 00000000
+case 289 MISMATCH rank=5 esize=1 total=840 off=0: byte 16 got ef exp 11
+case 289 MISMATCH rank=5 esize=1 total=840 off=5: byte 21 got ef exp 07
+case 289 MISMATCH rank=5 esize=1 total=840 off=10: byte 26 got ef exp c0
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 193 wm 00000000
+case 291 MISMATCH rank=3 esize=1 total=1792 off=0: byte 16 got ad exp 25
+case 291 MISMATCH rank=3 esize=1 total=1792 off=1: byte 17 got de exp 4e
+case 291 MISMATCH rank=3 esize=1 total=1792 off=2: byte 18 got ef exp d0
+AR beyond watermark: addr 60001000 len 26 wm 00000000
+case 293 MISMATCH rank=3 esize=1 total=100 off=0: byte 16 got ad exp 79
+case 293 MISMATCH rank=3 esize=1 total=100 off=1: byte 17 got de exp a5
+case 293 MISMATCH rank=3 esize=1 total=100 off=2: byte 18 got ef exp 65
+AR beyond watermark: addr 60001000 len 21 wm 00000000
+case 295 MISMATCH rank=2 esize=1 total=80 off=0: byte 16 got ad exp 32
+case 295 MISMATCH rank=2 esize=1 total=80 off=1: byte 17 got ad exp b9
+case 295 MISMATCH rank=2 esize=1 total=80 off=2: byte 18 got ad exp c3
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 32 wm 00000000
+case 297 MISMATCH rank=6 esize=1 total=1152 off=0: byte 16 got ef exp de
+case 297 MISMATCH rank=6 esize=1 total=1152 off=9: byte 25 got ef exp 7e
+case 297 MISMATCH rank=6 esize=1 total=1152 off=18: byte 34 got be exp 00
+AR beyond watermark: addr 60001000 len 22 wm 00000000
+case 299 MISMATCH rank=3 esize=1 total=84 off=0: byte 16 got ad exp 91
+case 299 MISMATCH rank=3 esize=1 total=84 off=1: byte 17 got de exp f8
+case 299 MISMATCH rank=3 esize=1 total=84 off=2: byte 18 got ef exp d1
+AR beyond watermark: addr 60001000 len 151 wm 00000000
+case 301 MISMATCH rank=6 esize=1 total=600 off=0: byte 16 got be exp 88
+case 301 MISMATCH rank=6 esize=1 total=600 off=2: byte 18 got ad exp a1
+case 301 MISMATCH rank=6 esize=1 total=600 off=4: byte 20 got de exp 8b
+AR beyond watermark: addr 60001000 len 57 wm 00000000
+case 303 MISMATCH rank=4 esize=1 total=224 off=0: byte 16 got de exp df
+case 303 MISMATCH rank=4 esize=1 total=224 off=1: byte 17 got de exp c7
+case 303 MISMATCH rank=4 esize=1 total=224 off=8: byte 24 got ad exp 19
+AR beyond watermark: addr 60001000 len 64 wm 00000000
+case 305 MISMATCH rank=2 esize=1 total=256 off=0: byte 16 got ef exp 25
+case 305 MISMATCH rank=2 esize=1 total=256 off=1: byte 17 got ef exp 66
+case 305 MISMATCH rank=2 esize=1 total=256 off=2: byte 18 got ef exp 86
+AR beyond watermark: addr 60001000 len 81 wm 00000000
+case 309 MISMATCH rank=4 esize=1 total=320 off=0: byte 16 got be exp 7b
+case 309 MISMATCH rank=4 esize=1 total=320 off=5: byte 21 got ad exp ce
+case 309 MISMATCH rank=4 esize=1 total=320 off=10: byte 26 got de exp 91
+AR beyond watermark: addr 60001000 len 49 wm 00000000
+case 311 MISMATCH rank=6 esize=1 total=192 off=0: byte 16 got de exp 6a
+case 311 MISMATCH rank=6 esize=1 total=192 off=1: byte 17 got ef exp 1a
+case 311 MISMATCH rank=6 esize=1 total=192 off=2: byte 18 got be exp 1a
+AR beyond watermark: addr 60001000 len 4 wm 00000000
+case 314 MISMATCH rank=5 esize=1 total=12 off=0: byte 16 got be exp 02
+case 314 MISMATCH rank=5 esize=1 total=12 off=1: byte 17 got be exp bc
+case 314 MISMATCH rank=5 esize=1 total=12 off=2: byte 18 got be exp 48
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 33 wm 00000000
+case 315 MISMATCH rank=5 esize=1 total=1152 off=0: byte 16 got be exp ba
+case 315 MISMATCH rank=5 esize=1 total=1152 off=1: byte 17 got be exp 43
+case 315 MISMATCH rank=5 esize=1 total=1152 off=2: byte 18 got be exp fa
+AR beyond watermark: addr 60001000 len 81 wm 00000000
+case 317 MISMATCH rank=3 esize=1 total=320 off=0: byte 16 got de exp c7
+case 317 MISMATCH rank=3 esize=1 total=320 off=1: byte 17 got ef exp e0
+case 317 MISMATCH rank=3 esize=1 total=320 off=2: byte 18 got be exp ef
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 321 MISMATCH rank=5 esize=1 total=512 off=0: byte 16 got ad exp 76
+case 321 MISMATCH rank=5 esize=1 total=512 off=4: byte 20 got de exp 93
+case 321 MISMATCH rank=5 esize=1 total=512 off=8: byte 24 got ef exp 2f
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 323 MISMATCH rank=2 esize=1 total=8 off=0: byte 16 got ad exp 7b
+case 323 MISMATCH rank=2 esize=1 total=8 off=1: byte 17 got ad exp 2a
+case 323 MISMATCH rank=2 esize=1 total=8 off=2: byte 18 got de exp d6
+AR beyond watermark: addr 60001000 len 64 wm 00000000
+case 325 MISMATCH rank=5 esize=1 total=256 off=0: byte 16 got ef exp de
+case 325 MISMATCH rank=5 esize=1 total=256 off=1: byte 17 got be exp 28
+case 325 MISMATCH rank=5 esize=1 total=256 off=2: byte 18 got ad exp 68
+AR beyond watermark: addr 60001000 len 193 wm 00000000
+case 327 MISMATCH rank=4 esize=1 total=768 off=0: byte 16 got ad exp d6
+case 327 MISMATCH rank=4 esize=1 total=768 off=1: byte 17 got ad exp cf
+case 327 MISMATCH rank=4 esize=1 total=768 off=24: byte 40 got de exp ce
+AR beyond watermark: addr 60001000 len 241 wm 00000000
+case 329 MISMATCH rank=4 esize=1 total=960 off=0: byte 16 got ad exp 7c
+case 329 MISMATCH rank=4 esize=1 total=960 off=1: byte 17 got ad exp 3f
+case 329 MISMATCH rank=4 esize=1 total=960 off=40: byte 56 got de exp 4c
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 331 MISMATCH rank=2 esize=1 total=64 off=0: byte 16 got de exp b4
+case 331 MISMATCH rank=2 esize=1 total=64 off=1: byte 17 got de exp d8
+case 331 MISMATCH rank=2 esize=1 total=64 off=2: byte 18 got de exp 00
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 333 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp 44
+case 333 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp b6
+case 333 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp ad
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 145 wm 00000000
+case 337 MISMATCH rank=5 esize=1 total=1600 off=0: byte 16 got ad exp 24
+case 337 MISMATCH rank=5 esize=1 total=1600 off=1: byte 17 got de exp 87
+case 337 MISMATCH rank=5 esize=1 total=1600 off=2: byte 18 got ef exp d9
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 339 MISMATCH rank=6 esize=1 total=1024 off=0: byte 16 got de exp ac
+case 339 MISMATCH rank=6 esize=1 total=1024 off=1: byte 17 got ef exp 42
+case 339 MISMATCH rank=6 esize=1 total=1024 off=2: byte 18 got be exp 70
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 49 wm 00000000
+case 341 MISMATCH rank=5 esize=1 total=2240 off=0: byte 16 got ad exp bf
+case 341 MISMATCH rank=5 esize=1 total=2240 off=1: byte 17 got ad exp 31
+case 341 MISMATCH rank=5 esize=1 total=2240 off=2: byte 18 got ad exp 34
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 343 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got be exp 55
+case 343 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ad exp fd
+case 343 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got de exp 35
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 345 MISMATCH rank=3 esize=1 total=64 off=0: byte 16 got be exp 28
+case 345 MISMATCH rank=3 esize=1 total=64 off=1: byte 17 got ad exp 2e
+case 345 MISMATCH rank=3 esize=1 total=64 off=2: byte 18 got de exp 8e
+AR beyond watermark: addr 60001000 len 5 wm 00000000
+case 347 MISMATCH rank=1 esize=1 total=16 off=0: byte 16 got de exp 03
+case 347 MISMATCH rank=1 esize=1 total=16 off=1: byte 17 got ef exp bb
+case 347 MISMATCH rank=1 esize=1 total=16 off=2: byte 18 got be exp 97
+AR beyond watermark: addr 60001000 len 1 wm 00000000
+AR beyond watermark: addr 60001000 len 15 wm 00000000
+case 353 MISMATCH rank=3 esize=1 total=56 off=0: byte 16 got de exp 0f
+case 353 MISMATCH rank=3 esize=1 total=56 off=1: byte 17 got de exp 0a
+case 353 MISMATCH rank=3 esize=1 total=56 off=2: byte 18 got de exp 18
+AR beyond watermark: addr 60001000 len 13 wm 00000000
+case 355 MISMATCH rank=3 esize=1 total=48 off=0: byte 16 got de exp fe
+case 355 MISMATCH rank=3 esize=1 total=48 off=1: byte 17 got de exp 99
+case 355 MISMATCH rank=3 esize=1 total=48 off=2: byte 18 got ad exp a6
+AR beyond watermark: addr 60001000 len 81 wm 00000000
+case 357 MISMATCH rank=3 esize=1 total=320 off=0: byte 16 got be exp a4
+case 357 MISMATCH rank=3 esize=1 total=320 off=5: byte 21 got be exp 71
+case 357 MISMATCH rank=3 esize=1 total=320 off=10: byte 26 got be exp 8f
+AR beyond watermark: addr 60001000 len 65 wm 00000000
+case 359 MISMATCH rank=3 esize=1 total=256 off=0: byte 16 got ad exp 53
+case 359 MISMATCH rank=3 esize=1 total=256 off=1: byte 17 got ad exp 18
+case 359 MISMATCH rank=3 esize=1 total=256 off=2: byte 18 got ad exp be
+AR beyond watermark: addr 60001000 len 169 wm 00000000
+case 361 MISMATCH rank=4 esize=1 total=672 off=0: byte 16 got ad exp a0
+case 361 MISMATCH rank=4 esize=1 total=672 off=1: byte 17 got be exp 65
+case 361 MISMATCH rank=4 esize=1 total=672 off=32: byte 48 got de exp 8b
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 363 MISMATCH rank=4 esize=1 total=64 off=0: byte 16 got de exp 8d
+case 363 MISMATCH rank=4 esize=1 total=64 off=1: byte 17 got ef exp e8
+case 363 MISMATCH rank=4 esize=1 total=64 off=2: byte 18 got be exp 29
+AR beyond watermark: addr 60001000 len 161 wm 00000000
+case 365 MISMATCH rank=4 esize=1 total=640 off=0: byte 16 got ad exp f9
+case 365 MISMATCH rank=4 esize=1 total=640 off=1: byte 17 got de exp 25
+case 365 MISMATCH rank=4 esize=1 total=640 off=2: byte 18 got ef exp 91
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 367 MISMATCH rank=5 esize=1 total=2048 off=0: byte 16 got be exp 50
+case 367 MISMATCH rank=5 esize=1 total=2048 off=1: byte 17 got be exp d3
+case 367 MISMATCH rank=5 esize=1 total=2048 off=2: byte 18 got be exp 90
+AR beyond watermark: addr 60001000 len 17 wm 00000000
+case 373 MISMATCH rank=3 esize=1 total=64 off=0: byte 16 got de exp be
+case 373 MISMATCH rank=3 esize=1 total=64 off=4: byte 20 got ef exp 84
+case 373 MISMATCH rank=3 esize=1 total=64 off=8: byte 24 got be exp c8
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 65 wm 00000000
+case 375 MISMATCH rank=5 esize=1 total=1280 off=0: byte 16 got be exp 17
+case 375 MISMATCH rank=5 esize=1 total=1280 off=1: byte 17 got ad exp 60
+case 375 MISMATCH rank=5 esize=1 total=1280 off=2: byte 18 got de exp 35
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 377 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp 66
+case 377 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp 62
+case 377 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp 16
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 381 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got be exp 51
+case 381 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ad exp 3a
+case 381 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got de exp 39
+AR beyond watermark: addr 60001000 len 97 wm 00000000
+case 383 MISMATCH rank=4 esize=1 total=384 off=0: byte 16 got be exp 84
+case 383 MISMATCH rank=4 esize=1 total=384 off=1: byte 17 got ef exp 6d
+case 383 MISMATCH rank=4 esize=1 total=384 off=2: byte 18 got de exp 65
+AR beyond watermark: addr 60001000 len 5 wm 00000000
+case 385 MISMATCH rank=3 esize=1 total=20 off=0: byte 16 got ef exp 49
+case 385 MISMATCH rank=3 esize=1 total=20 off=1: byte 17 got be exp 9d
+case 385 MISMATCH rank=3 esize=1 total=20 off=2: byte 18 got ad exp fd
+AR beyond watermark: addr 60001000 len 6 wm 00000000
+case 387 MISMATCH rank=2 esize=1 total=20 off=0: byte 16 got be exp 9f
+case 387 MISMATCH rank=2 esize=1 total=20 off=1: byte 17 got be exp 07
+case 387 MISMATCH rank=2 esize=1 total=20 off=5: byte 21 got ad exp 9c
+AR beyond watermark: addr 60001000 len 161 wm 00000000
+case 389 MISMATCH rank=6 esize=1 total=640 off=0: byte 16 got be exp 54
+case 389 MISMATCH rank=6 esize=1 total=640 off=1: byte 17 got ad exp 1d
+case 389 MISMATCH rank=6 esize=1 total=640 off=2: byte 18 got de exp c6
+AR beyond watermark: addr 60001000 len 129 wm 00000000
+case 391 MISMATCH rank=5 esize=1 total=512 off=0: byte 16 got ad exp 15
+case 391 MISMATCH rank=5 esize=1 total=512 off=4: byte 20 got de exp ef
+case 391 MISMATCH rank=5 esize=1 total=512 off=8: byte 24 got ef exp 87
+AR beyond watermark: addr 60001000 len 65 wm 00000000
+case 393 MISMATCH rank=6 esize=1 total=256 off=0: byte 16 got be exp ee
+case 393 MISMATCH rank=6 esize=1 total=256 off=8: byte 24 got ad exp 63
+case 393 MISMATCH rank=6 esize=1 total=256 off=16: byte 32 got de exp 00
+AR beyond watermark: addr 60001000 len 33 wm 00000000
+case 395 MISMATCH rank=4 esize=1 total=128 off=0: byte 16 got de exp 19
+case 395 MISMATCH rank=4 esize=1 total=128 off=1: byte 17 got de exp d5
+case 395 MISMATCH rank=4 esize=1 total=128 off=2: byte 18 got de exp a3
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 397 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got de exp d4
+case 397 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got ef exp 0d
+case 397 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got be exp 07
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 193 wm 00000000
+case 399 MISMATCH rank=4 esize=1 total=1792 off=0: byte 16 got ad exp fe
+case 399 MISMATCH rank=4 esize=1 total=1792 off=7: byte 23 got ad exp 81
+case 399 MISMATCH rank=4 esize=1 total=1792 off=14: byte 30 got ad exp cf
+AR beyond watermark: addr 60001000 len 5 wm 00000000
+case 401 MISMATCH rank=2 esize=1 total=16 off=0: byte 16 got de exp d1
+case 401 MISMATCH rank=2 esize=1 total=16 off=1: byte 17 got ef exp c6
+case 401 MISMATCH rank=2 esize=1 total=16 off=2: byte 18 got be exp 10
+AR beyond watermark: addr 60001000 len 225 wm 00000000
+AR beyond watermark: addr 60001000 len 13 wm 00000000
+case 405 MISMATCH rank=6 esize=1 total=48 off=0: byte 16 got be exp 79
+case 405 MISMATCH rank=6 esize=1 total=48 off=1: byte 17 got be exp 4c
+case 405 MISMATCH rank=6 esize=1 total=48 off=3: byte 19 got ad exp 04
+AR beyond watermark: addr 60001000 len 25 wm 00000000
+case 409 MISMATCH rank=3 esize=1 total=96 off=0: byte 16 got be exp d3
+case 409 MISMATCH rank=3 esize=1 total=96 off=1: byte 17 got be exp c8
+case 409 MISMATCH rank=3 esize=1 total=96 off=2: byte 18 got be exp a9
+AR beyond watermark: addr 60001000 len 16 wm 00000000
+case 411 MISMATCH rank=4 esize=1 total=64 off=0: byte 16 got ef exp b8
+case 411 MISMATCH rank=4 esize=1 total=64 off=1: byte 17 got ad exp 1d
+case 411 MISMATCH rank=4 esize=1 total=64 off=2: byte 18 got ef exp ca
+AR beyond watermark: addr 60001000 len 26 wm 00000000
+case 413 MISMATCH rank=3 esize=1 total=100 off=0: byte 16 got ad exp 1a
+case 413 MISMATCH rank=3 esize=1 total=100 off=1: byte 17 got de exp 4a
+case 413 MISMATCH rank=3 esize=1 total=100 off=2: byte 18 got ef exp 95
+AR beyond watermark: addr 60001000 len 43 wm 00000000
+case 415 MISMATCH rank=4 esize=1 total=168 off=0: byte 16 got be exp 2d
+case 415 MISMATCH rank=4 esize=1 total=168 off=1: byte 17 got de exp c4
+case 415 MISMATCH rank=4 esize=1 total=168 off=2: byte 18 got be exp 0f
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 417 MISMATCH rank=1 esize=1 total=4 off=0: byte 16 got de exp 23
+case 417 MISMATCH rank=1 esize=1 total=4 off=1: byte 17 got ef exp 0f
+case 417 MISMATCH rank=1 esize=1 total=4 off=2: byte 18 got be exp f9
+AR beyond watermark: addr 60001000 len 21 wm 00000000
+case 419 MISMATCH rank=3 esize=1 total=80 off=0: byte 16 got ad exp a6
+case 419 MISMATCH rank=3 esize=1 total=80 off=1: byte 17 got de exp 19
+case 419 MISMATCH rank=3 esize=1 total=80 off=2: byte 18 got ef exp c4
+AR beyond watermark: addr 60001000 len 33 wm 00000000
+case 421 MISMATCH rank=4 esize=1 total=128 off=0: byte 16 got de exp 81
+case 421 MISMATCH rank=4 esize=1 total=128 off=1: byte 17 got ef exp 07
+case 421 MISMATCH rank=4 esize=1 total=128 off=2: byte 18 got be exp 9d
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 423 MISMATCH rank=5 esize=1 total=2048 off=0: byte 16 got ad exp fd
+case 423 MISMATCH rank=5 esize=1 total=2048 off=1: byte 17 got ad exp 2d
+case 423 MISMATCH rank=5 esize=1 total=2048 off=32: byte 48 got de exp 86
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 1 wm 00000000
+case 425 MISMATCH rank=3 esize=1 total=2048 off=0: byte 16 got de exp 19
+case 425 MISMATCH rank=3 esize=1 total=2048 off=1: byte 17 got de exp 3f
+case 425 MISMATCH rank=3 esize=1 total=2048 off=2: byte 18 got de exp b2
+AR beyond watermark: addr 60001000 len 113 wm 00000000
+case 427 MISMATCH rank=3 esize=1 total=448 off=0: byte 16 got de exp 38
+case 427 MISMATCH rank=3 esize=1 total=448 off=1: byte 17 got de exp 17
+case 427 MISMATCH rank=3 esize=1 total=448 off=2: byte 18 got de exp e8
+AR beyond watermark: addr 60001000 len 31 wm 00000000
+case 429 MISMATCH rank=4 esize=1 total=120 off=0: byte 16 got be exp d4
+case 429 MISMATCH rank=4 esize=1 total=120 off=5: byte 21 got ad exp 8a
+case 429 MISMATCH rank=4 esize=1 total=120 off=10: byte 26 got de exp ed
+AR beyond watermark: addr 60001000 len 32 wm 00000000
+case 431 MISMATCH rank=3 esize=1 total=128 off=0: byte 16 got ef exp 82
+case 431 MISMATCH rank=3 esize=1 total=128 off=1: byte 17 got ef exp b8
+case 431 MISMATCH rank=3 esize=1 total=128 off=4: byte 20 got ef exp 1f
+AR beyond watermark: addr 60001000 len 13 wm 00000000
+case 433 MISMATCH rank=2 esize=1 total=48 off=0: byte 16 got de exp c2
+case 433 MISMATCH rank=2 esize=1 total=48 off=1: byte 17 got de exp 09
+case 433 MISMATCH rank=2 esize=1 total=48 off=2: byte 18 got de exp 09
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 129 wm 00000000
+case 435 MISMATCH rank=6 esize=1 total=2560 off=0: byte 16 got be exp 52
+case 435 MISMATCH rank=6 esize=1 total=2560 off=1: byte 17 got be exp fb
+case 435 MISMATCH rank=6 esize=1 total=2560 off=2: byte 18 got be exp 65
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 129 wm 00000000
+case 437 MISMATCH rank=6 esize=1 total=2560 off=0: byte 16 got be exp cc
+case 437 MISMATCH rank=6 esize=1 total=2560 off=8: byte 24 got ad exp f8
+case 437 MISMATCH rank=6 esize=1 total=2560 off=16: byte 32 got de exp 60
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 443 MISMATCH rank=5 esize=1 total=8 off=0: byte 16 got de exp 60
+case 443 MISMATCH rank=5 esize=1 total=8 off=1: byte 17 got de exp 3b
+case 443 MISMATCH rank=5 esize=1 total=8 off=2: byte 18 got ef exp 19
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 445 MISMATCH rank=6 esize=1 total=1024 off=0: byte 16 got de exp d9
+case 445 MISMATCH rank=6 esize=1 total=1024 off=64: byte 80 got ef exp af
+case 445 MISMATCH rank=6 esize=1 total=1024 off=128: byte 144 got be exp 26
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 49 wm 00000000
+case 447 MISMATCH rank=4 esize=1 total=2240 off=0: byte 16 got ad exp da
+case 447 MISMATCH rank=4 esize=1 total=2240 off=1: byte 17 got de exp 0e
+case 447 MISMATCH rank=4 esize=1 total=2240 off=2: byte 18 got ef exp 6e
+AR beyond watermark: addr 60001000 len 9 wm 00000000
+case 449 MISMATCH rank=2 esize=1 total=32 off=0: byte 16 got ad exp 70
+case 449 MISMATCH rank=2 esize=1 total=32 off=1: byte 17 got ad exp d9
+case 449 MISMATCH rank=2 esize=1 total=32 off=2: byte 18 got ad exp b7
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 64 wm 00000000
+case 453 MISMATCH rank=4 esize=1 total=1280 off=0: byte 16 got ef exp 2a
+case 453 MISMATCH rank=4 esize=1 total=1280 off=8: byte 24 got ef exp 3f
+case 453 MISMATCH rank=4 esize=1 total=1280 off=40: byte 56 got ad exp 9d
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 455 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ef exp 08
+case 455 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got be exp 36
+case 455 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ad exp a4
+AR beyond watermark: addr 60001000 len 15 wm 00000000
+case 457 MISMATCH rank=4 esize=1 total=56 off=0: byte 16 got ad exp ae
+case 457 MISMATCH rank=4 esize=1 total=56 off=1: byte 17 got de exp 36
+case 457 MISMATCH rank=4 esize=1 total=56 off=2: byte 18 got ef exp fb
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 1 wm 00000000
+case 459 MISMATCH rank=6 esize=1 total=1024 off=0: byte 16 got de exp 31
+case 459 MISMATCH rank=6 esize=1 total=1024 off=1: byte 17 got de exp 2b
+case 459 MISMATCH rank=6 esize=1 total=1024 off=2: byte 18 got de exp ec
+AR beyond watermark: addr 60001000 len 56 wm 00000000
+case 463 MISMATCH rank=3 esize=1 total=224 off=0: byte 16 got ef exp 4e
+case 463 MISMATCH rank=3 esize=1 total=224 off=1: byte 17 got be exp 7c
+case 463 MISMATCH rank=3 esize=1 total=224 off=2: byte 18 got ad exp 8c
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 224 wm 00000000
+case 465 MISMATCH rank=6 esize=1 total=1920 off=0: byte 16 got ef exp 69
+case 465 MISMATCH rank=6 esize=1 total=1920 off=1: byte 17 got be exp 2e
+case 465 MISMATCH rank=6 esize=1 total=1920 off=2: byte 18 got ad exp 30
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+AR beyond watermark: addr 60001800 len 188 wm 00000000
+case 467 MISMATCH rank=6 esize=1 total=2800 off=0: byte 16 got ef exp aa
+case 467 MISMATCH rank=6 esize=1 total=2800 off=1: byte 17 got ef exp 79
+case 467 MISMATCH rank=6 esize=1 total=2800 off=4: byte 20 got ef exp 07
+AR beyond watermark: addr 60001000 len 20 wm 00000000
+case 469 MISMATCH rank=3 esize=1 total=80 off=0: byte 16 got ef exp 2a
+case 469 MISMATCH rank=3 esize=1 total=80 off=1: byte 17 got be exp d0
+case 469 MISMATCH rank=3 esize=1 total=80 off=10: byte 26 got ad exp 94
+AR beyond watermark: addr 60001000 len 224 wm 00000000
+case 471 MISMATCH rank=4 esize=1 total=896 off=0: byte 16 got ef exp 5a
+case 471 MISMATCH rank=4 esize=1 total=896 off=1: byte 17 got ef exp 9b
+case 471 MISMATCH rank=4 esize=1 total=896 off=2: byte 18 got ef exp b5
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 256 wm 00000000
+case 473 MISMATCH rank=5 esize=1 total=2048 off=0: byte 16 got ef exp 5f
+case 473 MISMATCH rank=5 esize=1 total=2048 off=256: byte 272 got be exp ef
+case 473 MISMATCH rank=5 esize=1 total=2048 off=512: byte 528 got ad exp 37
+AR beyond watermark: addr 60001000 len 40 wm 00000000
+case 475 MISMATCH rank=3 esize=1 total=160 off=0: byte 16 got ef exp d8
+case 475 MISMATCH rank=3 esize=1 total=160 off=1: byte 17 got be exp 29
+case 475 MISMATCH rank=3 esize=1 total=160 off=2: byte 18 got ad exp 49
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 245 wm 00000000
+case 477 MISMATCH rank=5 esize=1 total=2000 off=0: byte 16 got de exp cc
+case 477 MISMATCH rank=5 esize=1 total=2000 off=5: byte 21 got ef exp af
+case 477 MISMATCH rank=5 esize=1 total=2000 off=10: byte 26 got be exp a8
+AR beyond watermark: addr 60001000 len 2 wm 00000000
+case 481 MISMATCH rank=2 esize=1 total=4 off=0: byte 16 got de exp 24
+case 481 MISMATCH rank=2 esize=1 total=4 off=1: byte 17 got ef exp b5
+case 481 MISMATCH rank=2 esize=1 total=4 off=2: byte 18 got be exp a6
+AR beyond watermark: addr 60001000 len 65 wm 00000000
+case 483 MISMATCH rank=4 esize=1 total=256 off=0: byte 16 got ad exp 88
+case 483 MISMATCH rank=4 esize=1 total=256 off=1: byte 17 got ad exp 17
+case 483 MISMATCH rank=4 esize=1 total=256 off=32: byte 48 got de exp 42
+AR beyond watermark: addr 60001000 len 161 wm 00000000
+case 485 MISMATCH rank=3 esize=1 total=640 off=0: byte 16 got ad exp 8d
+case 485 MISMATCH rank=3 esize=1 total=640 off=1: byte 17 got ad exp ee
+case 485 MISMATCH rank=3 esize=1 total=640 off=2: byte 18 got ad exp da
+AR beyond watermark: addr 60001000 len 29 wm 00000000
+case 489 MISMATCH rank=2 esize=1 total=112 off=0: byte 16 got ad exp 26
+case 489 MISMATCH rank=2 esize=1 total=112 off=1: byte 17 got be exp 80
+case 489 MISMATCH rank=2 esize=1 total=112 off=2: byte 18 got ef exp 21
+AR beyond watermark: addr 60001000 len 11 wm 00000000
+case 491 MISMATCH rank=4 esize=1 total=40 off=0: byte 16 got be exp 2e
+case 491 MISMATCH rank=4 esize=1 total=40 off=5: byte 21 got ad exp d1
+case 491 MISMATCH rank=4 esize=1 total=40 off=10: byte 26 got de exp 82
+AR beyond watermark: addr 60001000 len 256 wm 00000000
+AR beyond watermark: addr 60001400 len 24 wm 00000000
+case 493 MISMATCH rank=6 esize=1 total=1120 off=0: byte 16 got ef exp f0
+case 493 MISMATCH rank=6 esize=1 total=1120 off=1: byte 17 got be exp f6
+case 493 MISMATCH rank=6 esize=1 total=1120 off=2: byte 18 got ad exp 1a
+AR beyond watermark: addr 60001000 len 113 wm 00000000
+case 497 MISMATCH rank=5 esize=1 total=448 off=0: byte 16 got ad exp 6f
+case 497 MISMATCH rank=5 esize=1 total=448 off=1: byte 17 got de exp ca
+case 497 MISMATCH rank=5 esize=1 total=448 off=2: byte 18 got ef exp 67
+AR beyond watermark: addr 60001000 len 3 wm 00000000
+case 499 MISMATCH rank=1 esize=1 total=8 off=0: byte 16 got ad exp 22
+case 499 MISMATCH rank=1 esize=1 total=8 off=1: byte 17 got de exp 05
+case 499 MISMATCH rank=1 esize=1 total=8 off=2: byte 18 got ef exp a8
+rank histogram: 1:94 2:73 3:75 4:96 5:82 6:80
+cases run: 500, failing cases: 204, protocol errors: 305, engine cycles: 603739, burst-engine cases: 220
+watermark writes: 433, AR-beyond-watermark violations: 305
+npu_transpose_tb: FAIL
+hw/sim/npu_transpose_tb.sv:390: $finish called at 6254050000 (1ps)

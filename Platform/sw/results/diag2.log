@@ -1,0 +1,197 @@
+SYNC!@#[2J[H
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> l[2J[H
+Running Lab menu
+[2J[H
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ x: eXit to previous menu
+lab> l[2J[H
+Running run logistic test
+[PASS] LogisticQuantizedInt8AroundZeroShouldMatchGolden
+[PASS] LogisticQuantizedInt8NarrowRangeShouldMatchGolden
+[PASS] LogisticQuantizedInt8BasicShouldMatchGolden
+[PASS] LogisticQuantizedInt8WideRangeShouldMatchGolden
+Logistic tests: 4/4 passed
+---
+
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ x: eXit to previous menu
+lab> t[2J[H
+Running run transpose test
+[PASS] 2D_2x3_perm10
+[PASS] 2D_4x5_perm10
+[PASS] 2D_1x8_perm10
+[PASS] 2D_identity_3x4_perm01
+[PASS] 3D_2x2x2_perm210
+[PASS] 3D_2x3x4_perm201
+[PASS] 3D_2x3x4_perm021
+[PASS] 3D_3x2x5_perm102
+[PASS] 3D_identity_2x3x4_perm012
+[PASS] 4D_NHWC_to_NCHW_1x3x4x2
+[PASS] 4D_NCHW_to_NHWC_2x2x3x4
+[PASS] 4D_reverse_2x3x2x3_perm3210
+[PASS] 5D_2x2x2x2x3_perm43210
+[PASS] 6D_2x2x2x2x2x2_perm543210
+Transpose tests: 14/14 passed
+---
+
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ x: eXit to previous menu
+lab> x[2J[H---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> t[2J[H
+Running TFLM inference, verification, and cycles
+
+=== TFLM Functional Verification ===
+Model: mobileViT_xxs.tflite (1212672 bytes)
+Convolution path: software/reference (upstream TFLM ConvPerChannel)
+Tensor arena: 8388608 bytes
+Profile: mobileVit_xxs
+Input profile: zero input
+Output profile: Print Output Value, tolerance=0
+Samples: 1
+AllocateTensors: kTfLiteOk
+
+--- Sample 1/1 ---
+Running inference...
+TC 0 31830
+TC 1 30415
+TC 2 16674
+TC 3 15500
+TC 4 15296
+TC 5 7057
+TC 6 7326
+TC 7 10530
+TC 8 16857
+TC 9 15595
+TC 10 6900
+TC 11 16107
+TC 12 6898
+TC 13 10535
+TC 14 31034
+TC 15 29888
+TC 16 10784
+TC 17 9957
+TC 18 6161
+TC 19 4534
+TC 20 2366
+TC 21 5239
+TC 22 2303
+TC 23 4161
+TC 24 6156
+TC 25 4526
+TC 26 4541
+TC 27 2315
+TC 28 2618
+TC 29 4344
+TC 30 6175
+TC 31 4534
+TC 32 2366
+TC 33 5259
+TC 34 2303
+TC 35 4368
+TC 36 6127
+TC 37 4495
+TC 38 2370
+TC 39 5195
+TC 40 2303
+TC 41 4359
+TC 42 11132
+TC 43 9731
+TC 44 4482
+TC 45 3553
+TC 46 3253
+TC 47 1822
+TC 48 1196
+TC 49 2317
+TC 50 1124
+TC 51 1621
+TC 52 3218
+TC 53 1787
+TC 54 1198
+TC 55 2363
+TC 56 1108
+TC 57 1616
+TC 58 3321
+TC 59 1915
+TC 60 1154
+TC 61 2443
+TC 62 1159
+TC 63 1616
+TC 64 4871
+TC 65 3436
+Invoke status: kTfLiteOk
+Inference complete.
+Output Data unavailable: expected 12 float32 words, got type=9, bytes=10.
+Output (10 bytes):
+00: -32
+01: 114
+02: -38
+03: 52
+04: 50
+05: 127
+06: -120
+07: -128
+08: -71
+09: 80
+
+==============================================
+ Counter |       Total | Starts |   Average   
+---------+-------------+--------+-------------
+    0    |     8246241 |     37 |      222871
+    1    |      463670 |     66 |        7025
+    2    |           0 |      0 |         n/a
+    3    |           0 |      0 |         n/a
+    4    |           0 |      0 |         n/a
+    5    |           0 |      0 |         n/a
+    6    |           0 |      0 |         n/a
+    7    |           0 |      0 |         n/a
+    8    |           0 |      0 |         n/a
+    9    |           0 |      0 |         n/a
+==============================================
+Cycles: 5688908004
+Time (50000000 Hz): 113778 ms
+---
+
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> 

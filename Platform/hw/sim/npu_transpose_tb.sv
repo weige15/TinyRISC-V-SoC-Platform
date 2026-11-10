@@ -7,6 +7,12 @@
 // byte-delta computation). The golden output is computed independently by
 // coordinate decoding.  Guard bytes around the output and the input region are
 // checked for stray writes.
+//
+// Read watermark (burst engine, funct7=8): software cleans the input out of the
+// D-cache in chunks while the engine runs and advances a watermark. The slave
+// model tracks the last watermark written (tb_wm_end) and counts a violation
+// whenever an AR reaches beyond it (and returns garbage data for any word
+// beyond it), so an engine that ignores the watermark fails the run.
 module npu_transpose_tb;
     localparam integer NCASES = 500;
     localparam integer MEMSZ  = 1 << 17;
@@ -73,6 +79,10 @@ module npu_transpose_tb;
     integer    b_delay;
     integer    ci;
     integer    r_beats_total = 0, w_beats_total = 0;
+    reg [31:0] tb_wm_end = 32'd0;       // watermark as last written by the "CPU" (byte address, exclusive)
+    integer    wm_violations = 0;
+    integer    wm_writes = 0;
+    wire [31:0] tb_wm_end_w = (tb_wm_end + 32'd3) & 32'hFFFF_FFFC;
 
     function stall;
         input integer dummy;
@@ -95,6 +105,10 @@ module npu_transpose_tb;
                 arq_wr  <= (arq_wr + 1) % 8;
                 arq_cnt = arq_cnt + 1;
                 if (araddr[1:0] != 0) begin protocol_errors = protocol_errors + 1; $display("unaligned AR"); end
+                if (fast_mode && ((araddr + (arlen + 1) * 4) > tb_wm_end_w)) begin
+                    wm_violations = wm_violations + 1; protocol_errors = protocol_errors + 1;
+                    $display("AR beyond watermark: addr %h len %0d wm %h", araddr, arlen + 1, tb_wm_end_w);
+                end
                 if (!fast_mode && arlen !== 8'd0) begin protocol_errors = protocol_errors + 1; $display("ARLEN != 0"); end
                 if (({20'd0, araddr[11:0]} + (arlen + 1) * 4) > 4096) begin protocol_errors = protocol_errors + 1; $display("AR crosses 4KB"); end
             end
@@ -108,8 +122,11 @@ module npu_transpose_tb;
                     arq_rd <= (arq_rd + 1) % 8; arq_cnt = arq_cnt - 1;
                 end else if (r_active && r_left > 0 && !stall(0)) begin
                     rvalid  <= 1;
-                    rdata_r <= {mem[r_addr[16:0]+3], mem[r_addr[16:0]+2],
-                                mem[r_addr[16:0]+1], mem[r_addr[16:0]]};
+                    if (fast_mode && r_addr >= tb_wm_end_w)
+                        rdata_r <= 32'hDEAD_BEEF;   // not cleaned yet: stale DDR content
+                    else
+                        rdata_r <= {mem[r_addr[16:0]+3], mem[r_addr[16:0]+2],
+                                    mem[r_addr[16:0]+1], mem[r_addr[16:0]]};
                     r_addr <= r_addr + 4;
                     r_left <= r_left - 1;
                     r_beats_total = r_beats_total + 1;
@@ -160,6 +177,7 @@ module npu_transpose_tb;
     task npu_op(input [2:0] f3, input [31:0] f7, input [31:0] a, input [31:0] b);
         begin
             @(negedge clk);
+            if (f3 == 3'b110 && f7 == 8) begin tb_wm_end = a; wm_writes = wm_writes + 1; end
             funct3_i = {1'b0, f3}; funct7_i = f7; rs1_i = a; rs2_i = b; NPU_start = 1;
             @(negedge clk);
             NPU_start = 0;
@@ -188,6 +206,8 @@ module npu_transpose_tb;
     integer fast_cases = 0, fast_k, fast_R, hh, use_fast, fast_cand;
     integer in_bytes, out_bytes, bad;
     integer maxel;
+    reg [31:0] in_abs, in_end_abs, wm_p, wm_n;
+    integer wm_mode, wm_chunk;
 
     initial begin
         for (n = 1; n <= 6; n = n + 1) rank_hist[n] = 0;
@@ -316,13 +336,33 @@ module npu_transpose_tb;
                 fast_cases = fast_cases + 1;
             end
             t = $time;
-            if (use_fast && (n % 4 == 1)) begin
-                // asynchronous start, then wait (CPU would do cache maintenance in between)
+            in_abs = MEMBASE + IN_REGION + in_off;
+            in_end_abs = in_abs + in_bytes;
+            tb_wm_end = 32'd0;
+            if (use_fast && (n % 4 != 0)) begin
+                // asynchronous start; the "CPU" then cleans the input in chunks of whole
+                // 32-byte lines (1 KB in transpose.h; random sizes here) and advances the
+                // read watermark after each chunk, then waits.
                 npu_op(3'b110, 6, 0, 0);
+                wm_p = in_abs & 32'hFFFF_FFE0;
+                wm_mode = n % 4;   // 1: random chunks, 2: 1 KB chunks, 3: random chunks with long pauses
+                while (wm_p < in_end_abs) begin
+                    wm_chunk = (wm_mode == 2) ? 32 : $urandom_range(40, 1);
+                    wm_n = wm_p + wm_chunk * 32;
+                    if (wm_n > in_end_abs) wm_n = in_end_abs;
+                    repeat ($urandom_range((wm_mode == 3) ? 300 : 40, 0)) @(negedge clk);
+                    npu_op(3'b110, 8, wm_n, 0);
+                    wm_p = wm_n;
+                end
                 repeat ($urandom_range(400, 0)) @(negedge clk);
                 npu_op(3'b110, 7, 0, 0);
+            end else if (use_fast) begin
+                // everything cleaned before the start (watermark = end of the input)
+                npu_op(3'b110, 8, in_end_abs, 0);
+                npu_op(3'b110, 4, 0, 0);
             end else
                 npu_op(3'b110, 4, 0, 0);
+            tb_wm_end = 32'd0;
             cycles_total = cycles_total + ($time - t) / 10;
 
             // ---- compare ----
@@ -342,7 +382,8 @@ module npu_transpose_tb;
                  rank_hist[1], rank_hist[2], rank_hist[3], rank_hist[4], rank_hist[5], rank_hist[6]);
         $display("cases run: %0d, failing cases: %0d, protocol errors: %0d, engine cycles: %0d, burst-engine cases: %0d",
                  cases_done, mismatches, protocol_errors, cycles_total, fast_cases);
-        if (mismatches == 0 && protocol_errors == 0 && cases_done == NCASES && fast_cases >= 100)
+        $display("watermark writes: %0d, AR-beyond-watermark violations: %0d", wm_writes, wm_violations);
+        if (mismatches == 0 && protocol_errors == 0 && cases_done == NCASES && fast_cases >= 100 && wm_violations == 0 && wm_writes >= fast_cases)
             $display("npu_transpose_tb: PASS (%0d/%0d)", cases_done, NCASES);
         else
             $display("npu_transpose_tb: FAIL");
