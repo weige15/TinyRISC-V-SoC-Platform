@@ -254,3 +254,26 @@ All four rows come from UART logs captured by Claude in `Platform/sw/results/` (
 | Both (final, `lab4_both_wm.log`) | 8,257,055 | 393,327 | 5,692,964,147 | 102.25x | 17.90x | 1.148x |
 
 Final post-route timing of the bitstream that produced the Both row (`build/out.bit`, sha256 `00a2fa84...32b32c`): `Platform/sw/results/lab4_both_wm_post_route_timing_summary.rpt`, Design Timing Summary: **WNS +0.267 ns** (>= 0), TNS 0.000, WHS +0.011 ns, 0 failing endpoints.
+
+
+## Randomized NPU-vs-CPU board test (temporary lab menu `r` and `m`)
+
+Source: UART log `Platform/sw/results/lab4_randtest_final.log`, captured by Claude (`Platform/sw/results/board_run_randtest.py`: waits for `SYNC`, uploads `main.bin`, lab menu `r`, then `m`). Board state: `make -C Platform prog` of the existing `build/out.bit` (sha256 `25a2ec43ee4c023d...`, built from the unchanged RTL; post-route WNS +0.267 ns, WHS +0.011 ns, 0 failing endpoints in `build/reports/post_route_timing_summary.rpt`); after programming `SYNC` arrived without a RESET press. Software: `make -C Platform sw_build TFLM_SOFTWARE_CONV=1` (riscv64 toolchain from `env.sh`, same flags/model/50 MHz as the rows above) with temporary test code. All comparisons are exact (byte equality), no tolerance. The test code was removed afterwards (`git diff` of the source tree shows no test code); its text is kept in `Platform/sw/results/lab4_randtest_source_snapshot.cc.txt`.
+
+Method: a switch `g_lab4_sw_mode` (temporary, in the patched `logistic.h` / `transpose.h`) selects the NPU path (default) or a verbatim copy of the upstream CPU code. Fixed seed (xorshift32, `0x1a2b3c4d`).
+
+| Test | Result |
+|---|---|
+| Logistic, 200 random parameter sets | **200/200 exact**, 0 status errors, 515,059 elements |
+| Transpose (int8), 300 random cases | **300/300 exact**, guard bytes around the output and the input unchanged in every case |
+| Model, 3 random non-zero inputs, accelerated vs SW | **3/3 identical** (plus an accelerated repeat on sample 0, identical) |
+
+Logistic: per set a random input scale (2^e x [1,2), e in [-13,0]) and zero point in [-128,127] go through the TFLM Prepare path (`KernelRunner::InitAndPrepare` on the LOGISTIC registration), then the same Prepare parameters are used for one NPU `Invoke` and one upstream-CPU `Invoke`; sizes 0-5000 (cases 0/1/2 forced to 0, 5000, 1), input and output pointers at independent random offsets 0-7 bytes, guard bytes around the output checked.
+
+Transpose: ranks 1-6 (56/45/51/51/49/48 cases), **element size 1 only (int8): the TA said int8_t-only cases are sufficient, so element sizes 2 and 4 were not tested**; 234 cases contain a size-1 dimension; input base not 4-byte aligned in 232 cases and output base in 235; sizes up to 63,830 bytes (every 8th case is 32-64 KB); input and output written through the D-cache with no explicit clean before the call. The reference is an independent byte-wise odometer, which itself matched the upstream CPU `Transpose` in all 300 cases.
+
+Model (mobileViT_xxs, input 49,152 bytes, every byte non-zero, 3 different random inputs): outputs of the accelerated run (Logistic + Transpose on the NPU) and the CPU run (both on the CPU) are identical, `kTfLiteOk` for all. Outputs: sample 0 `-33 112 -37 49 51 127 -120 -128 -71 78`, sample 1 `-31 113 -36 51 51 127 -119 -126 -71 81`, sample 2 `-33 113 -37 49 53 127 -122 -126 -72 79`.
+
+Failed/invalid attempts kept in `Platform/sw/results/`:
+- `lab4_randtest_run1_model_mismatch.log` and `lab4_randtest_diag.log`: the first model comparison reported 0/3 identical. This was a test bug, not an NPU difference: TFLM reuses the input tensor's arena memory for intermediates, so the second `Invoke` on the same interpreter saw a clobbered input (even accelerated vs accelerated differed). The fix was to rewrite the input before every `Invoke`. The `r` results in these runs are identical to the final run (200/200, 300/300).
+- `lab4_randtest_attempt_ddr_corrupt_null_menu.log`: a re-upload without reprogramming printed `(null)` menu titles (the same DDR corruption after repeated uploads that is noted in the sections above; cause still not identified); `make -C Platform prog` fixed it.
