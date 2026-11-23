@@ -1,0 +1,367 @@
+// TEMPORARY Lab 4 randomized NPU-vs-CPU test (lab menu 'r' and 'm').
+// Removed again after the board run; a text snapshot is kept in results/.
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "perf.h"
+#include "tensorflow/lite/c/builtin_op_data.h"
+#include "tensorflow/lite/c/common.h"
+#include "tensorflow/lite/kernels/internal/types.h"
+#include "tensorflow/lite/kernels/internal/reference/transpose.h"
+#include "tensorflow/lite/micro/kernels/kernel_runner.h"
+#include "tensorflow/lite/micro/test_helpers.h"
+
+#if defined(TFLM_MODEL_ENABLED)
+#include "model_data.h"
+#include "tensorflow/lite/micro/micro_interpreter.h"
+#include "tensorflow/lite/schema/schema_generated.h"
+#include "tflm_ops.h"
+#endif
+
+// false = NPU path (default), true = upstream CPU code (see the TEMP blocks
+// in logistic.h / transpose.h).
+int g_lab4_sw_mode = 0;
+
+namespace {
+
+uint32_t g_rng = 0;
+uint32_t rnd() {  // xorshift32
+  uint32_t x = g_rng;
+  x ^= x << 13;
+  x ^= x >> 17;
+  x ^= x << 5;
+  return g_rng = x;
+}
+uint32_t rnd_below(uint32_t n) { return rnd() % n; }
+
+// ---------------------------------------------------------------- Logistic
+constexpr int kLgMax = 5000;
+constexpr int kLgGuard = 16;
+constexpr int kLgBuf = kLgMax + 2 * kLgGuard + 16;
+alignas(32) int8_t lg_in[kLgBuf];
+alignas(32) int8_t lg_out[kLgBuf];
+alignas(32) int8_t lg_npu[kLgMax];
+
+uint32_t float_bits(float f) {
+  uint32_t u;
+  memcpy(&u, &f, 4);
+  return u;
+}
+
+bool logistic_cases(int count, uint32_t seed) {
+  using namespace tflite;
+  using namespace tflite::testing;
+  g_rng = seed;
+  int pass = 0, fail = 0, nonok = 0;
+  uint32_t total_elems = 0;
+  for (int i = 0; i < count; ++i) {
+    // Random scale 2^e * [1,2), e in [-13,0]; zero point in [-128,127].
+    const int e = -(int)rnd_below(14);
+    const float mant = 1.0f + (float)(rnd() & 0xFFFFFF) / 16777216.0f;
+    float scale = mant;
+    for (int k = 0; k < -e; ++k) scale *= 0.5f;
+    const int zp = (int)rnd_below(256) - 128;
+    int n = (int)rnd_below(kLgMax + 1);
+    if (i == 0) n = 0;
+    if (i == 1) n = kLgMax;
+    if (i == 2) n = 1;
+    const int off_in = (int)rnd_below(8), off_out = (int)rnd_below(8);
+    for (int k = 0; k < kLgBuf; ++k) {
+      lg_in[k] = (int8_t)rnd();
+      lg_out[k] = (int8_t)0x5A;
+    }
+    int8_t* in = lg_in + kLgGuard + off_in;
+    int8_t* out = lg_out + kLgGuard + off_out;
+    if (off_in + n > kLgMax || off_out + n > kLgMax) n = kLgMax - 8;  // keep inside buffers
+
+    int in_dims_data[] = {2, 1, n};
+    int out_dims_data[] = {2, 1, n};
+    TfLiteIntArray* in_dims = IntArrayFromInts(in_dims_data);
+    TfLiteIntArray* out_dims = IntArrayFromInts(out_dims_data);
+    TfLiteTensor tensors[2] = {
+        CreateQuantizedTensor(in, in_dims, scale, zp),
+        CreateQuantizedTensor(out, out_dims, 1.0f / 256.0f, -128),
+    };
+    int inputs_data[] = {1, 0};
+    int outputs_data[] = {1, 1};
+    const TfLiteRegistration reg = tflite::Register_LOGISTIC();
+    micro::KernelRunner runner(reg, tensors, 2, IntArrayFromInts(inputs_data),
+                               IntArrayFromInts(outputs_data), nullptr);
+    bool ok = true;
+    if (runner.InitAndPrepare() != kTfLiteOk) {  // TFLM Prepare derives params
+      ok = false;
+      ++nonok;
+    }
+    if (ok) {
+      g_lab4_sw_mode = 0;  // NPU
+      if (runner.Invoke() != kTfLiteOk) { ok = false; ++nonok; }
+      for (int k = 0; k < n; ++k) lg_npu[k] = out[k];
+      // Guards untouched by the NPU run?
+      for (int k = 0; k < kLgGuard + off_out; ++k)
+        if (lg_out[k] != (int8_t)0x5A) ok = false;
+      for (int k = kLgGuard + off_out + n; k < kLgBuf; ++k)
+        if (lg_out[k] != (int8_t)0x5A) ok = false;
+      for (int k = 0; k < n; ++k) out[k] = (int8_t)0x5A;
+      g_lab4_sw_mode = 3;  // upstream CPU reference, same Prepare params
+      if (runner.Invoke() != kTfLiteOk) { ok = false; ++nonok; }
+      g_lab4_sw_mode = 0;
+    }
+    int mism = 0, first = -1;
+    {
+      for (int k = 0; k < n; ++k)
+        if (lg_npu[k] != out[k]) {
+          if (first < 0) first = k;
+          ++mism;
+        }
+    }
+    if (mism) ok = false;
+    total_elems += n;
+    printf("L%03d sbits=%08x zp=%4d n=%4d ai=%d ao=%d %s", i,
+           (unsigned)float_bits(scale), zp, n, off_in & 3, off_out & 3,
+           ok ? "OK\n" : "FAIL");
+    if (!ok) {
+      printf(" mism=%d first=%d", mism, first);
+      if (first >= 0)
+        printf(" npu=%d cpu=%d", lg_npu[first], out[first]);
+      printf("\n");
+    }
+    ok ? ++pass : ++fail;
+  }
+  printf("Logistic random: %d/%d exact (fail=%d, status_errors=%d, elems=%u)\n",
+         pass, count, fail, nonok, (unsigned)total_elems);
+  return fail == 0;
+}
+
+// --------------------------------------------------------------- Transpose
+constexpr int kTrMaxBytes = 65536;
+constexpr int kTrGuard = 64;
+constexpr int kTrBuf = kTrMaxBytes + 2 * kTrGuard + 16;
+alignas(32) uint8_t tr_in[kTrBuf];
+alignas(32) uint8_t tr_out[kTrBuf];
+alignas(32) uint8_t tr_ref[kTrMaxBytes];
+alignas(32) uint8_t tr_sw[kTrMaxBytes];  // upstream path (aligned cases only)
+
+template <typename T>
+void run_transpose(const int32_t* in_shape, const int32_t* perm, int rank,
+                   const uint8_t* in, uint8_t* out) {
+  tflite::TransposeParams p;
+  p.perm_count = rank;
+  int32_t od[6];
+  for (int d = 0; d < rank; ++d) {
+    p.perm[d] = perm[d];
+    od[d] = in_shape[perm[d]];
+  }
+  tflite::RuntimeShape is(rank, in_shape), os(rank, od);
+  tflite::reference_ops::Transpose<T>(p, is, reinterpret_cast<const T*>(in), os,
+                                      reinterpret_cast<T*>(out));
+}
+
+bool transpose_cases(int count, uint32_t seed) {
+  g_rng = seed;
+  int pass = 0, fail = 0, ref_mismatch = 0, upstream_checked = 0;
+  int by_rank[7] = {0}, by_es[5] = {0}, with_one = 0, unal_in = 0, unal_out = 0;
+  uint32_t max_bytes = 0;
+  for (int c = 0; c < count; ++c) {
+    const int rank = 1 + (int)rnd_below(6);
+    const int es = 1;  // TA: int8_t only is sufficient for Transpose
+    const int max_elems = kTrMaxBytes / es;
+    int target;
+    if (c % 8 == 0) {
+      target = max_elems / 2 + (int)rnd_below(max_elems / 2 + 1);  // large
+    } else {
+      int bits = 1;
+      while ((1 << bits) < max_elems) ++bits;
+      target = 1 + (int)rnd_below(1u << rnd_below(bits + 1));
+      if (target > max_elems) target = max_elems;
+    }
+    int32_t dims[6];
+    int rem = target;
+    bool has_one = false;
+    for (int d = 0; d < rank; ++d) {
+      int v;
+      if (rank > 1 && rnd_below(3) == 0) {
+        v = 1;
+      } else if (d == rank - 1) {
+        v = rem;
+      } else {
+        const int cap = rem < 64 ? rem : 64;
+        v = 1 + (int)rnd_below(cap);
+      }
+      if (v < 1) v = 1;
+      dims[d] = v;
+      rem = rem / v;
+      if (rem < 1) rem = 1;
+    }
+    for (int d = 0; d < rank; ++d)
+      if (dims[d] == 1) has_one = true;
+    int32_t perm[6];
+    for (int d = 0; d < rank; ++d) perm[d] = d;
+    for (int d = rank - 1; d > 0; --d) {
+      const int j = (int)rnd_below(d + 1);
+      const int32_t t = perm[d]; perm[d] = perm[j]; perm[j] = t;
+    }
+    int total = 1;
+    for (int d = 0; d < rank; ++d) total *= dims[d];
+    const int bytes = total * es;
+    const int off_in = (int)rnd_below(8), off_out = (int)rnd_below(8);
+    const uint32_t in_seed = rnd() | 1;
+
+    // Input data (random bytes) and output prefill, written via the CPU
+    // cache with no explicit clean (the kernel must handle that).
+    uint32_t save = g_rng;
+    g_rng = in_seed;
+    for (int k = 0; k < bytes; ++k) tr_in[kTrGuard + off_in + k] = (uint8_t)rnd();
+    g_rng = save;
+    for (int k = 0; k < kTrBuf; ++k) tr_out[k] = 0xA5;
+    for (int k = 0; k < bytes; ++k) tr_out[kTrGuard + off_out + k] = (uint8_t)(0x3C + k);
+    const uint8_t* in = tr_in + kTrGuard + off_in;
+    uint8_t* out = tr_out + kTrGuard + off_out;
+
+    // Independent byte-wise reference (odometer over the output coordinates).
+    int32_t in_stride[6], od[6], coord[6];
+    in_stride[rank - 1] = 1;
+    for (int d = rank - 2; d >= 0; --d) in_stride[d] = in_stride[d + 1] * dims[d + 1];
+    for (int d = 0; d < rank; ++d) { od[d] = dims[perm[d]]; coord[d] = 0; }
+    for (int o = 0; o < total; ++o) {
+      int idx = 0;
+      for (int d = 0; d < rank; ++d) idx += coord[d] * in_stride[perm[d]];
+      for (int b = 0; b < es; ++b) tr_ref[o * es + b] = in[idx * es + b];
+      for (int d = rank - 1; d >= 0; --d) {
+        if (++coord[d] < od[d]) break;
+        coord[d] = 0;
+      }
+    }
+
+    // Device under test: the NPU Transpose<T>.
+    g_lab4_sw_mode = 0;
+    if (es == 1) run_transpose<int8_t>(dims, perm, rank, in, out);
+    else if (es == 2) run_transpose<int16_t>(dims, perm, rank, in, out);
+    else run_transpose<int32_t>(dims, perm, rank, in, out);
+
+    bool ok = true;
+    int mism = 0, first = -1;
+    for (int k = 0; k < bytes; ++k)
+      if (out[k] != tr_ref[k]) {
+        if (first < 0) first = k;
+        ++mism;
+      }
+    int guard_bad = 0;
+    for (int k = 0; k < kTrGuard + off_out; ++k)
+      if (tr_out[k] != 0xA5) ++guard_bad;
+    for (int k = kTrGuard + off_out + bytes; k < kTrBuf; ++k)
+      if (tr_out[k] != 0xA5) ++guard_bad;
+    // Input unchanged?
+    int in_bad = 0;
+    g_rng = in_seed;
+    for (int k = 0; k < bytes; ++k)
+      if (in[k] != (uint8_t)rnd()) ++in_bad;
+    g_rng = save;
+    if (mism || guard_bad || in_bad) ok = false;
+
+    // Self-check of the independent reference against the upstream CPU code
+    // when the buffers are naturally aligned (unaligned T* is not allowed on
+    // this core).
+    if (((off_in | off_out) & (es - 1)) == 0) {
+      ++upstream_checked;
+      g_lab4_sw_mode = 3;
+      const uint8_t* sin = in;
+      if (es == 1) run_transpose<int8_t>(dims, perm, rank, sin, tr_sw);
+      else if (es == 2) run_transpose<int16_t>(dims, perm, rank, sin, tr_sw);
+      else run_transpose<int32_t>(dims, perm, rank, sin, tr_sw);
+      g_lab4_sw_mode = 0;
+      if (memcmp(tr_sw, tr_ref, bytes) != 0) ++ref_mismatch;
+    }
+
+    ++by_rank[rank];
+    ++by_es[es];
+    if (has_one) ++with_one;
+    if (off_in & 3) ++unal_in;
+    if (off_out & 3) ++unal_out;
+    if ((uint32_t)bytes > max_bytes) max_bytes = bytes;
+
+    printf("T%03d r=%d e=%d in=", c, rank, es);
+    for (int d = 0; d < rank; ++d) printf("%s%d", d ? "x" : "", (int)dims[d]);
+    printf(" perm=");
+    for (int d = 0; d < rank; ++d) printf("%d", (int)perm[d]);
+    printf(" B=%d ai=%d ao=%d %s", bytes, off_in & 3, off_out & 3, ok ? "OK\n" : "FAIL");
+    if (!ok) printf(" mism=%d first=%d guard_bad=%d in_bad=%d\n", mism, first, guard_bad, in_bad);
+    ok ? ++pass : ++fail;
+  }
+  printf("Transpose random: %d/%d exact (fail=%d)\n", pass, count, fail);
+  printf("  coverage: rank1..6 = %d %d %d %d %d %d; esize 1/2/4 = %d %d %d; "
+         "cases with size-1 dim = %d; unaligned in-base(mod4!=0) = %d, out-base = %d; max bytes = %u\n",
+         by_rank[1], by_rank[2], by_rank[3], by_rank[4], by_rank[5], by_rank[6],
+         by_es[1], by_es[2], by_es[4], with_one, unal_in, unal_out,
+         (unsigned)max_bytes);
+  printf("  reference self-check vs upstream CPU Transpose: %d aligned cases, %d mismatches\n",
+         upstream_checked, ref_mismatch);
+  return fail == 0 && ref_mismatch == 0;
+}
+
+}  // namespace
+
+void run_lab4_rand_test() {
+  printf("LAB4 RANDOM TEST (NPU vs CPU reference), seed=0x1a2b3c4d\n");
+  const bool l = logistic_cases(200, 0x1a2b3c4d);
+  const bool t = transpose_cases(300, 0x1a2b3c4d ^ 0x9e3779b9u);
+  printf("LAB4 RANDOM RESULT: logistic=%s transpose=%s\n", l ? "PASS" : "FAIL",
+         t ? "PASS" : "FAIL");
+}
+
+#if defined(TFLM_MODEL_ENABLED)
+namespace {
+alignas(16) uint8_t g_ab_arena[8 * 1024 * 1024];
+}
+
+void run_lab4_model_ab_test() {
+  printf("LAB4 MODEL A/B TEST (NPU Logistic+Transpose vs CPU), seed=0x600dbeef\n");
+  const tflite::Model* model = tflite::GetModel(g_model);
+  ProjectOpResolver resolver;
+  tflm_register_project_ops(&resolver);
+  tflite::MicroInterpreter interpreter(model, resolver, g_ab_arena,
+                                       sizeof(g_ab_arena));
+  if (interpreter.AllocateTensors() != kTfLiteOk) {
+    printf("AllocateTensors FAILED\n");
+    return;
+  }
+  TfLiteTensor* input = interpreter.input(0);
+  TfLiteTensor* output = interpreter.output(0);
+  printf("input bytes=%u output bytes=%u\n", (unsigned)input->bytes,
+         (unsigned)output->bytes);
+  // TFLM reuses the input tensor's arena memory for intermediates, so the
+  // input is rewritten (same seed) before EVERY Invoke.
+  static int8_t o[3][16];
+  int identical = 0;
+  for (int s = 0; s < 3; ++s) {
+    const uint32_t seed = 0x600dbeef + 7919u * (uint32_t)s;
+    unsigned nz = 0;
+    for (int r = 0; r < 3; ++r) {
+      if (r == 1 && s != 0) continue;  // repeat-determinism check on sample 0 only
+      g_rng = seed;
+      for (size_t k = 0; k < input->bytes; ++k) {
+        int8_t b = (int8_t)rnd();
+        if (b == 0) b = 1;
+        input->data.int8[k] = b;
+        if (r == 0) ++nz;
+      }
+      g_lab4_sw_mode = (r == 2) ? 3 : 0;  // 0 = NPU, 3 = CPU reference
+      TfLiteStatus st = interpreter.Invoke();
+      g_lab4_sw_mode = 0;
+      memcpy(o[r], output->data.int8, 10);
+      printf("  sample %d %s status=%d out:", s, r == 2 ? "sw   " : (r == 1 ? "accel(rep)" : "accel"), (int)st);
+      for (int k = 0; k < 10; ++k) printf(" %d", o[r][k]);
+      printf("\n");
+      if (st != kTfLiteOk) o[r][0] ^= 0x55;  // force mismatch on failure
+    }
+    if (s == 0) printf("  sample 0 accel==accel(rep): %s\n", memcmp(o[0], o[1], 10) ? "NO" : "yes");
+    const bool same = memcmp(o[0], o[2], 10) == 0;
+    printf("  sample %d: input %u bytes all non-zero (%u non-zero): %s\n", s,
+           (unsigned)input->bytes, nz, same ? "IDENTICAL" : "MISMATCH");
+    if (same) ++identical;
+  }
+  printf("LAB4 MODEL A/B RESULT: %d/3 identical\n", identical);
+}
+#else
+void run_lab4_model_ab_test() { printf("model not enabled in this build\n"); }
+#endif
