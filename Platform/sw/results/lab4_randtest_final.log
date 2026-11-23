@@ -1,0 +1,575 @@
+SYNC!@#[2J[H
+TinyRISC-V SoC Platform
+=======================
+ l: Lab menu
+ t: TFLM inference, verification, and cycles
+ p: Performance counter tests
+ i: System info
+main> l[2J[H
+Running Lab menu
+[2J[H
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ r: TEMP random NPU vs CPU
+ m: TEMP model accel vs SW
+ x: eXit to previous menu
+lab> r[2J[H
+Running TEMP random NPU vs CPU
+LAB4 RANDOM TEST (NPU vs CPU reference), seed=0x1a2b3c4d
+L000 sbits=39bd121b zp=  72 n=   0 ai=0 ao=1 OK
+L001 sbits=3adfc20b zp=-120 n=4992 ai=2 ao=0 OK
+L002 sbits=3bd5098c zp=  -4 n=   1 ai=1 ao=2 OK
+L003 sbits=3f724f18 zp=  95 n=2852 ai=3 ao=0 OK
+L004 sbits=3c9c7fb3 zp=  12 n=4802 ai=1 ao=2 OK
+L005 sbits=3a105416 zp=  25 n=1804 ai=1 ao=3 OK
+L006 sbits=3f6c8402 zp=-113 n=3671 ai=1 ao=3 OK
+L007 sbits=3d5eda40 zp=  -9 n= 735 ai=0 ao=1 OK
+L008 sbits=3c6b36ca zp= -26 n= 781 ai=0 ao=2 OK
+L009 sbits=3c30426e zp= -96 n=1062 ai=2 ao=1 OK
+L010 sbits=3d2675c9 zp= -83 n=4719 ai=3 ao=0 OK
+L011 sbits=3f826f62 zp=  75 n=3978 ai=1 ao=1 OK
+L012 sbits=3ea0b1cf zp= -25 n=2351 ai=1 ao=3 OK
+L013 sbits=3a7cd808 zp=-109 n=4902 ai=0 ao=0 OK
+L014 sbits=3d9f4b70 zp=-112 n=2496 ai=1 ao=3 OK
+L015 sbits=39b0e4d2 zp=  41 n=3192 ai=2 ao=1 OK
+L016 sbits=3b7a1198 zp=  -8 n=3614 ai=3 ao=1 OK
+L017 sbits=3bf3c187 zp= 109 n=4734 ai=1 ao=3 OK
+L018 sbits=3ec09f20 zp= -59 n= 625 ai=2 ao=2 OK
+L019 sbits=3b009552 zp= 111 n=4600 ai=1 ao=2 OK
+L020 sbits=3cb16bc8 zp= 121 n=1631 ai=2 ao=3 OK
+L021 sbits=3e997336 zp=  20 n=3232 ai=1 ao=2 OK
+L022 sbits=3b19f5fe zp=  -3 n=3916 ai=0 ao=1 OK
+L023 sbits=3e0b13aa zp= -53 n=4797 ai=2 ao=3 OK
+L024 sbits=3c9f0b8e zp=  19 n=1336 ai=2 ao=2 OK
+L025 sbits=3fe2dee4 zp= -39 n=2113 ai=3 ao=0 OK
+L026 sbits=39caa39a zp=-116 n=1302 ai=2 ao=1 OK
+L027 sbits=3ed0f0ba zp= 114 n=4518 ai=2 ao=1 OK
+L028 sbits=3babd843 zp=-123 n= 131 ai=2 ao=2 OK
+L029 sbits=3988b472 zp=  69 n=4418 ai=2 ao=2 OK
+L030 sbits=3b327964 zp= -73 n=1283 ai=2 ao=2 OK
+L031 sbits=3feee791 zp=  -2 n=1771 ai=2 ao=3 OK
+L032 sbits=3dd45185 zp= -82 n=1999 ai=0 ao=0 OK
+L033 sbits=3f045eb5 zp= -72 n=4213 ai=0 ao=1 OK
+L034 sbits=3bf7d058 zp=  76 n=4217 ai=3 ao=2 OK
+L035 sbits=3a63e76a zp=-102 n=3581 ai=0 ao=2 OK
+L036 sbits=3a10e693 zp= 100 n=1762 ai=3 ao=0 OK
+L037 sbits=393fd21c zp= -60 n=4281 ai=3 ao=2 OK
+L038 sbits=3d941c5a zp= -22 n=4268 ai=3 ao=0 OK
+L039 sbits=3c415d0b zp= -74 n=2338 ai=3 ao=3 OK
+L040 sbits=3c256f49 zp=  30 n=1652 ai=1 ao=1 OK
+L041 sbits=3a844d22 zp= -28 n= 563 ai=0 ao=2 OK
+L042 sbits=3efa0794 zp=  32 n=1635 ai=2 ao=2 OK
+L043 sbits=3e16e426 zp= 121 n=1451 ai=2 ao=3 OK
+L044 sbits=3f43465a zp= -68 n=2954 ai=3 ao=2 OK
+L045 sbits=3a8d0b58 zp= -73 n=3845 ai=3 ao=2 OK
+L046 sbits=3cdf9212 zp=  -2 n=2869 ai=0 ao=3 OK
+L047 sbits=39b05499 zp=  49 n=1300 ai=1 ao=1 OK
+L048 sbits=3f88311e zp= -42 n=4991 ai=3 ao=1 OK
+L049 sbits=3ac19d35 zp=  45 n=4546 ai=2 ao=2 OK
+L050 sbits=3950e349 zp= -53 n= 196 ai=1 ao=0 OK
+L051 sbits=3cdcff28 zp= 104 n=1424 ai=1 ao=2 OK
+L052 sbits=39106f98 zp= -77 n=1132 ai=1 ao=3 OK
+L053 sbits=3bd0f678 zp=  46 n=3549 ai=1 ao=1 OK
+L054 sbits=3954ff30 zp=  18 n=3158 ai=3 ao=1 OK
+L055 sbits=3c8e9362 zp= -26 n=1062 ai=1 ao=2 OK
+L056 sbits=3914dc5a zp= -84 n=2372 ai=3 ao=0 OK
+L057 sbits=39e9d9e2 zp=  86 n=1367 ai=2 ao=2 OK
+L058 sbits=3b9e6b9f zp= -77 n=3327 ai=3 ao=1 OK
+L059 sbits=3c0be1b0 zp= -63 n=1338 ai=1 ao=2 OK
+L060 sbits=3cfbabc8 zp= 115 n=2560 ai=3 ao=0 OK
+L061 sbits=3a39f64a zp=-125 n=1605 ai=3 ao=0 OK
+L062 sbits=39b4b9d9 zp= -99 n=4903 ai=0 ao=2 OK
+L063 sbits=39d6e208 zp= -71 n=2043 ai=3 ao=1 OK
+L064 sbits=3fbf3096 zp= -58 n=4940 ai=3 ao=2 OK
+L065 sbits=3dff02e5 zp=  73 n= 160 ai=0 ao=1 OK
+L066 sbits=3af5c4a0 zp=  32 n=3518 ai=2 ao=2 OK
+L067 sbits=3c937602 zp=  55 n=1813 ai=0 ao=1 OK
+L068 sbits=3dde9bda zp=-112 n=1917 ai=0 ao=0 OK
+L069 sbits=3f2d3260 zp=  32 n=4983 ai=1 ao=3 OK
+L070 sbits=3936924c zp= 104 n=1439 ai=2 ao=3 OK
+L071 sbits=3e79e176 zp=  91 n=2224 ai=0 ao=0 OK
+L072 sbits=3b78c478 zp=  57 n=2458 ai=1 ao=1 OK
+L073 sbits=3d8e6cf1 zp=  50 n= 363 ai=2 ao=0 OK
+L074 sbits=3dc63c59 zp=  31 n=2651 ai=2 ao=1 OK
+L075 sbits=3e25f574 zp= -94 n=3868 ai=0 ao=0 OK
+L076 sbits=3e9f3a76 zp= 122 n=4369 ai=3 ao=1 OK
+L077 sbits=398e6581 zp=  60 n=4189 ai=0 ao=1 OK
+L078 sbits=3b42b096 zp= 124 n= 116 ai=2 ao=0 OK
+L079 sbits=3d1ae148 zp= -61 n=2453 ai=2 ao=1 OK
+L080 sbits=3f67e4b4 zp=  57 n=4906 ai=0 ao=0 OK
+L081 sbits=3eb19217 zp= 125 n=4279 ai=2 ao=0 OK
+L082 sbits=3fc41a8a zp= -95 n= 831 ai=0 ao=0 OK
+L083 sbits=3a6b471d zp= 114 n=4888 ai=0 ao=0 OK
+L084 sbits=3e2fb850 zp= -91 n=4008 ai=3 ao=0 OK
+L085 sbits=3c5379ce zp=-105 n= 799 ai=1 ao=1 OK
+L086 sbits=3c1535d4 zp= -58 n=2556 ai=2 ao=2 OK
+L087 sbits=3c9066ac zp=  82 n=2116 ai=1 ao=1 OK
+L088 sbits=3fbedd4e zp=  74 n=3187 ai=2 ao=0 OK
+L089 sbits=3efd562a zp=-117 n=2001 ai=1 ao=3 OK
+L090 sbits=3ee46709 zp=  -9 n=2583 ai=3 ao=0 OK
+L091 sbits=3b3e3854 zp=  61 n=4582 ai=3 ao=3 OK
+L092 sbits=3e7933c3 zp= -25 n=4220 ai=2 ao=0 OK
+L093 sbits=3a31a2f6 zp=  99 n= 776 ai=1 ao=2 OK
+L094 sbits=39d9c4be zp= 114 n=1591 ai=1 ao=0 OK
+L095 sbits=3ee78622 zp= -32 n= 459 ai=3 ao=3 OK
+L096 sbits=3c891749 zp=  50 n=2156 ai=0 ao=0 OK
+L097 sbits=3f1953ce zp=  -4 n=1490 ai=2 ao=1 OK
+L098 sbits=3d9e3614 zp= 116 n=1118 ai=0 ao=3 OK
+L099 sbits=3ad32f3e zp= -23 n= 822 ai=0 ao=2 OK
+L100 sbits=3b863afc zp= 110 n=3899 ai=0 ao=2 OK
+L101 sbits=3f54ae6a zp=  10 n=2403 ai=1 ao=0 OK
+L102 sbits=399eada8 zp= -70 n=2593 ai=1 ao=2 OK
+L103 sbits=3ce4a09d zp= -19 n=4142 ai=2 ao=2 OK
+L104 sbits=3d60c7b6 zp=  93 n=1110 ai=2 ao=1 OK
+L105 sbits=39018382 zp= -12 n=4245 ai=2 ao=1 OK
+L106 sbits=3fa27814 zp= -87 n=1339 ai=1 ao=2 OK
+L107 sbits=39256fcc zp=  68 n= 592 ai=2 ao=3 OK
+L108 sbits=3d50c010 zp=  19 n=4501 ai=1 ao=2 OK
+L109 sbits=3cc2b567 zp=  32 n=4156 ai=0 ao=0 OK
+L110 sbits=3c7bf7f8 zp= -43 n=2882 ai=2 ao=1 OK
+L111 sbits=3b896e18 zp= 100 n= 952 ai=0 ao=2 OK
+L112 sbits=3c556820 zp=  16 n=3159 ai=1 ao=1 OK
+L113 sbits=3da1f49e zp= -87 n=4051 ai=3 ao=1 OK
+L114 sbits=3e022c0a zp=  86 n=4452 ai=1 ao=0 OK
+L115 sbits=3f48884e zp= 125 n=2857 ai=3 ao=2 OK
+L116 sbits=3b7faa82 zp= -84 n= 765 ai=2 ao=3 OK
+L117 sbits=3a1eabc4 zp=-113 n= 723 ai=2 ao=3 OK
+L118 sbits=3c6f207a zp= -13 n=2986 ai=2 ao=3 OK
+L119 sbits=3c43c837 zp= -53 n=2243 ai=1 ao=1 OK
+L120 sbits=3db1b1a6 zp=  14 n= 790 ai=2 ao=2 OK
+L121 sbits=3b1f15b8 zp=   6 n=3751 ai=0 ao=1 OK
+L122 sbits=39ef0507 zp=  97 n=4809 ai=2 ao=3 OK
+L123 sbits=3d483065 zp=  78 n=4292 ai=1 ao=0 OK
+L124 sbits=3ae9eda0 zp=  61 n=2980 ai=1 ao=2 OK
+L125 sbits=3afe8cf6 zp=  45 n=1532 ai=3 ao=3 OK
+L126 sbits=39be3976 zp=  93 n=3734 ai=1 ao=0 OK
+L127 sbits=3b265967 zp= -60 n=3851 ai=1 ao=3 OK
+L128 sbits=3d9e3f9a zp=  30 n=2261 ai=0 ao=0 OK
+L129 sbits=3d3acf62 zp=  82 n=4145 ai=3 ao=0 OK
+L130 sbits=3b0eca67 zp=  12 n=4717 ai=3 ao=2 OK
+L131 sbits=39dc9188 zp=-125 n=1537 ai=2 ao=1 OK
+L132 sbits=3c00d417 zp=  44 n=2133 ai=1 ao=3 OK
+L133 sbits=3f2cceee zp=-115 n=2901 ai=1 ao=0 OK
+L134 sbits=3c37011c zp= -61 n=1365 ai=2 ao=1 OK
+L135 sbits=3c7ff367 zp= 125 n= 649 ai=2 ao=2 OK
+L136 sbits=3f4d364f zp=  90 n=1988 ai=1 ao=3 OK
+L137 sbits=3b3af1c4 zp= -91 n=4509 ai=2 ao=3 OK
+L138 sbits=3a9618f2 zp= -51 n=2804 ai=0 ao=0 OK
+L139 sbits=3acb42a2 zp= -36 n= 660 ai=1 ao=3 OK
+L140 sbits=3a34ce11 zp= -44 n= 205 ai=1 ao=0 OK
+L141 sbits=3ca4f0e3 zp= -66 n=4213 ai=0 ao=3 OK
+L142 sbits=3b9dfae8 zp= -79 n=4137 ai=1 ao=0 OK
+L143 sbits=3cdb7f88 zp=  -6 n=2896 ai=2 ao=0 OK
+L144 sbits=3f1697ea zp=  -2 n= 218 ai=1 ao=3 OK
+L145 sbits=3e10ba62 zp=  -1 n=1001 ai=0 ao=0 OK
+L146 sbits=3f49ca59 zp= -80 n=1878 ai=2 ao=3 OK
+L147 sbits=3c11878c zp=  23 n=2819 ai=1 ao=0 OK
+L148 sbits=394a44ac zp= -58 n=1019 ai=3 ao=2 OK
+L149 sbits=3d275cec zp= -51 n=1524 ai=3 ao=2 OK
+L150 sbits=3a5a3c50 zp= -47 n=2957 ai=0 ao=3 OK
+L151 sbits=3e29d762 zp=  33 n=4401 ai=3 ao=2 OK
+L152 sbits=3f215062 zp= -55 n= 899 ai=2 ao=1 OK
+L153 sbits=39a77487 zp=-103 n=1961 ai=3 ao=3 OK
+L154 sbits=3d2232a6 zp= 122 n=4260 ai=2 ao=2 OK
+L155 sbits=3d45701a zp=-109 n=4594 ai=0 ao=0 OK
+L156 sbits=3d556e22 zp=-110 n=1954 ai=3 ao=1 OK
+L157 sbits=3faaa7ca zp=  64 n=2857 ai=0 ao=3 OK
+L158 sbits=3f27df2c zp=  -5 n=1255 ai=1 ao=2 OK
+L159 sbits=3aad4f2e zp=  53 n=2319 ai=3 ao=3 OK
+L160 sbits=3b27fe72 zp=-116 n=2769 ai=2 ao=3 OK
+L161 sbits=3ceae1d8 zp=  96 n=4357 ai=0 ao=3 OK
+L162 sbits=3d1fe92f zp= -28 n=2816 ai=2 ao=0 OK
+L163 sbits=3df118d3 zp= 109 n=1479 ai=3 ao=0 OK
+L164 sbits=39570b64 zp=-109 n=2834 ai=2 ao=1 OK
+L165 sbits=3eb20f08 zp=   2 n=3113 ai=3 ao=1 OK
+L166 sbits=3c9a4cb8 zp=  -4 n=2479 ai=2 ao=1 OK
+L167 sbits=3d25a8d4 zp=  24 n= 728 ai=0 ao=0 OK
+L168 sbits=3b55655f zp=  64 n=3009 ai=1 ao=3 OK
+L169 sbits=3ce7ca9e zp=  41 n=4521 ai=0 ao=1 OK
+L170 sbits=3f198c9a zp=  25 n=2397 ai=1 ao=1 OK
+L171 sbits=39e22cf1 zp=  94 n=2597 ai=2 ao=0 OK
+L172 sbits=3dc6bbab zp=  69 n=1413 ai=3 ao=1 OK
+L173 sbits=3ce64fb2 zp=  19 n=4080 ai=0 ao=3 OK
+L174 sbits=3faf1bb0 zp=  25 n=4087 ai=1 ao=3 OK
+L175 sbits=3f051057 zp=   1 n=3467 ai=2 ao=3 OK
+L176 sbits=3e854b5a zp= 125 n=4413 ai=3 ao=1 OK
+L177 sbits=392f2256 zp=  14 n=2904 ai=0 ao=3 OK
+L178 sbits=397e73e0 zp=  -6 n= 655 ai=0 ao=1 OK
+L179 sbits=3fddae66 zp=-102 n=3265 ai=3 ao=1 OK
+L180 sbits=3a85ff19 zp= -44 n= 484 ai=0 ao=2 OK
+L181 sbits=3ce04334 zp= -63 n=1286 ai=2 ao=2 OK
+L182 sbits=3b8cf638 zp=  91 n=4268 ai=0 ao=0 OK
+L183 sbits=3998bae4 zp=-116 n=2218 ai=2 ao=1 OK
+L184 sbits=3adbd892 zp= 108 n= 876 ai=0 ao=2 OK
+L185 sbits=3929f698 zp=  84 n=4683 ai=0 ao=3 OK
+L186 sbits=390b4906 zp= -96 n=   8 ai=1 ao=0 OK
+L187 sbits=3c173356 zp=-106 n=1024 ai=1 ao=3 OK
+L188 sbits=3f001092 zp= 118 n=1283 ai=0 ao=2 OK
+L189 sbits=3e06389e zp=  40 n= 442 ai=3 ao=0 OK
+L190 sbits=3acb8656 zp= -84 n= 898 ai=3 ao=0 OK
+L191 sbits=3c186196 zp=  70 n= 789 ai=3 ao=2 OK
+L192 sbits=3ff0f68e zp= -68 n=2240 ai=3 ao=1 OK
+L193 sbits=39f5debc zp=-102 n=3151 ai=0 ao=1 OK
+L194 sbits=3c4e666c zp=  59 n=3116 ai=3 ao=1 OK
+L195 sbits=39f41d12 zp=  85 n=2770 ai=0 ao=1 OK
+L196 sbits=3a063128 zp=  50 n= 307 ai=0 ao=1 OK
+L197 sbits=3f1342b0 zp=-123 n=2415 ai=3 ao=2 OK
+L198 sbits=3f0240aa zp=  35 n=4649 ai=3 ao=0 OK
+L199 sbits=3d3d20bd zp=  80 n=4255 ai=0 ao=1 OK
+Logistic random: 200/200 exact (fail=0, status_errors=0, elems=515059)
+T000 r=6 e=1 in=53x1x62x15x1x1 perm=230154 B=49290 ai=2 ao=1 OK
+T001 r=1 e=1 in=7 perm=0 B=7 ai=2 ao=2 OK
+T002 r=5 e=1 in=41x42x6x1x2 perm=41302 B=20664 ai=1 ao=0 OK
+T003 r=1 e=1 in=21 perm=0 B=21 ai=2 ao=2 OK
+T004 r=5 e=1 in=26x1x1x1x1 perm=23401 B=26 ai=0 ao=0 OK
+T005 r=6 e=1 in=36x22x2x6x1x2 perm=314052 B=19008 ai=3 ao=2 OK
+T006 r=1 e=1 in=2 perm=0 B=2 ai=1 ao=2 OK
+T007 r=5 e=1 in=44x8x2x1x1 perm=01324 B=704 ai=0 ao=3 OK
+T008 r=3 e=1 in=1x37x1139 perm=120 B=42143 ai=0 ao=3 OK
+T009 r=4 e=1 in=27x1x1x7 perm=3012 B=189 ai=2 ao=2 OK
+T010 r=5 e=1 in=58x1x6x1x1 perm=01243 B=348 ai=3 ao=1 OK
+T011 r=3 e=1 in=3x1x1 perm=102 B=3 ai=3 ao=2 OK
+T012 r=3 e=1 in=6x44x125 perm=210 B=33000 ai=2 ao=2 OK
+T013 r=3 e=1 in=26x1x108 perm=102 B=2808 ai=3 ao=0 OK
+T014 r=1 e=1 in=193 perm=0 B=193 ai=0 ao=1 OK
+T015 r=6 e=1 in=1x13x13x1x1x1 perm=420351 B=169 ai=2 ao=2 OK
+T016 r=2 e=1 in=1x44384 perm=10 B=44384 ai=2 ao=0 OK
+T017 r=2 e=1 in=1x10485 perm=10 B=10485 ai=3 ao=2 OK
+T018 r=4 e=1 in=16x1x19x3 perm=0213 B=912 ai=3 ao=3 OK
+T019 r=6 e=1 in=36x20x1x4x1x1 perm=430512 B=2880 ai=1 ao=3 OK
+T020 r=5 e=1 in=6x1x1x1x1 perm=42301 B=6 ai=0 ao=1 OK
+T021 r=5 e=1 in=1x10x4x1x1 perm=14302 B=40 ai=1 ao=3 OK
+T022 r=1 e=1 in=1 perm=0 B=1 ai=0 ao=1 OK
+T023 r=2 e=1 in=59x250 perm=10 B=14750 ai=2 ao=2 OK
+T024 r=1 e=1 in=63830 perm=0 B=63830 ai=0 ao=2 OK
+T025 r=1 e=1 in=134 perm=0 B=134 ai=1 ao=0 OK
+T026 r=2 e=1 in=1x1 perm=01 B=1 ai=1 ao=2 OK
+T027 r=3 e=1 in=43x1x2 perm=012 B=86 ai=1 ao=2 OK
+T028 r=3 e=1 in=1x1x1 perm=201 B=1 ai=0 ao=3 OK
+T029 r=2 e=1 in=33x1 perm=01 B=33 ai=3 ao=3 OK
+T030 r=1 e=1 in=3682 perm=0 B=3682 ai=3 ao=1 OK
+T031 r=3 e=1 in=1x11x53 perm=120 B=583 ai=3 ao=3 OK
+T032 r=1 e=1 in=63228 perm=0 B=63228 ai=3 ao=1 OK
+T033 r=5 e=1 in=61x13x1x6x1 perm=13024 B=4758 ai=1 ao=3 OK
+T034 r=3 e=1 in=1x1x12966 perm=102 B=12966 ai=3 ao=0 OK
+T035 r=1 e=1 in=3 perm=0 B=3 ai=0 ao=1 OK
+T036 r=6 e=1 in=1x63x11x1x1x1 perm=314205 B=693 ai=0 ao=2 OK
+T037 r=4 e=1 in=2x4x1x1 perm=0312 B=8 ai=3 ao=2 OK
+T038 r=4 e=1 in=33x1x1x1 perm=0321 B=33 ai=1 ao=3 OK
+T039 r=5 e=1 in=2x1x1x1x1 perm=20314 B=2 ai=0 ao=2 OK
+T040 r=6 e=1 in=53x1x1x60x1x1 perm=531204 B=3180 ai=3 ao=1 OK
+T041 r=4 e=1 in=59x39x1x2 perm=0312 B=4602 ai=0 ao=2 OK
+T042 r=5 e=1 in=1x8x1x1x1 perm=14032 B=8 ai=1 ao=3 OK
+T043 r=2 e=1 in=8x7 perm=10 B=56 ai=3 ao=0 OK
+T044 r=6 e=1 in=1x1x54x1x3x1 perm=042351 B=162 ai=3 ao=0 OK
+T045 r=3 e=1 in=35x19x1 perm=012 B=665 ai=0 ao=3 OK
+T046 r=2 e=1 in=7x1 perm=10 B=7 ai=1 ao=1 OK
+T047 r=4 e=1 in=52x7x1x1 perm=1032 B=364 ai=2 ao=2 OK
+T048 r=1 e=1 in=44433 perm=0 B=44433 ai=2 ao=2 OK
+T049 r=5 e=1 in=1x42x46x1x3 perm=20413 B=5796 ai=0 ao=3 OK
+T050 r=3 e=1 in=8x1x1 perm=102 B=8 ai=2 ao=3 OK
+T051 r=1 e=1 in=3 perm=0 B=3 ai=0 ao=2 OK
+T052 r=2 e=1 in=1x1 perm=10 B=1 ai=1 ao=3 OK
+T053 r=6 e=1 in=1x47x4x1x1x1 perm=153420 B=188 ai=3 ao=0 OK
+T054 r=5 e=1 in=1x32x1x28x7 perm=01324 B=6272 ai=3 ao=2 OK
+T055 r=4 e=1 in=1x1x2x1 perm=0231 B=2 ai=2 ao=3 OK
+T056 r=3 e=1 in=5x1x1 perm=021 B=5 ai=0 ao=3 OK
+T057 r=4 e=1 in=60x1x1x1 perm=0123 B=60 ai=1 ao=1 OK
+T058 r=1 e=1 in=250 perm=0 B=250 ai=0 ao=1 OK
+T059 r=5 e=1 in=54x5x1x2x1 perm=34102 B=540 ai=3 ao=2 OK
+T060 r=1 e=1 in=1830 perm=0 B=1830 ai=3 ao=0 OK
+T061 r=2 e=1 in=40x10 perm=10 B=400 ai=3 ao=1 OK
+T062 r=1 e=1 in=1 perm=0 B=1 ai=1 ao=2 OK
+T063 r=2 e=1 in=5x1 perm=01 B=5 ai=3 ao=2 OK
+T064 r=5 e=1 in=47x1x18x28x1 perm=20143 B=23688 ai=3 ao=1 OK
+T065 r=4 e=1 in=23x12x1x1 perm=2130 B=276 ai=2 ao=2 OK
+T066 r=5 e=1 in=8x1x1x1x1 perm=14032 B=8 ai=0 ao=2 OK
+T067 r=1 e=1 in=2 perm=0 B=2 ai=0 ao=1 OK
+T068 r=2 e=1 in=1x1 perm=01 B=1 ai=3 ao=0 OK
+T069 r=1 e=1 in=7587 perm=0 B=7587 ai=0 ao=3 OK
+T070 r=2 e=1 in=28x1051 perm=01 B=29428 ai=1 ao=1 OK
+T071 r=6 e=1 in=1x1x1x1x1x1 perm=435210 B=1 ai=3 ao=3 OK
+T072 r=5 e=1 in=57x16x1x40x1 perm=04123 B=36480 ai=1 ao=0 OK
+T073 r=6 e=1 in=2x1x1x1x1x1 perm=034125 B=2 ai=0 ao=3 OK
+T074 r=6 e=1 in=22x1x1x1x11x3 perm=013542 B=726 ai=2 ao=3 OK
+T075 r=4 e=1 in=24x1x1x1 perm=1302 B=24 ai=0 ao=3 OK
+T076 r=5 e=1 in=1x41x1x27x1 perm=13420 B=1107 ai=0 ao=2 OK
+T077 r=2 e=1 in=10x123 perm=01 B=1230 ai=3 ao=0 OK
+T078 r=2 e=1 in=1x1 perm=10 B=1 ai=1 ao=3 OK
+T079 r=3 e=1 in=1x53x9 perm=021 B=477 ai=2 ao=3 OK
+T080 r=3 e=1 in=29x45x1 perm=012 B=1305 ai=0 ao=3 OK
+T081 r=3 e=1 in=15x13x17 perm=210 B=3315 ai=2 ao=3 OK
+T082 r=4 e=1 in=38x1x1x3 perm=2301 B=114 ai=3 ao=0 OK
+T083 r=4 e=1 in=39x1x10x1 perm=0231 B=390 ai=2 ao=2 OK
+T084 r=3 e=1 in=1x41x1554 perm=021 B=63714 ai=2 ao=1 OK
+T085 r=3 e=1 in=31x2x3 perm=012 B=186 ai=3 ao=3 OK
+T086 r=6 e=1 in=31x1x5x2x1x1 perm=425013 B=310 ai=0 ao=2 OK
+T087 r=2 e=1 in=1x149 perm=10 B=149 ai=1 ao=3 OK
+T088 r=5 e=1 in=39x1x32x1x41 perm=02134 B=51168 ai=0 ao=2 OK
+T089 r=2 e=1 in=1x1 perm=10 B=1 ai=1 ao=2 OK
+T090 r=6 e=1 in=1x1x1x1x10x1 perm=014352 B=10 ai=2 ao=0 OK
+T091 r=3 e=1 in=23x42x1 perm=021 B=966 ai=2 ao=3 OK
+T092 r=1 e=1 in=4 perm=0 B=4 ai=1 ao=0 OK
+T093 r=3 e=1 in=1x1x1 perm=102 B=1 ai=3 ao=0 OK
+T094 r=6 e=1 in=14x1x1x1x8x1 perm=034215 B=112 ai=3 ao=3 OK
+T095 r=6 e=1 in=7x1x1x1x1x1 perm=245013 B=7 ai=1 ao=3 OK
+T096 r=3 e=1 in=5x1x7357 perm=120 B=36785 ai=2 ao=1 OK
+T097 r=1 e=1 in=7 perm=0 B=7 ai=1 ao=2 OK
+T098 r=6 e=1 in=1x3x1x14x9x1 perm=502143 B=378 ai=0 ao=2 OK
+T099 r=1 e=1 in=50 perm=0 B=50 ai=1 ao=3 OK
+T100 r=6 e=1 in=19x3x1x2x1x1 perm=130254 B=114 ai=3 ao=2 OK
+T101 r=6 e=1 in=1x1x17x1x1x1 perm=350241 B=17 ai=0 ao=0 OK
+T102 r=3 e=1 in=1x8x1 perm=102 B=8 ai=2 ao=1 OK
+T103 r=6 e=1 in=1x2x1x12x1x1 perm=342510 B=24 ai=2 ao=0 OK
+T104 r=4 e=1 in=57x1x63x13 perm=3102 B=46683 ai=3 ao=2 OK
+T105 r=5 e=1 in=20x1x9x1x2 perm=02134 B=360 ai=2 ao=2 OK
+T106 r=4 e=1 in=8x1x1x1 perm=2310 B=8 ai=2 ao=2 OK
+T107 r=1 e=1 in=4 perm=0 B=4 ai=3 ao=1 OK
+T108 r=3 e=1 in=1x1x1 perm=012 B=1 ai=3 ao=1 OK
+T109 r=3 e=1 in=62x1x1 perm=210 B=62 ai=0 ao=0 OK
+T110 r=6 e=1 in=22x15x2x1x5x1 perm=130542 B=3300 ai=1 ao=2 OK
+T111 r=1 e=1 in=9 perm=0 B=9 ai=1 ao=1 OK
+T112 r=3 e=1 in=29x21x1 perm=012 B=609 ai=1 ao=3 OK
+T113 r=5 e=1 in=47x21x1x1x1 perm=23014 B=987 ai=0 ao=0 OK
+T114 r=2 e=1 in=1x1 perm=01 B=1 ai=0 ao=1 OK
+T115 r=5 e=1 in=1x1x7x1x1 perm=20134 B=7 ai=2 ao=2 OK
+T116 r=3 e=1 in=1x4x1 perm=102 B=4 ai=0 ao=2 OK
+T117 r=1 e=1 in=492 perm=0 B=492 ai=0 ao=1 OK
+T118 r=5 e=1 in=58x1x55x14x1 perm=04321 B=44660 ai=3 ao=2 OK
+T119 r=6 e=1 in=1x5x1x17x1x1 perm=134052 B=85 ai=2 ao=2 OK
+T120 r=6 e=1 in=42x38x1x16x1x2 perm=412035 B=51072 ai=2 ao=3 OK
+T121 r=5 e=1 in=1x2x1x1x1 perm=34102 B=2 ai=1 ao=0 OK
+T122 r=5 e=1 in=3x44x19x1x1 perm=10234 B=2508 ai=1 ao=2 OK
+T123 r=2 e=1 in=1x1 perm=10 B=1 ai=2 ao=2 OK
+T124 r=4 e=1 in=1x36x45x31 perm=3102 B=50220 ai=3 ao=1 OK
+T125 r=3 e=1 in=1x1x1 perm=012 B=1 ai=0 ao=2 OK
+T126 r=4 e=1 in=1x30x1x2069 perm=3201 B=62070 ai=0 ao=1 OK
+T127 r=3 e=1 in=1x1x1 perm=021 B=1 ai=0 ao=2 OK
+T128 r=2 e=1 in=1x40567 perm=10 B=40567 ai=1 ao=1 OK
+T129 r=6 e=1 in=23x5x1x1x1x1 perm=425103 B=115 ai=2 ao=1 OK
+T130 r=1 e=1 in=7651 perm=0 B=7651 ai=0 ao=0 OK
+T131 r=1 e=1 in=820 perm=0 B=820 ai=3 ao=0 OK
+T132 r=6 e=1 in=43x1x5x2x1x1 perm=143502 B=430 ai=3 ao=3 OK
+T133 r=2 e=1 in=2x1 perm=10 B=2 ai=1 ao=3 OK
+T134 r=4 e=1 in=1x1x1x4 perm=3021 B=4 ai=2 ao=1 OK
+T135 r=2 e=1 in=32x1 perm=01 B=32 ai=1 ao=0 OK
+T136 r=5 e=1 in=52x1x2x1x538 perm=01243 B=55952 ai=3 ao=0 OK
+T137 r=1 e=1 in=50 perm=0 B=50 ai=1 ao=2 OK
+T138 r=2 e=1 in=1x4 perm=01 B=4 ai=2 ao=0 OK
+T139 r=2 e=1 in=1x1 perm=01 B=1 ai=3 ao=1 OK
+T140 r=2 e=1 in=1x1 perm=01 B=1 ai=0 ao=3 OK
+T141 r=1 e=1 in=1 perm=0 B=1 ai=1 ao=0 OK
+T142 r=6 e=1 in=1x1x1x1x1x1 perm=325104 B=1 ai=0 ao=2 OK
+T143 r=5 e=1 in=1x1x1x1x1 perm=20134 B=1 ai=1 ao=0 OK
+T144 r=2 e=1 in=34x1 perm=01 B=34 ai=0 ao=3 OK
+T145 r=5 e=1 in=3x1x32x1x10 perm=43201 B=960 ai=0 ao=2 OK
+T146 r=1 e=1 in=18024 perm=0 B=18024 ai=2 ao=3 OK
+T147 r=4 e=1 in=1x3x1x1 perm=2013 B=3 ai=2 ao=1 OK
+T148 r=1 e=1 in=9 perm=0 B=9 ai=3 ao=0 OK
+T149 r=4 e=1 in=1x55x1x1 perm=3102 B=55 ai=1 ao=2 OK
+T150 r=4 e=1 in=51x31x1x1 perm=0321 B=1581 ai=3 ao=2 OK
+T151 r=1 e=1 in=615 perm=0 B=615 ai=2 ao=0 OK
+T152 r=2 e=1 in=1x36314 perm=10 B=36314 ai=1 ao=1 OK
+T153 r=1 e=1 in=2213 perm=0 B=2213 ai=2 ao=3 OK
+T154 r=4 e=1 in=6x2x1x1 perm=1230 B=12 ai=0 ao=3 OK
+T155 r=3 e=1 in=1x40x1 perm=021 B=40 ai=2 ao=0 OK
+T156 r=1 e=1 in=8446 perm=0 B=8446 ai=3 ao=3 OK
+T157 r=5 e=1 in=15x1x4x2x1 perm=32140 B=120 ai=1 ao=3 OK
+T158 r=5 e=1 in=37x1x6x1x3 perm=23104 B=666 ai=3 ao=3 OK
+T159 r=6 e=1 in=1x1x1x3x3x1 perm=215430 B=9 ai=0 ao=3 OK
+T160 r=4 e=1 in=25x26x1x1 perm=0231 B=650 ai=3 ao=2 OK
+T161 r=1 e=1 in=4488 perm=0 B=4488 ai=0 ao=3 OK
+T162 r=4 e=1 in=1x1x1x1148 perm=0123 B=1148 ai=2 ao=1 OK
+T163 r=4 e=1 in=40x1x1x1 perm=3021 B=40 ai=2 ao=2 OK
+T164 r=5 e=1 in=1x43x50x1x1 perm=40132 B=2150 ai=3 ao=1 OK
+T165 r=3 e=1 in=1x44x1 perm=012 B=44 ai=2 ao=2 OK
+T166 r=5 e=1 in=1x1x1x1x1 perm=04132 B=1 ai=3 ao=3 OK
+T167 r=5 e=1 in=23x10x1x4x1 perm=30142 B=920 ai=2 ao=1 OK
+T168 r=4 e=1 in=9x1x37x142 perm=3210 B=47286 ai=1 ao=1 OK
+T169 r=4 e=1 in=1x23x12x1 perm=2130 B=276 ai=1 ao=0 OK
+T170 r=3 e=1 in=10x1x1 perm=210 B=10 ai=3 ao=0 OK
+T171 r=3 e=1 in=1x1x1 perm=012 B=1 ai=2 ao=0 OK
+T172 r=5 e=1 in=30x4x35x1x6 perm=41203 B=25200 ai=1 ao=2 OK
+T173 r=3 e=1 in=3x1x1 perm=210 B=3 ai=2 ao=1 OK
+T174 r=5 e=1 in=1x1x1x45x1 perm=30412 B=45 ai=0 ao=0 OK
+T175 r=1 e=1 in=562 perm=0 B=562 ai=2 ao=0 OK
+T176 r=3 e=1 in=64x55x14 perm=012 B=49280 ai=0 ao=2 OK
+T177 r=3 e=1 in=2x1x157 perm=120 B=314 ai=1 ao=0 OK
+T178 r=2 e=1 in=1x1 perm=01 B=1 ai=0 ao=2 OK
+T179 r=2 e=1 in=31x1 perm=01 B=31 ai=1 ao=2 OK
+T180 r=4 e=1 in=1x1x1x1 perm=3021 B=1 ai=0 ao=0 OK
+T181 r=2 e=1 in=5x4 perm=10 B=20 ai=3 ao=1 OK
+T182 r=6 e=1 in=1x1x2x1x1x1 perm=523401 B=2 ai=3 ao=1 OK
+T183 r=4 e=1 in=41x1x1x5 perm=3012 B=205 ai=2 ao=0 OK
+T184 r=2 e=1 in=15x1 perm=01 B=15 ai=3 ao=1 OK
+T185 r=1 e=1 in=1 perm=0 B=1 ai=0 ao=2 OK
+T186 r=4 e=1 in=1x43x41x14 perm=3210 B=24682 ai=3 ao=2 OK
+T187 r=3 e=1 in=1x1x1 perm=210 B=1 ai=3 ao=0 OK
+T188 r=6 e=1 in=1x1x1x1x1x1 perm=124035 B=1 ai=1 ao=0 OK
+T189 r=5 e=1 in=33x10x1x1x1 perm=41320 B=330 ai=0 ao=1 OK
+T190 r=1 e=1 in=2 perm=0 B=2 ai=2 ao=1 OK
+T191 r=6 e=1 in=59x1x1x1x1x5 perm=024351 B=295 ai=1 ao=3 OK
+T192 r=6 e=1 in=1x29x40x1x27x1 perm=021345 B=31320 ai=1 ao=3 OK
+T193 r=2 e=1 in=1x25 perm=10 B=25 ai=1 ao=3 OK
+T194 r=6 e=1 in=9x1x1x1x1x1 perm=150234 B=9 ai=3 ao=2 OK
+T195 r=6 e=1 in=1x5x1x1x1x1 perm=340521 B=5 ai=0 ao=1 OK
+T196 r=3 e=1 in=1x1x1 perm=021 B=1 ai=1 ao=2 OK
+T197 r=1 e=1 in=3293 perm=0 B=3293 ai=3 ao=3 OK
+T198 r=6 e=1 in=1x1x1x1x1x1 perm=012435 B=1 ai=0 ao=0 OK
+T199 r=4 e=1 in=2x1x1x1 perm=2031 B=2 ai=2 ao=3 OK
+T200 r=2 e=1 in=30x1392 perm=10 B=41760 ai=0 ao=0 OK
+T201 r=4 e=1 in=62x1x1x1 perm=1203 B=62 ai=3 ao=1 OK
+T202 r=4 e=1 in=2x24x45x1 perm=3210 B=2160 ai=3 ao=0 OK
+T203 r=3 e=1 in=6x1x1 perm=012 B=6 ai=2 ao=3 OK
+T204 r=3 e=1 in=30x6x1 perm=012 B=180 ai=3 ao=2 OK
+T205 r=1 e=1 in=3 perm=0 B=3 ai=1 ao=2 OK
+T206 r=2 e=1 in=1x1 perm=10 B=1 ai=3 ao=2 OK
+T207 r=1 e=1 in=11498 perm=0 B=11498 ai=1 ao=0 OK
+T208 r=5 e=1 in=1x17x1x30x83 perm=03421 B=42330 ai=3 ao=3 OK
+T209 r=5 e=1 in=1x1x1x1x1 perm=32014 B=1 ai=3 ao=0 OK
+T210 r=4 e=1 in=1x1x1x1 perm=0213 B=1 ai=0 ao=2 OK
+T211 r=4 e=1 in=1x1x1x1 perm=2013 B=1 ai=1 ao=2 OK
+T212 r=3 e=1 in=22x10x1 perm=201 B=220 ai=2 ao=0 OK
+T213 r=5 e=1 in=26x13x3x1x1 perm=14230 B=1014 ai=0 ao=0 OK
+T214 r=3 e=1 in=1x5x1 perm=021 B=5 ai=2 ao=1 OK
+T215 r=2 e=1 in=23x6 perm=10 B=138 ai=2 ao=0 OK
+T216 r=5 e=1 in=1x19x22x38x2 perm=30124 B=31768 ai=2 ao=1 OK
+T217 r=1 e=1 in=1 perm=0 B=1 ai=2 ao=1 OK
+T218 r=3 e=1 in=1x1x17 perm=201 B=17 ai=3 ao=3 OK
+T219 r=2 e=1 in=1x34564 perm=10 B=34564 ai=1 ao=2 OK
+T220 r=5 e=1 in=1x1x1x1x1 perm=21340 B=1 ai=3 ao=3 OK
+T221 r=6 e=1 in=47x1x1x2x1x1 perm=152340 B=94 ai=2 ao=1 OK
+T222 r=5 e=1 in=37x41x2x1x1 perm=02431 B=3034 ai=1 ao=0 OK
+T223 r=2 e=1 in=14x1 perm=10 B=14 ai=1 ao=1 OK
+T224 r=6 e=1 in=32x1x1x40x1x1 perm=102453 B=1280 ai=2 ao=3 OK
+T225 r=1 e=1 in=13 perm=0 B=13 ai=1 ao=2 OK
+T226 r=4 e=1 in=2x1x1x1 perm=3120 B=2 ai=1 ao=1 OK
+T227 r=5 e=1 in=5x1x1x1x1 perm=14032 B=5 ai=1 ao=0 OK
+T228 r=4 e=1 in=42x19x11x2 perm=0231 B=17556 ai=2 ao=2 OK
+T229 r=3 e=1 in=55x49x1 perm=210 B=2695 ai=1 ao=1 OK
+T230 r=6 e=1 in=1x1x27x2x30x10 perm=150423 B=16200 ai=1 ao=1 OK
+T231 r=4 e=1 in=1x19x1x209 perm=3102 B=3971 ai=0 ao=1 OK
+T232 r=4 e=1 in=20x1x5x1 perm=3210 B=100 ai=3 ao=3 OK
+T233 r=1 e=1 in=14 perm=0 B=14 ai=3 ao=3 OK
+T234 r=3 e=1 in=10x29x142 perm=102 B=41180 ai=1 ao=2 OK
+T235 r=2 e=1 in=1x1 perm=01 B=1 ai=1 ao=3 OK
+T236 r=1 e=1 in=1 perm=0 B=1 ai=3 ao=3 OK
+T237 r=1 e=1 in=2574 perm=0 B=2574 ai=3 ao=0 OK
+T238 r=6 e=1 in=1x41x3x1x1x4 perm=350124 B=492 ai=1 ao=0 OK
+T239 r=2 e=1 in=1x1 perm=01 B=1 ai=2 ao=1 OK
+T240 r=5 e=1 in=8x1x1x1x4951 perm=02431 B=39608 ai=0 ao=1 OK
+T241 r=5 e=1 in=62x1x3x1x1 perm=41032 B=186 ai=3 ao=1 OK
+T242 r=5 e=1 in=1x1x26x1x1 perm=30142 B=26 ai=3 ao=0 OK
+T243 r=5 e=1 in=1x1x1x4x1 perm=32014 B=4 ai=0 ao=2 OK
+T244 r=4 e=1 in=62x17x1x1 perm=0312 B=1054 ai=1 ao=1 OK
+T245 r=1 e=1 in=165 perm=0 B=165 ai=3 ao=3 OK
+T246 r=2 e=1 in=6x1 perm=10 B=6 ai=3 ao=2 OK
+T247 r=3 e=1 in=1x1x1 perm=210 B=1 ai=2 ao=0 OK
+T248 r=1 e=1 in=34860 perm=0 B=34860 ai=1 ao=0 OK
+T249 r=4 e=1 in=1x1x1x1 perm=2301 B=1 ai=0 ao=2 OK
+T250 r=6 e=1 in=30x1x33x4x1x1 perm=512304 B=3960 ai=0 ao=1 OK
+T251 r=1 e=1 in=19 perm=0 B=19 ai=3 ao=1 OK
+T252 r=3 e=1 in=2x1x3 perm=021 B=6 ai=1 ao=3 OK
+T253 r=1 e=1 in=8 perm=0 B=8 ai=3 ao=0 OK
+T254 r=6 e=1 in=1x37x12x1x18x1 perm=421503 B=7992 ai=0 ao=3 OK
+T255 r=4 e=1 in=1x1x44x1 perm=2310 B=44 ai=2 ao=3 OK
+T256 r=3 e=1 in=16x61x43 perm=120 B=41968 ai=2 ao=2 OK
+T257 r=6 e=1 in=1x14x61x1x2x1 perm=041235 B=1708 ai=1 ao=0 OK
+T258 r=6 e=1 in=1x1x1x1x1x1 perm=342150 B=1 ai=0 ao=1 OK
+T259 r=2 e=1 in=1x6 perm=01 B=6 ai=2 ao=3 OK
+T260 r=4 e=1 in=25x18x1x1 perm=2301 B=450 ai=3 ao=1 OK
+T261 r=6 e=1 in=2x1x7x6x1x1 perm=354012 B=84 ai=0 ao=1 OK
+T262 r=3 e=1 in=16x1x3440 perm=012 B=55040 ai=1 ao=3 OK
+T263 r=6 e=1 in=1x9x1x9x1x9 perm=452103 B=729 ai=1 ao=3 OK
+T264 r=4 e=1 in=10x52x1x1 perm=3201 B=520 ai=0 ao=2 OK
+T265 r=1 e=1 in=653 perm=0 B=653 ai=3 ao=1 OK
+T266 r=1 e=1 in=4 perm=0 B=4 ai=2 ao=3 OK
+T267 r=5 e=1 in=1x1x2x1x1 perm=21043 B=2 ai=3 ao=2 OK
+T268 r=1 e=1 in=2 perm=0 B=2 ai=1 ao=3 OK
+T269 r=3 e=1 in=1x9x610 perm=120 B=5490 ai=3 ao=2 OK
+T270 r=6 e=1 in=1x14x1x1x1x846 perm=015243 B=11844 ai=1 ao=1 OK
+T271 r=3 e=1 in=1x1x1 perm=120 B=1 ai=1 ao=3 OK
+T272 r=4 e=1 in=1x16x1x2339 perm=0123 B=37424 ai=0 ao=1 OK
+T273 r=2 e=1 in=2x1 perm=01 B=2 ai=0 ao=0 OK
+T274 r=1 e=1 in=1 perm=0 B=1 ai=2 ao=2 OK
+T275 r=4 e=1 in=1x18x8x1 perm=1230 B=144 ai=2 ao=3 OK
+T276 r=1 e=1 in=50565 perm=0 B=50565 ai=0 ao=1 OK
+T277 r=4 e=1 in=18x57x1x1 perm=2031 B=1026 ai=3 ao=0 OK
+T278 r=4 e=1 in=5x1x1x1 perm=2103 B=5 ai=3 ao=1 OK
+T279 r=1 e=1 in=50021 perm=0 B=50021 ai=1 ao=0 OK
+T280 r=6 e=1 in=1x33x1x54x27x1 perm=032514 B=48114 ai=2 ao=0 OK
+T281 r=4 e=1 in=1x1x1x1 perm=1302 B=1 ai=2 ao=1 OK
+T282 r=6 e=1 in=1x19x64x8x1x1 perm=214350 B=9728 ai=1 ao=1 OK
+T283 r=1 e=1 in=2 perm=0 B=2 ai=1 ao=2 OK
+T284 r=2 e=1 in=1x6 perm=10 B=6 ai=3 ao=2 OK
+T285 r=3 e=1 in=1x1x1 perm=102 B=1 ai=2 ao=3 OK
+T286 r=5 e=1 in=1x2x17x28x7 perm=30214 B=6664 ai=3 ao=3 OK
+T287 r=2 e=1 in=3x19 perm=01 B=57 ai=0 ao=0 OK
+T288 r=1 e=1 in=53076 perm=0 B=53076 ai=3 ao=3 OK
+T289 r=4 e=1 in=56x1x1x2 perm=0321 B=112 ai=2 ao=0 OK
+T290 r=3 e=1 in=2x1x1 perm=201 B=2 ai=1 ao=1 OK
+T291 r=4 e=1 in=2x1x1x1 perm=1320 B=2 ai=3 ao=3 OK
+T292 r=2 e=1 in=2x1 perm=01 B=2 ai=1 ao=2 OK
+T293 r=6 e=1 in=1x1x1x1x1x1 perm=103452 B=1 ai=2 ao=3 OK
+T294 r=4 e=1 in=16x8x2x1 perm=2013 B=256 ai=2 ao=1 OK
+T295 r=5 e=1 in=1x19x1x24x1 perm=13204 B=456 ai=1 ao=1 OK
+T296 r=2 e=1 in=30x1248 perm=01 B=37440 ai=2 ao=2 OK
+T297 r=6 e=1 in=1x11x1x1x1x1 perm=021345 B=11 ai=3 ao=1 OK
+T298 r=3 e=1 in=1x1x1093 perm=210 B=1093 ai=1 ao=2 OK
+T299 r=5 e=1 in=2x1x1x1x1 perm=10234 B=2 ai=2 ao=2 OK
+Transpose random: 300/300 exact (fail=0)
+  coverage: rank1..6 = 56 45 51 51 49 48; esize 1/2/4 = 300 0 0; cases with size-1 dim = 234; unaligned in-base(mod4!=0) = 232, out-base = 235; max bytes = 63830
+  reference self-check vs upstream CPU Transpose: 300 aligned cases, 0 mismatches
+LAB4 RANDOM RESULT: logistic=PASS transpose=PASS
+---
+
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ r: TEMP random NPU vs CPU
+ m: TEMP model accel vs SW
+ x: eXit to previous menu
+lab> m[2J[H
+Running TEMP model accel vs SW
+LAB4 MODEL A/B TEST (NPU Logistic+Transpose vs CPU), seed=0x600dbeef
+input bytes=49152 output bytes=10
+  sample 0 accel status=0 out: -33 112 -37 49 51 127 -120 -128 -71 78
+  sample 0 accel(rep) status=0 out: -33 112 -37 49 51 127 -120 -128 -71 78
+  sample 0 sw    status=0 out: -33 112 -37 49 51 127 -120 -128 -71 78
+  sample 0 accel==accel(rep): yes
+  sample 0: input 49152 bytes all non-zero (49152 non-zero): IDENTICAL
+  sample 1 accel status=0 out: -31 113 -36 51 51 127 -119 -126 -71 81
+  sample 1 sw    status=0 out: -31 113 -36 51 51 127 -119 -126 -71 81
+  sample 1: input 49152 bytes all non-zero (49152 non-zero): IDENTICAL
+  sample 2 accel status=0 out: -33 113 -37 49 53 127 -122 -126 -72 79
+  sample 2 sw    status=0 out: -33 113 -37 49 53 127 -122 -126 -72 79
+  sample 2: input 49152 bytes all non-zero (49152 non-zero): IDENTICAL
+LAB4 MODEL A/B RESULT: 3/3 identical
+---
+
+Lab : Self Test
+===============
+ a: Accelerator AXI Aligned Test
+ b: Accelerator AXI Misaligned Test
+ c: Basic Convolution Test
+ d: Basic platform tests
+ e: Standalone SIMD INT8 MAC Test
+ l: run logistic test
+ t: run transpose test
+ r: TEMP random NPU vs CPU
+ m: TEMP model accel vs SW
+ x: eXit to previous menu
+lab> 
